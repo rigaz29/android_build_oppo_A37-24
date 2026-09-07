@@ -5,12 +5,14 @@ yang berakhir dengan ROM 23.2 yang boot, dipakai harian, dengan kamera AIDL dan
 FBE Adiantum terbukti jalan.
 
 Isinya hasil analisis kode sumber, bukan perkiraan.
-**Fase 0 selesai: 51 klaim diuji, 51 lulus.**
+**Fase 0 selesai: 51 klaim diuji, 51 lulus. Fase 1 berjalan.**
 
 | Berkas | Isi |
 |---|---|
 | [`PLAN-LOS24.md`](PLAN-LOS24.md) | Dokumen utama. Kernel, device tree, vendor blob, userspace, 9 fase kerja |
 | [`FASE-0.md`](FASE-0.md) | Hasil verifikasi: 51 klaim, 18 cherry-pick ULH diuji nyata, release config |
+| [`FASE-1.md`](FASE-1.md) | Manifest + sync: branch `lineage-24`, validasi 17 project, kendala ruang disk |
+| [`tools/sync.sh`](tools/sync.sh) | `repo sync` dengan percobaan ulang dan catatan disk |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
 
 ## Sasaran
