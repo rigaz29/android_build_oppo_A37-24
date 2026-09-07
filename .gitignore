@@ -2,3 +2,10 @@ ref/
 src/
 out/
 *.log
+
+# verify/: hanya skrip yang di-commit; sisanya cache sumber hulu
+verify/trees/
+verify/*.h
+verify/*.mk
+verify/*.cpp
+verify/*.lst

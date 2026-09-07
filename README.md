@@ -4,17 +4,26 @@ Lanjutan dari [`android_build_oppo_A37-23`](https://github.com/rigaz29/android_b
 yang berakhir dengan ROM 23.2 yang boot, dipakai harian, dengan kamera AIDL dan
 FBE Adiantum terbukti jalan.
 
-Isinya hasil analisis kode sumber, bukan perkiraan. Fase 0 (analisis) selesai.
+Isinya hasil analisis kode sumber, bukan perkiraan.
+**Fase 0 selesai: 51 klaim diuji, 51 lulus.**
 
 | Berkas | Isi |
 |---|---|
 | [`PLAN-LOS24.md`](PLAN-LOS24.md) | Dokumen utama. Kernel, device tree, vendor blob, userspace, 9 fase kerja |
+| [`FASE-0.md`](FASE-0.md) | Hasil verifikasi: 51 klaim, 18 cherry-pick ULH diuji nyata, release config |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
 
 ## Sasaran
 
 **LineageOS 24.0 = Android 17** (`refs/tags/android-17.0.0_r1`), API penuh 37.0,
-1067 project. Release config `cp1a`/`cp2a`; 23.2 memakai `bp4a`.
+1067 project. Release config **`cp2a`** — dari
+`vendor/lineage/vars/aosp_target_release`; 23.2 memakai `bp4a`.
+
+```sh
+unset -f grep                            # jebakan lingkungan, masih berlaku
+source build/envsetup.sh
+lunch lineage_A37-cp2a-userdebug
+```
 
 ## Lima temuan yang membentuk seluruh rencana
 
@@ -41,8 +50,16 @@ oleh AOSP lalu dipulihkan LineageOS di balik `soong_config_set_bool,libion,legac
 `ALOGW` menjadi `return 7` — batas kernel efektif 5.4 → 5.10.
 
 **4. Belum ada fork `lineage-24.0` dari ULH maupun acroreiser.**
-Keduanya mentok di `lineage-23.2`. Beban forward-portnya terukur: **19 commit**,
-daftarnya lengkap di `PLAN-LOS24.md` §6.1.
+Keduanya mentok di `lineage-23.2`. Beban forward-portnya **19 commit** — dan
+Fase 0 sudah menguji 18 di antaranya dengan cherry-pick nyata ke `lineage-24.0`:
+
+| | commit | bersih | konflik | hunk |
+|---|---:|---:|---:|---:|
+| Total | 18 | **13** | 5 | 18 |
+
+`system/core` yang semula dikhawatirkan (refactor `libprocessgroup_platform`)
+justru bersih seluruhnya. Sisa konfliknya terpusat di satu commit —
+`c7f2fee2 Forward-port GLES Render Engine`, 10 dari 18 hunk.
 
 **5. Android 17 bukan patahan keras untuk perangkat Qualcomm lawas.**
 Delta device tree Mi-Thorium `a16_qpr2/master` ke `a17/master` hanya **8 commit**,

@@ -35,18 +35,22 @@ const bool isAtLeast26Q4 = (api_level_full >= 3710);  // 37.1
 
 Angka itu yang menentukan gerbang mana yang menyala (bagian 4.2).
 
-Release config: 23.2 memakai `bp4a`. Untuk `android-17.0.0_r1` yang tersedia
-`cp1a` dan `cp2a` (diperiksa di `platform/build/release/release_configs/`):
+Release config: **`cp2a`** — terjawab di Fase 0, tanpa perlu sync.
 
 ```
-cp1a   inherits: bp4a
-cp2a   inherits: mainline_2026_04, cp1a
+vendor/lineage/vars/aosp_target_release
+  lineage-23.2 :  aosp_target_release=bp4a
+  lineage-24.0 :  aosp_target_release=cp2a
+
+vendor/lineage/release/release_configs/
+  lineage-23.2 :  bp4a.textproto
+  lineage-24.0 :  cp2a.textproto      <- satu-satunya
 ```
 
-Mi-Thorium menyebut Android 17 sebagai "CP2A" di pesan commit mereka. **Pastikan
-sendiri sesudah sync** dengan `lunch` — jangan tebak; salah release config
-menghasilkan galat `Cannot locate config makefile for product` yang terlihat
-seperti masalah device tree.
+Umpan palsu yang hampir menyesatkan: `grep -c bp4a` atas seluruh `vendor/lineage`
+`lineage-24.0` masih menghasilkan **31** kecocokan. Semuanya direktori aconfig
+basi (`release/aconfig/bp4a/...`) plus `release/build_config/bp4a.textproto` yang
+tertinggal — bukan konfigurasi aktif. Yang menentukan `vars/aosp_target_release`.
 
 ---
 
@@ -498,8 +502,12 @@ komentar dengan alasannya, jangan hapus catatannya), tambahkan `KERNEL_CC` dan
 ### 5.5 `TARGET_COMPILE_WITH_MSM_KERNEL` — TIDAK berlaku untuk A37
 
 Mi-Thorium menambahkannya di `5a6c7d41` dengan catatan *"It's now unset from
-lineage side"*. Ditelusuri: variabel itu didefinisikan di
-`hardware/qcom-caf/common/BoardConfigQcom.mk` pada 23.2 dan **hilang di 24.0**.
+lineage side"*. Ditelusuri sampai sebabnya di Fase 0: commit teratas
+`hardware/qcom-caf/common` di `lineage-24.0` adalah
+`2cd569f common: Drop no longer used TARGET_COMPILE_WITH_MSM_KERNEL`.
+
+Menariknya, `624fa247` yang kita cherry-pick justru **mengembalikannya**
+(`BoardConfigQcom.mk:283`) — terverifikasi di Fase 0.
 
 A37 tidak terpengaruh, dan alasannya sudah terdokumentasi di `BoardConfig.mk:23-31`:
 device tree A37 **tidak pernah meng-include `BoardConfigQcom.mk`** sama sekali;
@@ -583,16 +591,32 @@ system/sepolicy     83b174ea sepolicy: allow su domain in user builds        <- 
 
 **Friksi yang sudah bisa diperkirakan:**
 
-- **`system/core` cgroup (61b57678).** Menyentuh `init/service.cpp` dan
-  `libprocessgroup/setup/cgroup_map_write.cpp`. Keduanya **masih ada** di 24.0
-  (diperiksa: HTTP 200). Tapi 24.0 memperkenalkan `libprocessgroup_platform`
-  (commit "libprocessgroup: Introduce libprocessgroup_platform") — refactor yang
-  hampir pasti menggeser konteks hunk. Patch aslinya kecil (+3/-0 dan +3/-3) dan
-  isinya membungkus blok gagal dengan `#if 0`, jadi konfliknya akan sepele
-  diselesaikan, bukan sepele dihindari.
+- **`system/core` cgroup — TERBUKTI BERSIH.** Versi awal bagian ini menduga
+  refactor `libprocessgroup_platform` di 24.0 "hampir pasti menggeser konteks
+  hunk". Diuji dengan cherry-pick nyata ke `lineage-24.0` di Fase 0: ketiga
+  commit (`61b57678`, `90ef1146`, `f5f2bd6d`) menerap **tanpa konflik sama
+  sekali**. Perkiraan itu benar sebagai kewaspadaan, salah sebagai ramalan.
 
-- **Rantai GLES RenderEngine (9 commit).** Ini yang terberat. `libs/renderengine`
-  berubah nyata antara 23.2 dan 24.0:
+- **Rantai GLES RenderEngine — 5 bersih, 4 konflik, 17 hunk.** Ini tetap yang
+  terberat, tapi skalanya kini terukur, bukan diduga:
+
+  ```
+  e2e91300  Revert "Delete genTextures and deleteTextures"      2 berkas,  2 hunk
+  cd1402b9  Revert "Remove useFramebufferCache parameter"       4 berkas,  4 hunk
+  c7f2fee2  Forward-port GLES Render Engine to 16 QPR2          6 berkas, 10 hunk
+  e4247554  SF: Bring back support for disabling backpressure   1 berkas,  1 hunk
+  ---- bersih ----
+  93877b86  fcc10e35   <- bersih BEGITU c7f2fee2 mendarat (dibuktikan)
+  9fe1c2a8  b3ddc63b  d4f1d339
+  ```
+
+  `93877b86` dan `fcc10e35` sempat terhitung konflik. Itu cacat alat ukur:
+  keduanya hanya menyentuh `libs/renderengine/gl/GLESRenderEngine.cpp` — berkas
+  yang **baru lahir dari `c7f2fee2`** (24 berkas `gl/`, semuanya baru) dan tidak
+  termasuk berkas yang bentrok di sana. Diuji terpisah: pasang `c7f2fee2`,
+  keduanya menerap bersih.
+
+  Berkas yang bentrok persis area yang berubah antara 23.2 dan 24.0:
 
   ```
   RenderEngine.cpp   + skia::Cache::initializeGraphiteDiskCache()
@@ -812,8 +836,8 @@ Setiap fase punya syarat lulus. Jangan lanjut sebelum terpenuhi.
 
 | Fase | Isi | Lulus bila |
 |---|---|---|
-| **0** | Verifikasi ulang seluruh klaim dokumen ini terhadap pohon nyata sesudah sync. Tentukan release config (`cp1a` atau `cp2a`). | daftar temuan tervalidasi; `lunch lineage_A37-<cfg>-userdebug` menghasilkan `TARGET_PRODUCT=lineage_A37` |
-| **1** | Manifest + sync. Cabang `lineage-24` untuk kernel/DT/vendor. GCC prebuilt masuk. | 1067+ project sync nol error; `QCOM_BOARD_PLATFORMS` memuat msm8916 |
+| **0** | ~~Verifikasi klaim + tentukan release config~~ **SELESAI** — lihat [`FASE-0.md`](FASE-0.md) | 51 klaim diuji, 51 lulus; release config `cp2a`; 18 cherry-pick ULH diuji nyata |
+| **1** | Manifest + sync. Cabang `lineage-24` untuk kernel/DT/vendor. GCC prebuilt masuk. | 1067+ project sync nol error; `lunch lineage_A37-cp2a-userdebug` menghasilkan `TARGET_PRODUCT=lineage_A37`; `QCOM_BOARD_PLATFORMS` memuat msm8916 |
 | **2** | **K-A saja.** Kernel terbangun dengan GCC. | `m -j8 bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` |
 | **3** | Forward-port 19 commit ULH ke 24.0. | tiga repo fork terbangun bersih |
 | **4** | Device tree: ION, configstore, displayservice. Perbaiki alamat set n7000, salin patch ke repo sendiri. | ROM terbangun sampai `.zip` |
@@ -841,12 +865,13 @@ memerlukan fork apa pun, tapi **belum satu pun diuji**. Kalau ketiganya buntu,
 konsekuensinya bukan "ROM lebih lambat" melainkan "kernel tidak bisa dibangun
 dari dalam pohon ROM".
 
-**Tidak ada ULH 24.0 (sedang).** 19 commit adalah beban yang jelas, tapi angka
-itu mengukur *jumlah*, bukan *kesulitan*. Rantai GLES RenderEngine berhadapan
-dengan `libs/renderengine` yang sudah bergeser, dan patch cgroup `system/core`
-berhadapan dengan refactor `libprocessgroup_platform`. `legacy_support_patches`
-ULH masih aktif (commit terakhir 6 September 2026) — kalau branch 24.0 mereka
-muncul di tengah jalan, itu menghemat pekerjaan, tapi **jangan menunggunya**.
+**Tidak ada ULH 24.0 (turun ke rendah sesudah Fase 0).** Diuji dengan
+cherry-pick nyata ke `lineage-24.0`: dari 18 commit yang relevan, **13 menerap
+bersih** dan 5 konflik dengan total **18 hunk**, 10 di antaranya terpusat di satu
+commit (`c7f2fee2`). `system/core` yang semula dikhawatirkan justru bersih
+seluruhnya. `legacy_support_patches` ULH masih aktif (commit terakhir
+6 September 2026) — kalau branch 24.0 mereka muncul itu menghemat pekerjaan,
+tapi **jangan menunggunya**.
 
 **Grafis (sedang, dan memburuk perlahan).** SkiaGL terbukti menjatuhkan
 SurfaceFlinger di Adreno 306 pada era Android 12. Skia terus berubah, jadi uji
