@@ -12,6 +12,7 @@ Isinya hasil analisis kode sumber, bukan perkiraan.
 | [`PLAN-LOS24.md`](PLAN-LOS24.md) | Dokumen utama. Kernel, device tree, vendor blob, userspace, 9 fase kerja |
 | [`FASE-0.md`](FASE-0.md) | Hasil verifikasi: 51 klaim, 18 cherry-pick ULH diuji nyata, release config |
 | [`FASE-1.md`](FASE-1.md) | Manifest + sync: branch `lineage-24`, validasi 17 project, kendala ruang disk |
+| [`FASE-2.md`](FASE-2.md) | Kernel: GCC 4.9 terbukti membangun 3.10.108 di pohon 24.0 |
 | [`tools/sync.sh`](tools/sync.sh) | `repo sync` dengan percobaan ulang dan catatan disk |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
 
