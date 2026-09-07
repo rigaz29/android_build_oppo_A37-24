@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Local manifest OPPO A37 untuk LineageOS 24.0 (Android 17).
+  Turunan dari A37-23.xml, disesuaikan terhadap manifest lineage-24.0 yang sudah
+  diperiksa (default.xml + snippets/lineage.xml).
+
+  Empat perbedaan dari versi 23.2, semuanya berdasar pemeriksaan langsung:
+
+  1. prebuilts/gcc 4.9 DIKEMBALIKAN. Commit LineageOS de40b978 "manifest: Drop
+     GCC prebuilts" membuangnya dari manifest 24.0, dan bersamaan dengan itu
+     vendor/lineage/config/BoardConfigKernel.mk kehilangan SELURUH jalur GCC.
+     Kernel A37 3.10.108 hanya bisa dikompilasi GCC 4.9; clang mati di
+     scripts/mod/devicetable-offsets.c. Reponya masih ada, branch lineage-19.1.
+     Dipasangkan dengan KERNEL_CC/KERNEL_CROSS_COMPILE di BoardConfig.mk;
+     lihat PLAN-LOS24.md bagian 4.1.
+
+  2. Daftar <linkfile> qcom-caf/common BERUBAH LAGI di 24.0: entri msm8998 dan
+     sdm845 dibuang, msm8996 (yang di 23.2 sudah dikomentari) hilang seluruhnya.
+     13 linkfile menjadi 11. Daftar di bawah disalin apa adanya dari
+     snippets/lineage.xml 24.0. JANGAN pakai daftar 23.2 — remove-project +
+     tambah-ulang menghapus seluruh linkfile milik entri resmi, jadi selisih apa
+     pun berarti symlink hilang.
+
+  3. hardware/sony/timekeep DIBUANG dari manifest 24.0 (di 23.2 masih ada).
+     Karena kita memang sudah menambahkannya sendiri, yang berubah hanya
+     revision -> lineage-24.0 (branch itu ada; diperiksa).
+
+  4. Fork ULH masih menunjuk lineage-23.2 karena branch 24.0 BELUM ADA
+     (diperiksa branch demi branch pada 7 September 2026: ULH dan acroreiser
+     keduanya mentok di lineage-23.2). Beban forward-portnya 19 commit dan
+     sudah didaftar di PLAN-LOS24.md bagian 6.1. Begitu selesai, pindahkan ke
+     branch sendiri; jangan menunggu ULH.
+
+  Cara memeriksa ulang kalau LineageOS mengubahnya lagi:
+    awk '/qcom-caf_common/{p=1} p{print} p&&/<\/project>/{exit}' \
+        .repo/manifests/snippets/lineage.xml
+-->
+<manifest>
+
+  <remote name="gh"  fetch="https://github.com/" />
+  <remote name="ulh" fetch="https://github.com/Ultra-Legacy-Hippeastrum/" />
+
+  <!-- ============================================================
+       Perangkat: device tree, kernel, blob
+       Cabangkan ketiganya ke lineage-24 dari lineage-23 SEBELUM perubahan
+       pertama, supaya ROM 23.2 yang stabil tidak pernah ikut tersentuh.
+       ============================================================ -->
+
+  <project name="rigaz29/rb_device_oppo_A37" path="device/oppo/A37"
+           remote="gh" revision="lineage-24" />
+
+  <project name="rigaz29/kernel_oppo_msm8939" path="kernel/oppo/msm8939"
+           remote="gh" revision="lineage-24" />
+
+  <project name="rigaz29/rb-vendor_oppo_A37" path="vendor/oppo"
+           remote="gh" revision="lineage-24" />
+
+  <!-- ============================================================
+       Toolchain kernel GCC 4.9 — WAJIB di 24.0.
+       Lihat catatan (1) di kepala berkas ini.
+       ============================================================ -->
+
+  <project name="LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9"
+           path="prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9"
+           remote="gh" revision="lineage-19.1" clone-depth="1" groups="pdk" />
+
+  <!-- Varian arm 32-bit: hanya diperlukan kalau nanti dipakai
+       CROSS_COMPILE_ARM32 / CROSS_COMPILE_COMPAT. Kernel A37 arm64 murni
+       dengan vDSO32 mati, jadi dibiarkan dikomentari sampai terbukti perlu.
+  <project name="LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9"
+           path="prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9"
+           remote="gh" revision="lineage-19.1" clone-depth="1" groups="pdk" />
+  -->
+
+  <!-- ============================================================
+       Fork ULH untuk perangkat legacy.
+       Masih lineage-23.2 — lihat catatan (4).
+       ============================================================ -->
+
+  <remove-project name="LineageOS/android_frameworks_native" />
+  <project name="android_frameworks_native" path="frameworks/native"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <remove-project name="LineageOS/android_system_core" />
+  <project name="android_system_core" path="system/core"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <remove-project name="LineageOS/android_bionic" />
+  <project name="android_bionic" path="bionic"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <remove-project name="LineageOS/android_system_sepolicy" />
+  <project name="android_system_sepolicy" path="system/sepolicy"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <!-- Nama harus persis; keduanya masih platform/* dari AOSP di 24.0
+       (diperiksa di default.xml baris 962 dan 963). -->
+  <remove-project name="platform/system/libhidl" />
+  <project name="android_system_libhidl" path="system/libhidl"
+           remote="ulh" revision="lineage-23.2" groups="pdk,sysui-studio" />
+
+  <remove-project name="platform/system/libhwbinder" />
+  <project name="android_system_libhwbinder" path="system/libhwbinder"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <remove-project name="platform/hardware/ril" />
+  <project name="android_hardware_ril" path="hardware/ril"
+           remote="ulh" revision="lineage-23.2" groups="pdk" />
+
+  <!-- ============================================================
+       Lapisan QCOM
+       WAJIB: msm8916 MASIH tidak dikenal di 24.0. Diperiksa pada
+       hardware/qcom-caf/common branch lineage-24.0 hulu:
+         grep -c msm8916 qcom_boards.mk qcom_defs.mk BoardConfigQcom.mk -> 0 0 0
+       qcom_boards.mk bahkan identik byte-per-byte dengan 23.2 (901 B);
+       platform tertua yang tersisa msm8937. Dua commit ULH (624fa247 dan
+       7b118701) yang mengembalikannya harus ikut di-forward-port.
+       ============================================================ -->
+
+  <remove-project name="LineageOS/android_hardware_qcom-caf_common" />
+  <project name="android_hardware_qcom-caf_common" path="hardware/qcom-caf/common"
+           remote="ulh" revision="lineage-23.2" groups="qcom">
+    <linkfile src="os_pickup_aosp.mk" dest="hardware/qcom/Android.mk" />
+    <linkfile src="os_pickup_sepolicy_vndr.mk" dest="device/qcom/sepolicy_vndr/SEPolicy.mk" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/msm8953/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sdm660/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8150/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8250/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8350/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450-6.6/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8550/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8650/Android.bp" />
+    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8750/Android.bp" />
+  </project>
+
+  <!-- Manifest 24.0 hanya menyediakan device/qcom/sepolicy (qssi) dan
+       sepolicy-legacy-um (sdm660, revision lineage-24.0-legacy-um).
+       Varian pre-UM yang dipakai A37 tetap hanya ada di ULH.
+       Jaraknya besar (ahead 641 / behind 1672 terhadap legacy-um 23.2), jadi
+       jangan coba rebase ke 24.0-legacy-um; pakai apa adanya lebih dulu.
+       Lihat PLAN-LOS24.md bagian 6.2. -->
+  <project name="android_device_qcom_sepolicy" path="device/qcom/sepolicy-legacy"
+           remote="ulh" revision="lineage-23.2-legacy" groups="qcom" />
+
+  <!-- ============================================================
+       HAL QCOM khusus msm8916, fork sendiri.
+       ============================================================ -->
+
+  <project name="rigaz29/android_hardware_qcom_audio" path="hardware/qcom-caf/msm8916/audio"
+           remote="gh" revision="lineage-23" />
+  <project name="rigaz29/android_hardware_qcom_display" path="hardware/qcom-caf/msm8916/display"
+           remote="gh" revision="lineage-22" />
+  <project name="rigaz29/android_hardware_qcom_media" path="hardware/qcom-caf/msm8916/media"
+           remote="gh" revision="lineage-22" />
+
+  <!-- Dipakai device.mk (PRODUCT_PACKAGES += timekeep).
+       Dibuang dari manifest 24.0; branch lineage-24.0 ada di repo. -->
+  <project name="LineageOS/android_hardware_sony_timekeep" path="hardware/sony/timekeep"
+           remote="gh" revision="lineage-24.0" />
+
+</manifest>
