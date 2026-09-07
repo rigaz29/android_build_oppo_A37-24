@@ -5,7 +5,7 @@ yang berakhir dengan ROM 23.2 yang boot, dipakai harian, dengan kamera AIDL dan
 FBE Adiantum terbukti jalan.
 
 Isinya hasil analisis kode sumber, bukan perkiraan.
-**Fase 0 selesai: 51 klaim diuji, 51 lulus. Fase 1 berjalan.**
+**Fase 0 dan Fase 1 selesai.** Pohon 24.0 tersinkron (1236 project), `lunch` lolos.
 
 | Berkas | Isi |
 |---|---|

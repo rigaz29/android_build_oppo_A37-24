@@ -52,6 +52,19 @@ Umpan palsu yang hampir menyesatkan: `grep -c bp4a` atas seluruh `vendor/lineage
 basi (`release/aconfig/bp4a/...`) plus `release/build_config/bp4a.textproto` yang
 tertinggal — bukan konfigurasi aktif. Yang menentukan `vars/aosp_target_release`.
 
+**Jebakan senyap, diukur di Fase 1: release config yang salah TIDAK menolak.**
+Ketiganya diterima `lunch` tanpa satu pun galat, dan hanya `cp2a` yang benar:
+
+```
+lunch lineage_A37-cp2a-userdebug   RELEASE_PLATFORM_VERSION=CP2A  SDK=37  PLATFORM_VERSION=17
+lunch lineage_A37-cp1a-userdebug   RELEASE_PLATFORM_VERSION=CP1A  SDK=36  PLATFORM_VERSION=16
+lunch lineage_A37-bp4a-userdebug   RELEASE_PLATFORM_VERSION=BP4A  SDK=36  PLATFORM_VERSION=16
+```
+
+Rencana versi pertama mencantumkan `cp1a` sebagai kandidat. Kalau itu yang
+dipakai, seluruh pohon 24.0 akan membangun **Android 16**, diam-diam, tanpa satu
+pun pesan galat.
+
 ---
 
 ## 2. Ringkasan: sembilan temuan yang membentuk rencana ini
@@ -509,11 +522,42 @@ lineage side"*. Ditelusuri sampai sebabnya di Fase 0: commit teratas
 Menariknya, `624fa247` yang kita cherry-pick justru **mengembalikannya**
 (`BoardConfigQcom.mk:283`) — terverifikasi di Fase 0.
 
-A37 tidak terpengaruh, dan alasannya sudah terdokumentasi di `BoardConfig.mk:23-31`:
-device tree A37 **tidak pernah meng-include `BoardConfigQcom.mk`** sama sekali;
-ia mendeklarasikan platformnya sendiri di `:44` (`QCOM_BOARD_PLATFORMS += msm8916`).
-Dicatat di sini supaya tidak ada yang menyalinnya dari Mi-Thorium tanpa
-memeriksa.
+> **KOREKSI dari Fase 1 — klaim di paragraf berikut ini SALAH, dan diukur
+> langsung di pohon nyata.**
+>
+> Versi awal menulis bahwa A37 "tidak pernah meng-include `BoardConfigQcom.mk`
+> sama sekali". Itu keliru. `vendor/lineage/config/BoardConfigLineage.mk:9-11`:
+>
+> ```make
+> ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+>     include hardware/qcom-caf/common/BoardConfigQcom.mk
+> endif
+> ```
+>
+> dan `device/oppo/A37/BoardConfig.mk:468` menyetel
+> `BOARD_USES_QCOM_HARDWARE := true`. Jadi A37 **memang** meng-include berkas itu
+> — lewat `vendor/lineage`, bukan langsung. Diukur sesudah `lunch`:
+>
+> ```
+> BOARD_USES_QCOM_HARDWARE        = true
+> QCOM_HARDWARE_VARIANT           = msm8916     <- di 23.2 tercatat KOSONG
+> TARGET_COMPILE_WITH_MSM_KERNEL  = true
+> ```
+>
+> **Kesimpulan praktisnya tidak berubah: A37 tetap tidak perlu menyetel
+> `TARGET_COMPILE_WITH_MSM_KERNEL` sendiri.** Tapi sebabnya berbeda dari yang
+> ditulis. Bukan karena berkasnya tidak pernah dibaca, melainkan karena fork ULH
+> `lineage-23.2` masih memuat baris itu (`BoardConfigQcom.mk:283`) — ULH
+> mencabangkan sebelum LineageOS membuangnya, dan `624fa247` yang kita
+> cherry-pick justru mengembalikannya.
+>
+> Pelajaran yang lebih penting dari koreksinya sendiri: klaim ini diwarisi dari
+> `PLAN-LOS23.md` §8b dan **tidak pernah diukur ulang** di pohon 24.0. Temuan
+> yang diwarisi antar rilis harus diperlakukan sebagai hipotesis, bukan fakta.
+
+Paragraf asli, dipertahankan supaya koreksinya bisa ditelusuri: *"A37 tidak
+terpengaruh karena device tree A37 tidak pernah meng-include `BoardConfigQcom.mk`
+sama sekali; ia mendeklarasikan platformnya sendiri di `BoardConfig.mk:44`."*
 
 ### 5.6 Yang TIDAK berubah — jangan sentuh
 
@@ -837,7 +881,7 @@ Setiap fase punya syarat lulus. Jangan lanjut sebelum terpenuhi.
 | Fase | Isi | Lulus bila |
 |---|---|---|
 | **0** | ~~Verifikasi klaim + tentukan release config~~ **SELESAI** — lihat [`FASE-0.md`](FASE-0.md) | 51 klaim diuji, 51 lulus; release config `cp2a`; 18 cherry-pick ULH diuji nyata |
-| **1** | Manifest + sync. Cabang `lineage-24` untuk kernel/DT/vendor. GCC prebuilt masuk. | 1067+ project sync nol error; `lunch lineage_A37-cp2a-userdebug` menghasilkan `TARGET_PRODUCT=lineage_A37`; `QCOM_BOARD_PLATFORMS` memuat msm8916 |
+| **1** | ~~Manifest + sync~~ **SELESAI** — lihat [`FASE-1.md`](FASE-1.md) | 1236/1236 project sync rc=0; `TARGET_PRODUCT=lineage_A37`, SDK 37, `QCOM_HARDWARE_VARIANT=msm8916`. Sisa disk 59 GB — **kendala untuk Fase 2** |
 | **2** | **K-A saja.** Kernel terbangun dengan GCC. | `m -j8 bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` |
 | **3** | Forward-port 19 commit ULH ke 24.0. | tiga repo fork terbangun bersih |
 | **4** | Device tree: ION, configstore, displayservice. Perbaiki alamat set n7000, salin patch ke repo sendiri. | ROM terbangun sampai `.zip` |
