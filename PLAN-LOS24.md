@@ -883,9 +883,9 @@ Setiap fase punya syarat lulus. Jangan lanjut sebelum terpenuhi.
 | **0** | ~~Verifikasi klaim + tentukan release config~~ **SELESAI** — lihat [`FASE-0.md`](FASE-0.md) | 51 klaim diuji, 51 lulus; release config `cp2a`; 18 cherry-pick ULH diuji nyata |
 | **1** | ~~Manifest + sync~~ **SELESAI** — lihat [`FASE-1.md`](FASE-1.md) | 1236/1236 project sync rc=0; `TARGET_PRODUCT=lineage_A37`, SDK 37, `QCOM_HARDWARE_VARIANT=msm8916`. Sisa disk 59 GB — **kendala untuk Fase 2** |
 | **2** | ~~K-A: kernel terbangun dengan GCC~~ **SELESAI** — lihat [`FASE-2.md`](FASE-2.md) | `boot.img` 20.369.408 B, `dt.img` 210.944 B, `Image` 18.578.872 B; struktur boot image terverifikasi (offset 40 = dt_size, magic QCDT). 14 percobaan, 13 fork repo |
-| **3** | Forward-port **18** commit ULH ke 24.0 (turun dari 19; `system/sepolicy` gugur di Fase 2). **KOREKSI: ini PRASYARAT Fase 2B, bukan lanjutan** — fork ULH 23.2 bentrok struktural dengan 24.0 (`fs_mgr` dipecah keluar dari `system/core`), dan analisis soong mencakup seluruh pohon. | tiga repo fork terbangun bersih |
-| **4** | Device tree: ION, configstore, displayservice. Perbaiki alamat set n7000, salin patch ke repo sendiri. | ROM terbangun sampai `.zip` |
-| **5** | Flash dan boot. Terapkan rantai BPF-less (21 patch, dengan penyesuaian 043 untuk gerbang 25Q4). | boot sampai homescreen; jaringan hidup |
+| **3** | ~~Forward-port commit ULH ke 24.0~~ **SELESAI** — lihat [`FASE-3.md`](FASE-3.md). Bukan 18 melainkan **21** (tiga repo AOSP tidak terukur di Fase 0). **KOREKSI: ini PRASYARAT Fase 2B, bukan lanjutan** — fork ULH 23.2 bentrok struktural dengan 24.0. | 21 commit di 9 repo, SHA terverifikasi lokal↔GitHub |
+| **4** | Device tree: ION, configstore, displayservice — **sebagian terserap ke Fase 2** karena memblokir build (lights + memtrack ke AIDL, power dicabut). Set patch n7000 sudah disalin ke `patches/`. | ROM penuh terbangun sampai `.zip` — **belum** |
+| **5** | ~~Terapkan rantai BPF-less~~ **SELESAI (kompilasi)** — lihat [`FASE-4.md`](FASE-4.md). Bukan 21 patch melainkan **22**; 13 di antaranya harus di-port. Flash dan boot **belum**. | kompilasi bersih 9 modul ✓ · boot sampai homescreen dan jaringan hidup: **butuh perangkat** |
 | **6** | Uji SkiaGL hulu sekali; kalau abort `SkImage`, pasang fork GLES ULH. | nol abort `SkImage` di `logcat -b crash` |
 | **7** | K-B (spoof 5.10.199) — **hanya kalau K-D dikerjakan**, kalau tidak lewati. K-C Tier 1. | tidak ada regresi |
 | **8** | Opsional: penyetelan kernel, sepolicy enforcing, build `user` | ukur sebelum/sesudah |
