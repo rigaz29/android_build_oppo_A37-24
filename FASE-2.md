@@ -86,6 +86,75 @@ Itu **disengaja**: sysroot glibc 2.17 tidak cocok dengan gcc host modern (mesin
 ini gcc 13.3). `HOSTLDFLAGS` hulu tidak tertimpa dan tetap aktif. Dicatat di
 `BoardConfig.mk` supaya tidak ada yang "memperbaikinya" tanpa tahu sebabnya.
 
+## Dua kegagalan build, dan satu koreksi urutan fase
+
+### #1 fork ULH `system/sepolicy` — plugin Go tidak kompatibel
+
+Soong bootstrap mati 48 detik setelah mulai:
+
+```
+bug_map.go:66        android.Cat kini blueprint.HostTool, tidak lagi memenuhi
+                     blueprint.Rule (missing method String)
+cil_compat_map.go:85
+flags.go:53, :103    gobtools.CustomEnc kini menuntut method Encode
+```
+
+Perbaikannya bukan menambal, melainkan **membuang fork-nya**. Isinya hanya satu
+commit, `83b174ea sepolicy: allow su domain in user builds`, dan
+`PLAN-LOS24.md` §6.1 sudah menandainya "lewati" sejak Fase 0 karena A37
+userdebug. Fork itu tidak pernah dibutuhkan; ia ikut terbawa hanya karena ada
+di daftar ULH.
+
+Akibatnya beban forward-port turun dari 19 commit menjadi **18**.
+
+### #2 fork ULH 23.2 tidak bisa dipakai di pohon 24.0 sama sekali
+
+Ini yang mengubah rencana. LineageOS 24.0 **memecah `fs_mgr` keluar dari
+`system/core`** menjadi project sendiri:
+
+```
+LineageOS/android_system_fs_fs_mgr    di manifest 23.2: 0    di 24.0: 1
+system/core/fs_mgr/libsnapshot/...    ADA (dari fork ULH 23.2)
+system/fs/fs_mgr/libsnapshot/...      ADA (project baru 24.0)
+```
+
+Keduanya ter-checkout, dan soong menolak:
+
+```
+system/core/fs_mgr/libsnapshot/snapuserd/Android.bp:57:1
+  module "libsnapuserd" already defined                      (8 modul)
+frameworks/native/libs/binder/Android.bp:962:1
+  module "packagemanager_aidl_interface" already defined
+```
+
+**Ketidakcocokannya STRUKTURAL, bukan API.** Dan karena analisis soong mencakup
+seluruh pohon, satu bentrokan di mana pun memblokir semuanya — termasuk build
+kernel yang sama sekali tidak menyentuh repo itu.
+
+### Koreksi: urutan fase di `PLAN-LOS24.md` keliru
+
+Rencana menaruh Fase 2 (kernel) sebelum Fase 3 (forward-port ULH), dengan
+asumsi keduanya bisa dikerjakan terpisah. **Salah.** Forward-port ULH adalah
+**prasyarat build**, bukan lanjutan.
+
+Fase 0 dan Fase 1 tidak bisa menangkap ini: Fase 0 memeriksa klaim terhadap
+*sumber hulu*, Fase 1 berhenti di `lunch`. Bentrokan modul hanya muncul di
+analisis soong, yaitu langkah pertama build sesungguhnya. Pelajaran yang sama
+seperti koreksi `BoardConfigQcom.mk` di Fase 1, satu tingkat lebih dalam:
+**tiap tahap hanya bisa menggugurkan klaim yang memang terjangkau alatnya.**
+
+### Yang dikerjakan untuk mengisolasi uji kernel
+
+Keenam fork ULH sementara dilepas ke hulu 24.0. Itu **melucuti kemampuan yang
+dibutuhkan untuk boot** — GLES RenderEngine, cgroup v1, text relocation, RIL
+v6/v8/v9 — dan itu disengaja: tujuannya memisahkan variabel toolchain kernel
+dari pekerjaan forward-port, bukan mengklaim ROM ini bisa boot.
+
+Kecualinya `hardware/qcom-caf/common`, yang wajib untuk msm8916. Dibuatkan fork
+sendiri `rigaz29/android_hardware_qcom-caf_common` branch `lineage-24` =
+LineageOS 24.0 + dua commit ULH yang sudah terbukti di Fase 0, hasilnya
+diverifikasi identik dengan ULH 23.2 di ketiga berkas.
+
 ## Catatan operasional
 
 Build B ditunda sampai konversi partial clone reda. Alasannya bukan kehati-hatian

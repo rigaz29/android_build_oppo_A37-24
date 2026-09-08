@@ -883,7 +883,7 @@ Setiap fase punya syarat lulus. Jangan lanjut sebelum terpenuhi.
 | **0** | ~~Verifikasi klaim + tentukan release config~~ **SELESAI** — lihat [`FASE-0.md`](FASE-0.md) | 51 klaim diuji, 51 lulus; release config `cp2a`; 18 cherry-pick ULH diuji nyata |
 | **1** | ~~Manifest + sync~~ **SELESAI** — lihat [`FASE-1.md`](FASE-1.md) | 1236/1236 project sync rc=0; `TARGET_PRODUCT=lineage_A37`, SDK 37, `QCOM_HARDWARE_VARIANT=msm8916`. Sisa disk 59 GB — **kendala untuk Fase 2** |
 | **2** | **K-A saja.** Kernel terbangun dengan GCC. | `m -j8 bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` |
-| **3** | Forward-port 19 commit ULH ke 24.0. | tiga repo fork terbangun bersih |
+| **3** | Forward-port **18** commit ULH ke 24.0 (turun dari 19; `system/sepolicy` gugur di Fase 2). **KOREKSI: ini PRASYARAT Fase 2B, bukan lanjutan** — fork ULH 23.2 bentrok struktural dengan 24.0 (`fs_mgr` dipecah keluar dari `system/core`), dan analisis soong mencakup seluruh pohon. | tiga repo fork terbangun bersih |
 | **4** | Device tree: ION, configstore, displayservice. Perbaiki alamat set n7000, salin patch ke repo sendiri. | ROM terbangun sampai `.zip` |
 | **5** | Flash dan boot. Terapkan rantai BPF-less (21 patch, dengan penyesuaian 043 untuk gerbang 25Q4). | boot sampai homescreen; jaringan hidup |
 | **6** | Uji SkiaGL hulu sekali; kalau abort `SkImage`, pasang fork GLES ULH. | nol abort `SkImage` di `logcat -b crash` |

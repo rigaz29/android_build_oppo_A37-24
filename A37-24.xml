@@ -77,35 +77,54 @@
        Masih lineage-23.2 — lihat catatan (4).
        ============================================================ -->
 
-  <remove-project name="LineageOS/android_frameworks_native" />
-  <project name="android_frameworks_native" path="frameworks/native"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
 
-  <remove-project name="LineageOS/android_system_core" />
-  <project name="android_system_core" path="system/core"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
 
-  <remove-project name="LineageOS/android_bionic" />
-  <project name="android_bionic" path="bionic"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
 
-  <remove-project name="LineageOS/android_system_sepolicy" />
-  <project name="android_system_sepolicy" path="system/sepolicy"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
+  <!-- system/sepolicy SENGAJA memakai hulu lineage-24.0, BUKAN fork ULH.
+       Dua alasan, keduanya terbukti:
 
-  <!-- Nama harus persis; keduanya masih platform/* dari AOSP di 24.0
-       (diperiksa di default.xml baris 962 dan 963). -->
-  <remove-project name="platform/system/libhidl" />
-  <project name="android_system_libhidl" path="system/libhidl"
-           remote="ulh" revision="lineage-23.2" groups="pdk,sysui-studio" />
+       1. Isinya tidak dibutuhkan. Fork ULH hanya satu commit di atas hulu,
+          83b174ea "sepolicy: allow su domain in user builds" — dan A37
+          dibangun userdebug (RILIS.md 23.2 mencatat varian user tidak bisa
+          boot karena sepolicy belum lengkap untuk enforcing).
 
-  <remove-project name="platform/system/libhwbinder" />
-  <project name="android_system_libhwbinder" path="system/libhwbinder"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
+       2. Memakainya MEMATAHKAN BUILD. Plugin Go soong di fork 23.2 tidak
+          kompatibel dengan API blueprint 24.0; soong bootstrap gagal 48 detik
+          setelah mulai:
+            bug_map.go:66     android.Cat kini blueprint.HostTool, tidak lagi
+                              memenuhi blueprint.Rule (missing method String)
+            cil_compat_map.go:85, flags.go:53,103
+                              gobtools.CustomEnc kini menuntut method Encode
+  -->
 
-  <remove-project name="platform/hardware/ril" />
-  <project name="android_hardware_ril" path="hardware/ril"
-           remote="ulh" revision="lineage-23.2" groups="pdk" />
+  <!-- ============================================================
+       Fork ULH DILEPAS SEMENTARA — lihat FASE-2.md
+
+       Fork ULH lineage-23.2 TIDAK BISA dipakai di pohon 24.0. Bukan soal
+       API, melainkan STRUKTUR repo: LineageOS 24.0 memecah fs_mgr keluar dari
+       system/core menjadi project sendiri (system/fs/fs_mgr, nol di manifest
+       23.2, ada di 24.0). Fork ULH masih memuat fs_mgr/, jadi keduanya
+       ter-checkout dan soong menolak:
+
+         system/core/fs_mgr/libsnapshot/snapuserd/Android.bp:57:1:
+           module "libsnapuserd" already defined            (8 modul)
+         frameworks/native/libs/binder/Android.bp:962:1:
+           module "packagemanager_aidl_interface" already defined
+
+       Karena analisis soong mencakup SELURUH pohon, satu bentrokan di mana pun
+       memblokir semuanya — termasuk build kernel yang sama sekali tidak
+       memakai repo ini. Forward-port ULH karena itu PRASYARAT build, bukan
+       lanjutan; urutan fase di PLAN-LOS24.md keliru soal ini.
+
+       frameworks/native, system/core, bionic, system/libhidl,
+       system/libhwbinder, hardware/ril untuk sementara memakai hulu 24.0.
+       Itu MELUCUTI kemampuan yang dibutuhkan untuk boot (GLES RenderEngine,
+       cgroup v1, text relocation, RIL v6/v8/v9) — sengaja, supaya uji
+       toolchain kernel bisa diisolasi dari pekerjaan forward-port.
+
+       Kembalikan lewat branch lineage-24 sendiri sesudah 18 commit ULH
+       di-cherry-pick (13 sudah terbukti bersih di Fase 0).
+       ============================================================ -->
 
   <!-- ============================================================
        Lapisan QCOM
@@ -114,12 +133,14 @@
          grep -c msm8916 qcom_boards.mk qcom_defs.mk BoardConfigQcom.mk -> 0 0 0
        qcom_boards.mk bahkan identik byte-per-byte dengan 23.2 (901 B);
        platform tertua yang tersisa msm8937. Dua commit ULH (624fa247 dan
-       7b118701) yang mengembalikannya harus ikut di-forward-port.
+       7b118701) sudah di-cherry-pick ke fork sendiri branch lineage-24, dan
+       hasilnya diverifikasi identik dengan ULH 23.2 di ketiga berkas
+       (qcom_boards.mk, qcom_defs.mk, BoardConfigQcom.mk).
        ============================================================ -->
 
   <remove-project name="LineageOS/android_hardware_qcom-caf_common" />
-  <project name="android_hardware_qcom-caf_common" path="hardware/qcom-caf/common"
-           remote="ulh" revision="lineage-23.2" groups="qcom">
+  <project name="rigaz29/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common"
+           remote="gh" revision="lineage-24" groups="qcom">
     <linkfile src="os_pickup_aosp.mk" dest="hardware/qcom/Android.mk" />
     <linkfile src="os_pickup_sepolicy_vndr.mk" dest="device/qcom/sepolicy_vndr/SEPolicy.mk" />
     <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/msm8953/Android.bp" />
