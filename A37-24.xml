@@ -148,6 +148,61 @@
   <project name="rigaz29/android_hardware_ril" path="hardware/ril"
            remote="gh" revision="lineage-24" groups="pdk" />
 
+  <!-- build/soong: fork sendiri untuk satu perbaikan fsgen.
+
+       Perangkat non-Treble tidak punya partisi vendor (TARGET_COPY_OUT_VENDOR
+       = system/vendor), sehingga PartitionTag() melaporkan "system" untuk modul
+       bervarian vendor. Modul begitu hanya membangun varian vendor, jadi
+       memasukkannya ke dependensi system image meminta varian platform yang
+       tidak bisa ada:
+
+         dependency "libstdc++_vendor" of "lineage_A37_generated_system_image"
+           missing variant: os:android,arch:arm_armv8-a_cortex-a53
+         available variants:
+           os:android,image:vendor,arch:arm_armv8-a_cortex-a53,link:shared
+
+       Sama untuk android.hardware.health@2.1-impl, dan akan berlaku untuk
+       SETIAP modul vendor-only di PRODUCT_PACKAGES.
+
+       Penyaring systemPartitionFalsePositive di fsgen_mutators.go memang untuk
+       kelas masalah ini, tapi daftarnya hanya ramdisk, vendor_ramdisk, dan
+       recovery. Penyaring itu BARU di 24.0 — di 23.2 pemeriksaannya cuma
+       Enabled && ExportedToMake, itulah sebabnya A37 tidak pernah tersandung.
+
+       Patch menambahkan varian vendor ke daftar lewati, HANYA bila vendor
+       bukan partisi sendiri. Uji VendorPath() != "vendor" disalin dari
+       filesystem_creator.go:228 dan :1497, jadi perangkat Treble tidak
+       tersentuh.
+  -->
+  <remove-project name="LineageOS/android_build_soong" />
+  <!-- groups disalin PERSIS dari default.xml 24.0; nol linkfile, karena commit
+       e792ac0a "Remove top-level bootstrap.bash & Android.bp links" membuang
+       keduanya di 24.0. -->
+  <project name="rigaz29/android_build_soong" path="build/soong"
+           remote="gh" revision="lineage-24" groups="pdk,tradefed,sysui-studio" />
+
+  <!-- vendor/qcom/opensource/power DICABUT.
+
+       A37 tidak memakainya: device.mk:911-918 eksplisit tetap memakai HIDL
+       android.hardware.power@1.0-impl, bukan AIDL power-service-qti. Project
+       ini hanya ikut ter-sync karena grup "qcom", lalu tetap dianalisis soong
+       karena analisis mencakup seluruh pohon.
+
+       Dan analisisnya GAGAL, sebagai akibat langsung temuan Fase 1
+       (QCOM_HARDWARE_VARIANT kini terisi msm8916, di 23.2 kosong):
+
+         BoardConfigQcom.mk:438  soong_config_set qtidisplay,headers_namespace,
+                                 $(QCOM_SOONG_NAMESPACE)/display
+                                 -> hardware/qcom-caf/msm8916/display
+         power/Android.bp:60,78  //<headers_namespace>:display_intf_headers
+                                 //<headers_namespace>:vendor.qti.hardware.display.config-V12-ndk
+
+       Fork msm8916/display kita (lineage-22) tidak menyediakan keduanya.
+       Diperiksa: nol pemakai lain qti_powerhal_headers maupun
+       power-service-qti di seluruh device/, hardware/qcom-caf/, dan vendor/qcom/.
+  -->
+  <remove-project name="LineageOS/android_vendor_qcom_opensource_power" />
+
   <!-- ============================================================
        Lapisan QCOM
        WAJIB: msm8916 MASIH tidak dikenal di 24.0. Diperiksa pada
