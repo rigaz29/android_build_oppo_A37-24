@@ -882,7 +882,7 @@ Setiap fase punya syarat lulus. Jangan lanjut sebelum terpenuhi.
 |---|---|---|
 | **0** | ~~Verifikasi klaim + tentukan release config~~ **SELESAI** — lihat [`FASE-0.md`](FASE-0.md) | 51 klaim diuji, 51 lulus; release config `cp2a`; 18 cherry-pick ULH diuji nyata |
 | **1** | ~~Manifest + sync~~ **SELESAI** — lihat [`FASE-1.md`](FASE-1.md) | 1236/1236 project sync rc=0; `TARGET_PRODUCT=lineage_A37`, SDK 37, `QCOM_HARDWARE_VARIANT=msm8916`. Sisa disk 59 GB — **kendala untuk Fase 2** |
-| **2** | **K-A saja.** Kernel terbangun dengan GCC. | `m -j8 bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` |
+| **2** | ~~K-A: kernel terbangun dengan GCC~~ **SELESAI** — lihat [`FASE-2.md`](FASE-2.md) | `boot.img` 20.369.408 B, `dt.img` 210.944 B, `Image` 18.578.872 B; struktur boot image terverifikasi (offset 40 = dt_size, magic QCDT). 14 percobaan, 13 fork repo |
 | **3** | Forward-port **18** commit ULH ke 24.0 (turun dari 19; `system/sepolicy` gugur di Fase 2). **KOREKSI: ini PRASYARAT Fase 2B, bukan lanjutan** — fork ULH 23.2 bentrok struktural dengan 24.0 (`fs_mgr` dipecah keluar dari `system/core`), dan analisis soong mencakup seluruh pohon. | tiga repo fork terbangun bersih |
 | **4** | Device tree: ION, configstore, displayservice. Perbaiki alamat set n7000, salin patch ke repo sendiri. | ROM terbangun sampai `.zip` |
 | **5** | Flash dan boot. Terapkan rantai BPF-less (21 patch, dengan penyesuaian 043 untuk gerbang 25Q4). | boot sampai homescreen; jaringan hidup |
@@ -903,7 +903,13 @@ bootloop.
 
 ## 10. Risiko
 
-**Toolchain kernel (tinggi).** Satu-satunya risiko yang benar-benar baru di
+**Toolchain kernel — TERSELESAIKAN, turun dari tinggi ke nihil.** Kernel
+3.10.108 terbangun dengan GCC 4.9 baik mandiri maupun dari dalam pohon, dan
+kedua keluarannya byte-identik. Butuh empat perbaikan terpisah (`KERNEL_CC`,
+path absolut, `HOSTCC=clang`, `HOSTCFLAGS`+`HOSTLDFLAGS` bersamaan) — rinciannya
+di `FASE-2.md`. Paragraf di bawah dipertahankan sebagai catatan penilaian awal.
+
+**Penilaian awal (sebelum Fase 2):** satu-satunya risiko yang benar-benar baru di
 rilis ini. Tiga jalan keluar sudah dipetakan (4.1) dan yang termurah tidak
 memerlukan fork apa pun, tapi **belum satu pun diuji**. Kalau ketiganya buntu,
 konsekuensinya bukan "ROM lebih lambat" melainkan "kernel tidak bisa dibangun

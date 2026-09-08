@@ -1,6 +1,6 @@
 # Fase 2 — kernel
 
-7 September 2026. **Sedang berjalan.**
+7-8 September 2026. **SELESAI.**
 
 Fase paling berisiko dari seluruh port ini, dan sengaja dikerjakan sendirian:
 di 23.2 milestone kernel dicapai gratis (3.10.108 apa adanya kompilasi bersih),
@@ -8,83 +8,131 @@ di 24.0 justru di sinilah blocker terbesarnya.
 
 ## Syarat lulus
 
-| | status |
+| | hasil |
 |---|---|
 | A. kernel 3.10.108 terbangun dengan GCC 4.9 dari pohon 24.0 | **LULUS** |
-| B. `m -j8 bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` | menunggu |
-
-Dipecah dua karena keduanya menguji hal berbeda. A menguji **premisnya** —
-apakah toolchainnya masih sanggup sama sekali. B menguji **integrasinya** —
-apakah `KERNEL_CC` benar-benar menang atas default clang di dalam sistem build.
-A bisa dijalankan tanpa soong, jadi tidak berbalapan dengan konversi partial
-clone yang sedang menghapus-dan-mengambil-ulang `build/*` dan `prebuilts/*`.
-
-## A. Kernel terbangun dengan GCC 4.9 — LULUS
-
-Mandiri, tanpa soong, tanpa `vendor/lineage`:
-
-```sh
-GCC=prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-
-make -C kernel/oppo/msm8939 O=$OUT ARCH=arm64 CROSS_COMPILE=$GCC lineageos_a37f_defconfig
-make -C kernel/oppo/msm8939 O=$OUT ARCH=arm64 CROSS_COMPILE=$GCC -j8 Image
-```
+| B. `m bootimage` menghasilkan `KERNEL_OBJ/arch/arm64/boot/Image` | **LULUS** |
 
 ```
-rc=0
-arch/arm64/boot/Image   18.578.872 byte
-2963 satuan kompilasi, 25 warning, nol error
-kompiler: real-aarch64-linux-android-gcc (GCC) 4.9.x 20150123 (prerelease)
+boot.img    20.369.408 byte
+dt.img         210.944 byte
+kernel      18.578.872 byte
+Image       18.578.872 byte
 ```
 
-Pembanding 23.2: kernel 18.327.160 byte. Selisih 251 KB wajar untuk sumber yang
-sama dengan konfigurasi yang sama.
+### Struktur boot image diverifikasi, bukan disimpulkan dari build hijau
 
-**Artinya prebuilt GCC 4.9 yang dikembalikan `A37-24.xml` memang berfungsi**, dan
-kernel 3.10.108 tidak menuntut apa pun dari Android 17. Yang tersisa murni soal
-sistem build.
-
-## B. Perubahan `BoardConfig.mk` untuk integrasi
-
-Diterapkan, belum diuji:
-
-```make
-A37_KERNEL_GCC := $(abspath $(TOPDIR))prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
-KERNEL_CC := CC="$(CCACHE_BIN) $(A37_KERNEL_GCC)/aarch64-linux-android-gcc"
-KERNEL_CROSS_COMPILE := CROSS_COMPILE="$(A37_KERNEL_GCC)/aarch64-linux-android-"
+```
+magic        ANDROID!
+page_size    2048
+offset 40    210944      = ukuran dt.img persis        COCOK
+offset dt    20158464 -> b'QCDT'                       COCOK
 ```
 
-Kenapa ini sah, bukan akal-akalan:
+`dt_size` **210.944** adalah persis angka yang dicatat `BoardConfig.mk` sebagai
+`dt_size` partisi recovery TWRP yang terbukti boot di perangkat ini. Bukan
+"mestinya benar" — dicocokkan dengan referensi dari perangkat.
 
-- `KERNEL_CC` **didokumentasikan** sebagai knob device tree di `kernel.mk:53`,
-  dan gerbangnya `kernel.mk:264` adalah `ifeq ($(KERNEL_CC),)` — nilai dari
-  device tree menang, default clang tidak pernah terpasang.
-- `KERNEL_CROSS_COMPILE` **tidak pernah di-assign** di mana pun pada 24.0; ia
-  hanya diekspansi di baris perintah make (`kernel.mk:283`, `291`, `299`).
-- Urutan include sudah diperiksa: `build/make/core/config.mk:502` meng-include
-  `BoardConfigLineage.mk` **sesudah** `BoardConfig.mk` device dibaca, jadi kedua
-  nilai sudah terpasang saat gerbang `ifeq` dievaluasi.
+### Kernel: dua jalur, keluaran identik
 
-Dua baris lama `TARGET_KERNEL_CLANG_COMPILE := false` dan
-`TARGET_KERNEL_LLVM_BINUTILS := false` **sengaja dipertahankan** meski kini
-no-op senyap — sebagai catatan sejarah, dengan komentar yang menyatakan bahwa
-keduanya tidak lagi dibaca siapa pun di 24.0.
+`Image` byte-identik antara build mandiri (Fase 2A, tanpa soong) dan build dari
+dalam pohon (Fase 2B, lewat `KERNEL_CC`). Dua toolchain path berbeda, byte yang
+sama — konfirmasi terkuat bahwa override `KERNEL_CC` benar-benar dipakai dan
+bukan diam-diam jatuh ke clang.
 
-### Satu benturan yang sudah diketahui dan dibiarkan sadar
+---
 
-`vendor/lineage/config/BoardConfigKernel.mk:113-114` di 24.0 menambahkan:
+## Empat belas percobaan build
 
-```make
-KERNEL_MAKE_FLAGS += HOSTCFLAGS="$(KERNEL_HOST_C_LD_FLAGS_SYSROOT) -I.../kernel-build-tools/include"
-KERNEL_MAKE_FLAGS += HOSTLDFLAGS="$(KERNEL_HOST_C_LD_FLAGS_SYSROOT) ... -fuse-ld=lld --rtlib=compiler-rt"
+| # | Berhenti di | Sebab | Kelas |
+|---|---|---|---|
+| 1 | soong bootstrap | plugin Go ULH sepolicy vs API blueprint 24.0 | fork ULH |
+| 2 | analisis soong | `fs_mgr` ganda — struktur repo 24.0 | fork ULH |
+| 3 | analisis soong | `display_intf_headers`, lights HIDL | A37 |
+| 4 | analisis soong | power QTI, lights | A37 |
+| 5 | analisis soong | `missing variant` | **bug hulu** |
+| 6 | analisis soong | OOM, `GOMEMLIMIT` tak sampai | **bug hulu** |
+| 7 | kati | 5 modul tidak ada | campuran |
+| 8 | kati | 2 modul hulu tersisa | **celah hulu** |
+| 9 | kompilasi | ccache rusak | lingkungan |
+| 10 | kernel `.config` | `HOSTCC=gcc` tidak ada di PATH | A37 |
+| 11 | kernel `modpost` | header glibc baru lawan pustaka 2.17 | A37 |
+| 12 | `boot.img` | mkbootimg tanpa `--dt` | **hulu mencabut** |
+| 13 | `boot.img` | `dt.img` tak pernah dibuat | **hulu tak berdependensi** |
+| 14 | — | **berhasil** | |
+
+Enam dari tiga belas kegagalan adalah **bug atau celah hulu**, bukan salah
+konfigurasi A37. Itu ukuran sebenarnya dari "LineageOS 24.0 membuang dukungan
+GCC": pencabutannya meninggalkan beberapa lubang terpisah, dan masing-masing
+baru terlihat setelah yang sebelumnya ditutup.
+
+---
+
+## Tiga belas repo di-fork
+
+| Repo | Isi perubahan |
+|---|---|
+| `build/soong` | fsgen non-Treble; `SOONG_GOMEMLIMIT` diteruskan |
+| `build/make` | `boot.img` bergantung pada `dt.img` |
+| `vendor/lineage` | allowlist 2 modul yang hulunya belum sediakan |
+| `system/tools/mkbootimg` | kembalikan `--dt` |
+| `frameworks/native` | 9 commit ULH (GLES RenderEngine dll) |
+| `system/core` | 3 commit ULH (cgroup v1) |
+| `frameworks/av` | 2 commit ULH (OMX software codec) |
+| `hardware/qcom-caf/common` | 2 commit ULH (platform pre-UM msm8916) |
+| `bionic`, `Connectivity`, `libhidl`, `libhwbinder`, `hardware/ril` | 1 commit ULH masing-masing |
+
+Ditambah tiga repo perangkat sendiri (device, kernel, vendor) dan tiga fork HAL
+QCOM msm8916 — total **19 project** di local manifest.
+
+---
+
+## Empat perbaikan toolchain kernel, dan urutan penemuannya
+
+Semuanya akibat satu sebab: **LineageOS 24.0 membuang seluruh jalur GCC**
+(`BoardConfigKernel.mk` turun dari 36 rujukan menjadi nol). Tapi lubangnya
+terpisah-pisah:
+
+**1. `KERNEL_CC` dan `KERNEL_CROSS_COMPILE`** — knob yang memang disediakan
+`kernel.mk:53` dengan gerbang `ifeq ($(KERNEL_CC),)`, jadi nilai device tree
+menang. `KERNEL_CROSS_COMPILE` bahkan tidak pernah di-assign di 24.0.
+
+**2. Path harus absolut.** `$(abspath $(TOPDIR))` menghasilkan path **relatif**
+karena `TOPDIR` kosong saat `BoardConfig.mk` dievaluasi. Fatal secara senyap:
+`kernel.mk:283` menjalankan make dengan `-C $(KERNEL_SRC)`, jadi path relatif
+resolve dari direktori kernel. Diganti `$(abspath .)`.
+
+**3. `HOSTCC=clang` wajib eksplisit.** `kernel/oppo/msm8939/Makefile:243`
+menetapkan `HOSTCC = gcc` mati, dan kernel 3.10 tidak mengenal `LLVM=1` (nol
+kecocokan `ifneq ($(LLVM),)`) sehingga tidak pernah beralih sendiri. PATH ninja
+hanya memuat prebuilts:
+
+```
+/bin/sh: 1: gcc: not found
+make[2]: *** [scripts/Makefile.host:118: scripts/basic/fixdep] Error 127
 ```
 
-lalu `KERNEL_MAKE_FLAGS += $(TARGET_KERNEL_ADDITIONAL_FLAGS)` **sesudahnya**.
-Karena flag make yang belakangan menang, `HOSTCFLAGS` milik A37 menimpa milik
-hulu — dan sysroot `glibc2.17-4.8` itu ikut hilang.
+Build mandiri Fase 2A lolos justru karena memakai `/usr/bin/gcc` sistem —
+perbedaan lingkungan yang tidak terlihat sampai kernel dibangun dari dalam pohon.
 
-Itu **disengaja**: sysroot glibc 2.17 tidak cocok dengan gcc host modern (mesin
-ini gcc 13.3). `HOSTLDFLAGS` hulu tidak tertimpa dan tetap aktif. Dicatat di
-`BoardConfig.mk` supaya tidak ada yang "memperbaikinya" tanpa tahu sebabnya.
+**4. `HOSTCFLAGS` dan `HOSTLDFLAGS` harus ditimpa BERSAMAAN.** Versi pertama
+hanya menimpa `HOSTCFLAGS`, sehingga kompilasi memakai header glibc sistem
+(2.39) sementara link memakai sysroot glibc 2.17:
+
+```
+ld.lld: error: undefined symbol: __isoc23_strtoul
+```
+
+`__isoc23_strtoul` simbol glibc 2.38+; header modern mengalihkan `strtoul` ke
+sana, pustaka 2.17 tidak memilikinya.
+
+**Kekeliruan ini milik saya, dan komentar saya sendiri sudah mencatatnya.**
+`BoardConfig.mk` versi sebelumnya menulis bahwa `HOSTLDFLAGS` hulu "tidak
+tertimpa dan tetap aktif" — mencatat ketidakcocokannya dengan benar lalu
+menyimpulkannya aman. Nilai penggantinya memulihkan jalur GCC 23.2
+(`BoardConfigKernel.mk:198` di sana) yang ikut terhapus di 24.0.
+
+---
 
 ## Dua kegagalan build, dan satu koreksi urutan fase
 
@@ -162,3 +210,100 @@ berlebih: konversi itu menghapus-dan-mengambil-ulang `build/make`, `build/soong`
 `prebuilts/build-tools`, dan `prebuilts/clang` — semuanya build-kritis. Build yang
 gagal karena repo hilang di tengah jalan akan menghasilkan diagnosis yang
 menyesatkan, dan kit 23.2 sudah penuh contoh berapa mahal itu.
+
+---
+
+## Fase 6 yang terpaksa dikerjakan lebih awal
+
+Tiga HAL harus dimigrasi sebelum build bisa hijau, jadi sebagian Fase 6
+terserap ke sini.
+
+### Lights: HIDL 2.0 ke AIDL ILights V2
+
+`android.hardware.light@2.0` dihapus dari `hardware/interfaces` di Android 17
+(tersisa `aidl/` dan `utils/`). HAL keempat yang patah setelah `configstore`,
+`libion`, dan `memtrack`.
+
+Implementasi A37 **di-port**, bukan diganti HAL generik. Sebabnya konkret: A37
+berkedip lewat `grpfreq`/`grppwm` gaya QCOM, sedangkan
+`android.hardware.light-service.lineage` memakai node tunggal
+`/sys/class/leds/rgb/rgb_blink`. Memakai HAL generik berarti LED notifikasi
+menyala solid tanpa kedip.
+
+`sepolicy/file_contexts` ikut diperbarui ke nama biner baru. Komentar di berkas
+itu justru merekam kekeliruan identik yang pernah terjadi — barisnya dulu
+menunjuk `-service.a6000`, sisa kang dari Lenovo, sehingga biner A37 tidak
+pernah dapat label dan init tidak bisa transisi ke `hal_light_default`.
+
+### Memtrack: HIDL 1.0 ke AIDL
+
+Penggantinya sudah ada di repo yang memang sudah kita fork:
+`hardware/qcom-caf/common/memtrack/` menyediakan
+`vendor.qti.hardware.memtrack-service` lengkap dengan `memtrack_kgsl.cpp` —
+pelacakan memori GPU Adreno, persis kebutuhan perangkat ini.
+
+### libbt-vendor dicabut — konsekuensinya harus diuji
+
+Repo `hardware/qcom-caf/bt` **dihapus dari manifest 24.0**; direktorinya tidak
+ada di pohon. `libbt-vendor` adalah lapisan vendor Bluetooth QCOM.
+
+**Kalau Bluetooth tidak hidup, di sinilah titik pertama yang harus dilihat.**
+Jalan keluarnya mem-fork `hardware/qcom-caf/bt` dari branch 23.2 dan
+mengembalikan dua baris yang kini dikomentari di `device.mk`.
+
+---
+
+## Yang layak diwariskan
+
+### `PRODUCT_ENFORCE_PACKAGES_EXIST_ALLOW_LIST` hanya bisa dipanggil sekali
+
+Kuncinya `PRODUCTS.<mk-produk-teratas>.<VAR>`, dan
+`$(lastword $(_include_stack))` menghasilkan `lineage_A37.mk` baik dipanggil
+dari device tree maupun dari `vendor/lineage`. Karena `.KATI_READONLY`,
+panggilan kedua mana pun langsung galat. Menambahinya dengan `+=` juga percuma.
+
+Sekalian ketahuan pembungkus `enforce-product-packages-exist` **cacat di hulu** —
+`$(enforce-...-internal,...)` tanpa `call`, jadi tidak melakukan apa pun.
+
+`TARGET_DISABLE_EPPE := true` sengaja **tidak** dipakai meski satu baris dan
+tanpa fork: knob itu mematikan seluruh pemeriksaan, padahal pemeriksaan tersebut
+sudah menangkap memtrack HIDL, `libbt-vendor`, dan lights HIDL dalam sesi ini.
+
+### Menolak patch berdasarkan asalnya adalah kesalahan
+
+`PLAN-LOS24.md` §6.3 menyaring `mkbootimg --dt` sebagai "khas Exynos, tidak
+relevan", satu daftar dengan Broadcom Wi-Fi dan RIL v6/v8/v9. **Salah** — A37
+memakainya juga (`BOARD_KERNEL_SEPARATED_DT := true`), dan penolakannya
+berdasar asal patch, bukan kebutuhan perangkat.
+
+Itu persis yang diperingatkan rencana itu sendiri: *"setiap patch disaring
+terhadap kemampuan A37 yang sudah diverifikasi, bukan terhadap kemiripan nama
+perangkat atau vendor."*
+
+### Dua patch mkbootimg yang setara, dan cara memilihnya
+
+Kit 23.2 punya patch `--dt` sendiri; ULH punya `d96838c5`. ULH sedikit lebih
+lengkap (dt ikut dihitung SHA, ada penjaga `header_version > 0`), tapi patch
+23.2 **terverifikasi di perangkat**.
+
+Diperiksa langsung pada `boot.img` hasil build: `dt_size` di offset 40 bernilai
+210944 dan magic `QCDT` ada di offset yang benar — **identik strukturnya**
+dengan yang divalidasi patch 23.2. Satu-satunya delta tersisa adalah SHA
+identitas citra, yang tidak diverifikasi bootloader LK legacy.
+
+Karena itu ULH dipertahankan, dengan alasan yang terukur, bukan preferensi.
+Kalau nanti terbukti tidak boot, patch 23.2 adalah hal pertama yang ditukar.
+
+---
+
+## Yang BELUM terbukti
+
+`boot.img` **terbangun dan strukturnya benar**. Itu bukan bukti ia **boot**.
+
+Yang masih menunggu perangkat:
+- ROM penuh belum dibangun — ini baru `bootimage`
+- Bluetooth tanpa `libbt-vendor`
+- LED notifikasi setelah migrasi lights ke AIDL
+- memtrack AIDL menggantikan HIDL
+- rantai BPF-less (Fase 5) belum diterapkan sama sekali
+- SkiaGL lawan fork GLES ULH (Fase 6) belum diuji

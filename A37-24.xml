@@ -148,6 +148,79 @@
   <project name="rigaz29/android_hardware_ril" path="hardware/ril"
            remote="gh" revision="lineage-24" groups="pdk" />
 
+  <!-- build/make: fork sendiri agar boot.img bergantung pada dt.img.
+
+       vendor/lineage/build/tasks/dt_image.mk menyediakan aturan pembuat dt.img
+       dan MASIH ADA di 24.0, tapi tidak ada satu pun yang menyatakan boot.img
+       bergantung padanya. Urutannya jadi diserahkan kebetulan, dan mkbootimg
+       gagal:
+
+         mkbootimg: error: argument [dt]: can't open
+           out/target/product/A37/dt.img
+
+       Patch diwarisi dari kit 23.2 dan menerap bersih ke 24.0.
+
+       ENAM linkfile di bawah disalin PERSIS dari default.xml. remove-project +
+       tambah-ulang membuang seluruh linkfile milik entri resmi, dan build/make
+       adalah kasus terburuk kalau sampai keliru: build/core, build/envsetup.sh,
+       dan build/target semuanya symlink dari sini.
+  -->
+  <remove-project name="LineageOS/android_build" />
+  <project name="rigaz29/android_build" path="build/make"
+           remote="gh" revision="lineage-24" groups="pdk,sysui-studio">
+    <linkfile src="CleanSpec.mk" dest="build/CleanSpec.mk" />
+    <linkfile src="buildspec.mk.default" dest="build/buildspec.mk.default" />
+    <linkfile src="core" dest="build/core" />
+    <linkfile src="envsetup.sh" dest="build/envsetup.sh" />
+    <linkfile src="target" dest="build/target" />
+    <linkfile src="tools" dest="build/tools" />
+  </project>
+
+  <!-- system/tools/mkbootimg: fork sendiri untuk mengembalikan —dt.
+
+       A37 memakai tabel DT TERPISAH, bukan DTB yang ditempelkan ke kernel
+       (BoardConfig.mk: BOARD_KERNEL_SEPARATED_DT := true dan
+       BOARD_MKBOOTIMG_ARGS += —dt $(PRODUCT_OUT)/dt.img). Alasannya sudah
+       terdokumentasi di device tree: penempelan lewat
+       CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE sudah dicoba dan DITOLAK bootloader
+       perangkat ini, sementara partisi recovery TWRP yang jelas-jelas boot
+       memakai dt_size = 210944.
+
+       mkbootimg AOSP 17 sudah TIDAK punya —dt (nol kecocokan; yang ada hanya
+       —dtb), sehingga perakitan boot.img gagal dengan mencetak usage.
+
+       Basisnya AOSP android-17.0.0_r1 + satu commit ULH d96838c5
+       "mkbootimg: add support for —dt", menerap bersih.
+
+       CATATAN untuk PLAN-LOS24 bagian 6.3: repo ini sempat DITOLAK KELIRU di
+       Fase 0 sebagai "khas Exynos, harus disaring". A37 memakainya juga.
+  -->
+  <remove-project name="platform/system/tools/mkbootimg" />
+  <project name="rigaz29/android_system_tools_mkbootimg" path="system/tools/mkbootimg"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <!-- vendor/lineage: fork sendiri untuk satu baris allowlist.
+
+       com.android.ranging dan vendor_tracing_descriptors dirujuk base product
+       AOSP tapi sumbernya BELUM ADA di pohon 24.0 — hulu menandainya sendiri di
+       external/perfetto Android.bp:22225 ("TODO(primiano): /vendor").
+
+       Harus di sini, bukan di device tree: kuncinya
+       PRODUCTS.<mk-produk-teratas>.<VAR> dan variabelnya .KATI_READONLY
+       (product.mk:571-572), jadi hanya boleh ada SATU panggilan
+       enforce-product-packages-exist-internal per produk, dan
+       common.mk:133 sudah memakainya.
+
+       TARGET_DISABLE_EPPE := true sengaja tidak dipakai — knob itu mematikan
+       seluruh pemeriksaan, padahal pemeriksaan tersebut sudah menangkap
+       memtrack HIDL, libbt-vendor, dan lights HIDL yang hilang di Android 17.
+  -->
+  <remove-project name="LineageOS/android_vendor_lineage" />
+  <!-- entri hulu snippets/lineage.xml:61 TIDAK punya atribut groups; disalin
+       persis, karena remove-project + tambah-ulang membuang seluruh atribut. -->
+  <project name="rigaz29/android_vendor_lineage" path="vendor/lineage"
+           remote="gh" revision="lineage-24" />
+
   <!-- build/soong: fork sendiri untuk satu perbaikan fsgen.
 
        Perangkat non-Treble tidak punya partisi vendor (TARGET_COPY_OUT_VENDOR

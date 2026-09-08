@@ -5,7 +5,16 @@ yang berakhir dengan ROM 23.2 yang boot, dipakai harian, dengan kamera AIDL dan
 FBE Adiantum terbukti jalan.
 
 Isinya hasil analisis kode sumber, bukan perkiraan.
-**Fase 0 dan Fase 1 selesai.** Pohon 24.0 tersinkron (1236 project), `lunch` lolos.
+**Fase 0-3 selesai. `boot.img` terbangun dan strukturnya terverifikasi.**
+
+```
+boot.img  20.369.408 byte    dt.img  210.944 byte    kernel  18.578.872 byte
+offset 40 = 210944 (= ukuran dt.img)    offset dt -> magic QCDT
+```
+
+`dt_size` 210944 persis sama dengan partisi recovery TWRP yang terbukti boot di
+perangkat ini. Kernel byte-identik antara build mandiri dan build dari dalam
+pohon — konfirmasi `KERNEL_CC` benar-benar dipakai.
 
 | Berkas | Isi |
 |---|---|
