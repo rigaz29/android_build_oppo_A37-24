@@ -1,0 +1,23 @@
+From 3f16b45e7d0ac5e312b7d1a18ce063cb4363cfa4 Mon Sep 17 00:00:00 2001
+From: N7000 Patch Merge <n7000-patches@local.invalid>
+Date: Mon, 27 Jul 2026 00:00:00 +0800
+Subject: [PATCH] ClatCoordinator: make fatal permission result non-fatal
+
+Imported from lineage-diff-20260727 for the GT-N7000 LineageOS 23.2 tree.
+
+---
+diff --git a/service/jni/com_android_server_connectivity_ClatCoordinator.cpp b/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
+index 70991ebad3..769f27b16d 100644
+--- a/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
++++ b/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
+@@ -132,7 +132,7 @@ static void verifyClatPerms() {
+ 
+ #undef V2
+ 
+-    if (fatal) abort();
++    if (fatal) return;
+ }
+ 
+ #undef V
+-- 
+2.53.0

@@ -118,7 +118,7 @@
 
   <remove-project name="LineageOS/android_frameworks_native" />
   <project name="rigaz29/android_frameworks_native" path="frameworks/native"
-           remote="gh" revision="lineage-24" groups="pdk" />
+           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
 
   <remove-project name="LineageOS/android_system_core" />
   <project name="rigaz29/android_system_core" path="system/core"
@@ -130,11 +130,11 @@
 
   <remove-project name="LineageOS/android_frameworks_av" />
   <project name="rigaz29/android_frameworks_av" path="frameworks/av"
-           remote="gh" revision="lineage-24" groups="pdk" />
+           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
 
   <remove-project name="LineageOS/android_packages_modules_Connectivity" />
   <project name="rigaz29/android_packages_modules_Connectivity"
-           path="packages/modules/Connectivity" remote="gh" revision="lineage-24" groups="pdk" />
+           path="packages/modules/Connectivity" remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs" />
 
   <remove-project name="platform/system/libhidl" />
   <project name="rigaz29/android_system_libhidl" path="system/libhidl"
@@ -147,6 +147,32 @@
   <remove-project name="platform/hardware/ril" />
   <project name="rigaz29/android_hardware_ril" path="hardware/ril"
            remote="gh" revision="lineage-24" groups="pdk" />
+
+  <!-- Empat repo untuk rantai BPF-less (Fase 4).
+
+       Kernel A37 3.10.108 tidak punya eBPF sama sekali. Yang fatal bukan
+       kegagalan jalur BPF-nya, melainkan reaksinya: proses mati, init
+       menghidupkannya lagi, dan perangkat tidak pernah boot.
+
+       Connectivity dan frameworks/native sudah di-fork lebih dulu untuk
+       keperluan lain; muatan BPF-less menyusul di branch yang sama.
+  -->
+  <remove-project name="LineageOS/android_system_bpf" />
+  <project name="rigaz29/android_system_bpf" path="system/bpf"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_system_netd" />
+  <project name="rigaz29/android_system_netd" path="system/netd"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_system_vold" />
+  <project name="rigaz29/android_system_vold" path="system/vold"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="platform/packages/modules/DnsResolver" />
+  <!-- groups hulu "pdk-cw-fs,pdk-fs", BUKAN "pdk" seperti tiga repo di atas. -->
+  <project name="rigaz29/android_packages_modules_DnsResolver" path="packages/modules/DnsResolver"
+           remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs" />
 
   <!-- build/make: fork sendiri agar boot.img bergantung pada dt.img.
 

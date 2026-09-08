@@ -5,7 +5,7 @@ yang berakhir dengan ROM 23.2 yang boot, dipakai harian, dengan kamera AIDL dan
 FBE Adiantum terbukti jalan.
 
 Isinya hasil analisis kode sumber, bukan perkiraan.
-**Fase 0-3 selesai. `boot.img` terbangun dan strukturnya terverifikasi.**
+**Fase 0-4 selesai. `boot.img` terbangun; rantai BPF-less terpasang dan terkompilasi.**
 
 ```
 boot.img  20.369.408 byte    dt.img  210.944 byte    kernel  18.578.872 byte
@@ -23,6 +23,8 @@ pohon — konfirmasi `KERNEL_CC` benar-benar dipakai.
 | [`FASE-1.md`](FASE-1.md) | Manifest + sync: branch `lineage-24`, validasi 17 project, kendala ruang disk |
 | [`FASE-2.md`](FASE-2.md) | Kernel: GCC 4.9 terbukti membangun 3.10.108 di pohon 24.0 |
 | [`FASE-3.md`](FASE-3.md) | Forward-port 21 commit ULH ke 24.0 di 9 repo fork sendiri |
+| [`FASE-4.md`](FASE-4.md) | Rantai BPF-less: 22 patch, 13 di-port, kompilasi terverifikasi |
+| [`patches/`](patches) | 22 patch rantai BPF-less, disalin agar tidak bergantung repo pihak ketiga |
 | [`tools/sync.sh`](tools/sync.sh) | `repo sync` dengan percobaan ulang dan catatan disk |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
 
