@@ -98,33 +98,55 @@
   -->
 
   <!-- ============================================================
-       Fork ULH DILEPAS SEMENTARA — lihat FASE-2.md
+       Fork sendiri: LineageOS/AOSP 24.0 + cherry-pick commit ULH
 
-       Fork ULH lineage-23.2 TIDAK BISA dipakai di pohon 24.0. Bukan soal
-       API, melainkan STRUKTUR repo: LineageOS 24.0 memecah fs_mgr keluar dari
-       system/core menjadi project sendiri (system/fs/fs_mgr, nol di manifest
-       23.2, ada di 24.0). Fork ULH masih memuat fs_mgr/, jadi keduanya
-       ter-checkout dan soong menolak:
+       Fork ULH lineage-23.2 TIDAK BISA dipakai di pohon 24.0. Bukan soal API,
+       melainkan STRUKTUR repo: LineageOS 24.0 memecah fs_mgr keluar dari
+       system/core menjadi project sendiri, sehingga 8 modul snapuserd plus
+       packagemanager_aidl_interface terdefinisi ganda dan analisis soong
+       berhenti. Karena analisis mencakup SELURUH pohon, satu bentrokan di mana
+       pun memblokir semuanya.
 
-         system/core/fs_mgr/libsnapshot/snapuserd/Android.bp:57:1:
-           module "libsnapuserd" already defined            (8 modul)
-         frameworks/native/libs/binder/Android.bp:962:1:
-           module "packagemanager_aidl_interface" already defined
+       Fase 3 karena itu memindahkan seluruh muatan ULH ke branch lineage-24
+       sendiri, di atas hulu 24.0. 21 commit di 9 repo, semuanya terverifikasi
+       cocok antara lokal dan GitHub.
 
-       Karena analisis soong mencakup SELURUH pohon, satu bentrokan di mana pun
-       memblokir semuanya — termasuk build kernel yang sama sekali tidak
-       memakai repo ini. Forward-port ULH karena itu PRASYARAT build, bukan
-       lanjutan; urutan fase di PLAN-LOS24.md keliru soal ini.
-
-       frameworks/native, system/core, bionic, system/libhidl,
-       system/libhwbinder, hardware/ril untuk sementara memakai hulu 24.0.
-       Itu MELUCUTI kemampuan yang dibutuhkan untuk boot (GLES RenderEngine,
-       cgroup v1, text relocation, RIL v6/v8/v9) — sengaja, supaya uji
-       toolchain kernel bisa diisolasi dari pekerjaan forward-port.
-
-       Kembalikan lewat branch lineage-24 sendiri sesudah 18 commit ULH
-       di-cherry-pick (13 sudah terbukti bersih di Fase 0).
+       system/sepolicy sengaja TIDAK ikut: satu-satunya commit ULH di sana
+       (83b174ea, su domain di build user) tidak relevan untuk A37 yang
+       userdebug, dan plugin Go-nya mematahkan soong bootstrap di 24.0.
        ============================================================ -->
+
+  <remove-project name="LineageOS/android_frameworks_native" />
+  <project name="rigaz29/android_frameworks_native" path="frameworks/native"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_system_core" />
+  <project name="rigaz29/android_system_core" path="system/core"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_bionic" />
+  <project name="rigaz29/android_bionic" path="bionic"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_frameworks_av" />
+  <project name="rigaz29/android_frameworks_av" path="frameworks/av"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="LineageOS/android_packages_modules_Connectivity" />
+  <project name="rigaz29/android_packages_modules_Connectivity"
+           path="packages/modules/Connectivity" remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="platform/system/libhidl" />
+  <project name="rigaz29/android_system_libhidl" path="system/libhidl"
+           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
+
+  <remove-project name="platform/system/libhwbinder" />
+  <project name="rigaz29/android_system_libhwbinder" path="system/libhwbinder"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <remove-project name="platform/hardware/ril" />
+  <project name="rigaz29/android_hardware_ril" path="hardware/ril"
+           remote="gh" revision="lineage-24" groups="pdk" />
 
   <!-- ============================================================
        Lapisan QCOM
