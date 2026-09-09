@@ -148,6 +148,46 @@
   <project name="rigaz29/android_hardware_ril" path="hardware/ril"
            remote="gh" revision="lineage-24" groups="pdk" />
 
+  <!-- frameworks/base: dua deklarasi AIDL yang belum ada di hulu.
+
+       Launcher3 lineage-24.0 memanggil ISystemUiProxy.onLongPressKeyEvent dan
+       onSleepEvent, tapi keduanya tidak pernah dideklarasikan di
+       ISystemUiProxy.aidl. Keduanya di HEAD hulu masing-masing, jadi celah
+       hulu yang menghadang perangkat LineageOS 24.0 mana pun.
+
+       Ini ketidakkonsistenan hulu KEDUA yang ditemui; yang pertama
+       NetworkPolicyManager di ConnectivityService (lihat FASE-4.md).
+  -->
+  <remove-project name="LineageOS/android_frameworks_base" />
+  <project name="rigaz29/android_frameworks_base" path="frameworks/base"
+           remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs,sysui-studio" />
+
+  <!-- lineage-sdk: dua setelan AOSP yang pindah rumah di Android 17.
+
+       LineageDatabaseHelper merujuk Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
+       dan Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS. Keduanya milik AOSP,
+       dan AOSP sendiri yang memindahkannya di 17: yang pertama ke
+       android.net.ConnectivitySettingsManager (SystemApi MODULE_LIBRARIES,
+       tak terjangkau aplikasi sistem biasa), yang kedua jadi konstanta privat
+       di Tethering.java. Diganti nama kuncinya langsung, mengikuti idiom yang
+       sudah dipakai berkas yang sama untuk sfps_require_screen_on_to_auth_enabled.
+  -->
+  <remove-project name="LineageOS/android_lineage-sdk" />
+  <project name="rigaz29/android_lineage-sdk" path="lineage-sdk"
+           remote="gh" revision="lineage-24" />
+
+  <!-- hardware/libhardware: menyediakan display_defs.h.
+
+       hwc_utils.h:29 di HAL display msm8916 meng-include
+       <hardware/display_defs.h>, dan berkas itu tidak ada di pohon 24.0.
+       Berisi composition type khas QCOM (HWC_BLIT) dan flag rotasi untuk HAL
+       display pre-UM. Diambil dari ULH legacy_support_patches; kegagalan yang
+       sama tercatat sebagai kegagalan build kedua saat porting 23.2.
+  -->
+  <remove-project name="LineageOS/android_hardware_libhardware" />
+  <project name="rigaz29/android_hardware_libhardware" path="hardware/libhardware"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
   <!-- Empat repo untuk rantai BPF-less (Fase 4).
 
        Kernel A37 3.10.108 tidak punya eBPF sama sekali. Yang fatal bukan
@@ -337,8 +377,13 @@
        Jaraknya besar (ahead 641 / behind 1672 terhadap legacy-um 23.2), jadi
        jangan coba rebase ke 24.0-legacy-um; pakai apa adanya lebih dulu.
        Lihat PLAN-LOS24.md bagian 6.2. -->
-  <project name="android_device_qcom_sepolicy" path="device/qcom/sepolicy-legacy"
-           remote="ulh" revision="lineage-23.2-legacy" groups="qcom" />
+  <!-- Fork sendiri dari ULH lineage-23.2-legacy, dengan satu tambahan:
+       deklarasi vendor_hal_soter. device/lineage/sepolicy/qcom/private
+       memakainya lewat hal_client_domain, tapi atributnya hanya dideklarasikan
+       di pohon generic dan legacy-um yang TIDAK dipakai perangkat pre-UM.
+       Tanpa ini checkpolicy gagal membangun system_ext_sepolicy.cil. -->
+  <project name="rigaz29/android_device_qcom_sepolicy" path="device/qcom/sepolicy-legacy"
+           remote="gh" revision="lineage-24" groups="qcom" />
 
   <!-- ============================================================
        HAL QCOM khusus msm8916, fork sendiri.

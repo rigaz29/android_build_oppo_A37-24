@@ -24,6 +24,7 @@ pohon — konfirmasi `KERNEL_CC` benar-benar dipakai.
 | [`FASE-2.md`](FASE-2.md) | Kernel: GCC 4.9 terbukti membangun 3.10.108 di pohon 24.0 |
 | [`FASE-3.md`](FASE-3.md) | Forward-port 21 commit ULH ke 24.0 di 9 repo fork sendiri |
 | [`FASE-4.md`](FASE-4.md) | Rantai BPF-less: 22 patch, 13 di-port, kompilasi terverifikasi |
+| [`FASE-5.md`](FASE-5.md) | Build ROM: 3 celah hulu, batas mesin 11,7 GB, dua diagnosis yang salah |
 | [`patches/`](patches) | 22 patch rantai BPF-less, disalin agar tidak bergantung repo pihak ketiga |
 | [`tools/sync.sh`](tools/sync.sh) | `repo sync` dengan percobaan ulang dan catatan disk |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
