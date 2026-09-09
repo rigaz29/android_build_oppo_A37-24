@@ -1,6 +1,14 @@
 # Fase 5 — build ROM penuh
 
-9 September 2026. **BERJALAN** — belum ada zip flashable.
+9 September 2026. **SELESAI** — `rc=0`, zip flashable terbentuk.
+
+```
+lineage-24.0-20260909_170246-UNOFFICIAL-A37.zip
+849,8 MB   md5 a15fd3abd3aa3cfcb9dbc8c2f461f030
+```
+
+ROM ini **belum pernah menyentuh perangkat**. Yang terbukti di sini adalah
+pipeline build dari nol sampai zip bertanda tangan, bukan boot.
 
 Fase ini bukan soal menulis kode baru. Pohonnya sudah lengkap setelah Fase 0–4;
 yang tersisa adalah menjalankan `m bacon` sampai tuntas dan menambal apa pun
@@ -11,10 +19,11 @@ LineageOS 24.0 dan **batas mesin** 11,7 GB.
 
 | | |
 |---|---|
-| Percobaan build | 18 |
-| Celah hulu ditemukan di fase ini | 3 (nomor 6, 7, 8) |
-| Repo fork bertambah | 1 (`lineage-sdk`) |
-| Zip flashable | **belum** |
+| Percobaan build | 28 |
+| Celah hulu ditemukan di fase ini | 6 (nomor 6-11) |
+| Repo fork bertambah | 3 (`lineage-sdk`, `hardware_lineage_interfaces`, `packages_modules_adb`) |
+| Zip flashable | **849,8 MB**, `rc=0` |
+| Verifikasi artefak | `ro.adb.secure=0`, `ro.debuggable=1`, `dt_size=210944` |
 
 ---
 
@@ -190,7 +199,153 @@ menghentikan build, melainkan meninggalkan berkas terpotong yang lolos sebagai
 membunuh build yang sehat, dan tidak ada penjaga lebih baik daripada penjaga
 yang salah.
 
+## 6b. Celah hulu 9, 10, 11 — jalur yang hanya dilewati perangkat lawas
+
+Tiga celah terakhir punya benang merah: semuanya di kode yang perangkat modern
+tidak pernah sentuh, sehingga bisa rusak lama tanpa ketahuan.
+
+### #9 — generator OTA mengandaikan dynamic partitions
+
+```
+ota_from_target_files.py:584 ModifyTargetFilesDynamicPartitionInfo
+FileNotFoundError: META/dynamic_partitions_info.txt
+```
+
+Baris 1332-1334 menyalakan `disable_ublk` otomatis untuk perangkat yang tidak
+mendukung ublk, lalu baris 1452 menulis flag itu ke berkas info dynamic
+partition tanpa penjaga. Kedua sisi saling meniadakan: `supports_ublk` membaca
+`ro.virtual_ab.ublk.enabled`, properti Virtual A/B, dan Virtual A/B mensyaratkan
+dynamic partitions. Jadi perangkat yang berkasnya tidak pernah dihasilkan justru
+yang dijamin masuk cabang itu. Makin lawas, makin pasti gagal.
+Diperbaiki di `build/make` `5badd464`.
+
+### #10 — `non_ab_ota.py` lupa `zip -y`
+
+Gejalanya menyamar sebagai disk penuh: `exit code 14`, `Output file write
+failure` — padahal disk 20 GB lega. Pembedanya `zip I/O error: Bad address`
+(EFAULT) dan nama berkasnya: `RECOVERY/RAMDISK/d/kvm/*`.
+
+`RECOVERY/RAMDISK/d` adalah symlink absolut ke `/sys/kernel/debug`. Di perangkat
+itu benar. Tetapi saat host mengemas, `zip -r .` mengikutinya dan mengarsipkan
+debugfs milik HOST yang sedang hidup — ribuan berkas semu yang ukurannya berubah
+sambil dibaca.
+
+Basis kode ini sudah tahu jawabannya, hanya tidak di berkas itu:
+
+| pemanggil | perintah |
+|---|---|
+| `sign_target_files_apks.py:1797` | `zip ... -y -r .` |
+| `sign_target_files_apks.py:1799` | `zip ... -y -0 -r .` |
+| `non_ab_ota.py:569` | `zip ... -r . -0` |
+
+Bertahan tanpa ketahuan karena namanya `non_ab_ota.py` — hanya perangkat non-A/B
+yang menyentuhnya — dan hanya menggigit bila build berjalan sebagai root di host
+yang punya debugfs ter-mount. Diperbaiki di `build/make` `00fd8b81`.
+
+### #11 — FCM level 5 dicabut, dan HAL HIDL menyusul
+
+`compatibility_matrix.202604.xml` hanya mengenal varian AIDL:
+`bluetooth.audio` 3-6 dan `health` 3-5. Deklarasi HIDL keduanya pasti ditolak.
+Untuk bluetooth audio, deklarasi manual di `manifest.xml` perangkat justru YANG
+MEMICU penolakan, karena paket AIDL membawa `vintf_fragment` sendiri.
+Diperbaiki di device tree `65b86520`.
+
+Lalu `target-level="5"` sendiri gugur: Android 17 hanya mengirim matrix untuk
+level 7 ke atas. Komentar di manifest itu memperingatkan dirinya sendiri —
+level 5 dipilih justru karena `compatibility_matrix.5.xml` nol menyebut
+`android.hardware.radio`, sehingga `IRadio 1.5-6` tidak mengikat perangkat yang
+hanya punya `@1.4::IRadio`.
+
+**Diuji sebelum diterapkan, bukan sesudah.** `checkvintf` sudah ada sebagai
+biner di `out/host`, dan pohon hasil build masih utuh, jadi manifest TERBANGUN
+disunting sementara ke level 7 dan `checkvintf` dijalankan langsung dengan
+dirmap serta properti yang sama persis: **COMPATIBLE, rc=0**. Kekhawatirannya
+tidak terwujud karena aturan pewarisan HIDL `HalManifest.cpp:384-390`.
+Diperbaiki di device tree `1a68b033`.
+
+> Alat tahap pengemasan sudah terbangun di `out/host`. Hipotesis tentangnya bisa
+> diuji dalam detik, bukan dengan siklus build 90 menit.
+
+## 6c. Kesalahan sendiri yang berbiaya
+
+Selain dua penjaga di §4 yang membunuh build sehat:
+
+**Menghapus versi clang saat disk kritis.** Alasannya "kompilasi sudah selesai,
+tinggal pengemasan" — keliru. Bindgen memakai `clang-r584948` lewat
+`ClangDefaultVersion` di `global.go` (baris yang sudah dibaca berjam-jam
+sebelumnya dan tidak dihubungkan), dan soong men-`stat` tiga versi lain saat
+analisis karena `prebuilts/clang/host/linux-x86/Android.bp:661` mendeklarasikan
+`dirgroup` yang mencantumkannya. Benar soal *target*, salah soal *analisis*.
+Ongkosnya satu siklus.
+
+Pemangkasan yang benar dilakukan belakangan: yang dihapus **object store**
+`.repo` (8,4 GB, hanya dibutuhkan `repo sync`), bukan worktree yang dipakai
+kompilasi dan analisis.
+
+**Regresi javadoc yang lolos tinjauan.** Commit Fase 4 menyisipkan
+`pauseDownload`/`resumeDownload` di antara javadoc `restartDownload` dan
+metodenya, sehingga `@hide` milik hulu jadi blok yatim dan metode itu telanjang.
+Metalava lalu memperlakukannya sebagai API publik baru. Yang membuatnya lolos:
+diff-nya **nol penghapusan** — teks javadoc tidak hilang, hanya berpindah
+pemilik. Diperbaiki di `886171e9`.
+
+**`--` di dalam komentar XML, dua kali lagi** (total lima kali di proyek ini),
+meski sanitasi otomatis sudah dibuat sendiri dan tidak dipakai. Tertangkap
+validator sebelum commit. Sejak itu pemeriksaannya dijalankan SEBELUM menulis.
+
+**`groups=` salah lagi saat menambah fork** — tertangkap `verify/cek-manifest.sh`,
+skrip yang memang dibuat untuk kelas kesalahan ini. Skripnya bekerja.
+
+## 6d. Hal yang tidak boleh dilakukan di pohon ini
+
+`git log -S` dan `git grep` pada partial clone `blob:none` menarik **setiap
+blob** dari setiap commit. Satu proses `git log -S` yang tertinggal dari sesi
+sebelumnya memakan 13 GB disk dan sebagian besar RAM selama 12 menit pertama
+sebuah build, dan gejalanya terbaca persis seperti build yang rakus.
+
 ## 7. Belum terbukti
 
-Boot perangkat; Bluetooth tanpa `libbt-vendor`; kedip LED sesudah migrasi AIDL;
-memtrack AIDL; SkiaGL vs fork GLES ULH; jaringan hidup tanpa BPF.
+**Boot perangkat.** ROM ini belum pernah di-flash. Yang terbukti di fase ini
+adalah pipeline build, bukan perangkatnya.
+
+Juga belum terbukti: Bluetooth tanpa `libbt-vendor`; kedip LED sesudah migrasi
+AIDL lights; health dan bluetooth.audio sesudah pindah ke AIDL; SkiaGL vs fork
+GLES ULH; jaringan hidup tanpa BPF.
+
+Terbukti secara kompilasi (bukan runtime): memtrack AIDL, dan jalur FunctionFS
+legacy adb.
+
+## 8. Fase 6 — 28 patch kompatibilitas yang masih absen
+
+Seluruh 63 patch kit 23.2 diuji terhadap pohon 24.0 dengan `git apply --check
+--reverse`. Hasilnya perlu dibaca hati-hati: **"tidak bisa di-reverse" biasanya
+berarti sudah diterapkan dalam bentuk port-tangan**, bukan belum ada. Contoh
+telak, `build_make/0701-releasetools-zip-y` terbaca "belum" padahal perbaikan
+yang sama diturunkan ulang secara mandiri di fase ini sebagai `00fd8b81`, tanpa
+tahu kit lama sudah memuatnya.
+
+Yang benar-benar absen adalah **28 patch yang menempel MULUS** — artinya kodenya
+belum tersentuh sama sekali:
+
+| kelas | repo | jml |
+|---|---|---|
+| kritis-boot | `bionic` | 5 |
+| kritis-boot | `system_core` | 5 |
+| kritis-boot | `frameworks_base` | 4 |
+| kritis-boot | `system_memory_lmkd` | 2 |
+| kritis-boot | `frameworks_native` | 2 |
+| kritis-boot | `system_apex` | 1 |
+| kritis-boot | `system_sepolicy` | 1 |
+| stabilitas runtime | telephony, wifi, BT, NetworkStack, wlan, Connectivity | 8 |
+
+Diverifikasi sampel: `system/apex/apexd/apexd_loop.cpp:612` masih memakai
+`O_DIRECT` tanpa syarat, sedangkan loop device kernel 3.10 tidak mendukungnya.
+
+Kelas "stabilitas runtime" berasal dari **debug perangkat nyata** di 23.2, bukan
+tebakan; ia tidak memblokir boot tetapi menentukan sinyal, wifi dan Bluetooth.
+
+Urutan yang dipilih: build lebih dulu sampai `rc=0`, baru 28 patch diterapkan.
+Alasannya bukan kehati-hatian berlebih — semuanya menempel mulus sehingga murah
+— melainkan supaya kalau ada yang rusak sesudahnya, penyebabnya tidak ambigu
+antara "pipeline belum pernah jalan" dan "patch ini yang salah". Baseline itu
+sekarang ada.

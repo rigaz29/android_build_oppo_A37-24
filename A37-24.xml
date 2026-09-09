@@ -162,6 +162,32 @@
   <project name="rigaz29/android_frameworks_base" path="frameworks/base"
            remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs,sysui-studio" />
 
+  <!-- packages/modules/adb: jalur FunctionFS legacy (non-AIO).
+
+       Kernel 3.10 A37 menyediakan FunctionFS lewat gadget Android lama yang
+       nol dukungan AIO, sedangkan adbd 24.0 hanya punya jalur io_submit tanpa
+       syarat. Akibatnya gadget CONFIGURED tapi data tidak pernah mengalir dan
+       host melihat perangkat offline selamanya. device.mk:1913 sudah menyetel
+       ro.adb.nonblocking_ffs=false, properti yang tanpa tambalan ini tidak
+       dibaca kode mana pun. Berpasangan dengan WITH_ADB_INSECURE untuk
+       bring-up: tanpa keduanya, adb tidak berguna saat paling dibutuhkan.
+  -->
+  <remove-project name="LineageOS/android_packages_modules_adb" />
+  <project name="rigaz29/android_packages_modules_adb" path="packages/modules/adb"
+           remote="gh" revision="lineage-24" groups="pdk" />
+
+  <!-- hardware/lineage/interfaces: %ld salah untuk int64_t di userspace 32-bit.
+
+       FastCharge.cpp:74 dan lima situs di Session.cpp (fingerprint) memformat
+       int64_t/uint64_t dengan %ld. Benar di arm64, salah di arm 32-bit, dan
+       -Wformat diangkat ke -Werror. A37 memakai userspace 32-bit dengan HAL
+       64-bit, jadi perangkat seperti inilah yang membongkarnya. Diganti makro
+       PRId64/PRIu64 sesuai tanda tiap tipe.
+  -->
+  <remove-project name="LineageOS/android_hardware_lineage_interfaces" />
+  <project name="rigaz29/android_hardware_lineage_interfaces" path="hardware/lineage/interfaces"
+           remote="gh" revision="lineage-24" />
+
   <!-- lineage-sdk: dua setelan AOSP yang pindah rumah di Android 17.
 
        LineageDatabaseHelper merujuk Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
