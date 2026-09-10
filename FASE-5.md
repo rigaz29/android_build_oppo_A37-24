@@ -3,12 +3,16 @@
 9 September 2026. **SELESAI** — `rc=0`, zip flashable terbentuk.
 
 ```
-lineage-24.0-20260909_170246-UNOFFICIAL-A37.zip
-849,8 MB   md5 a15fd3abd3aa3cfcb9dbc8c2f461f030
+lineage-24.0-20260910_004703-UNOFFICIAL-A37.zip
+849,8 MB   md5 50e6d938d9b26374bd0a3bda4f353b87
 ```
 
-ROM ini **belum pernah menyentuh perangkat**. Yang terbukti di sini adalah
-pipeline build dari nol sampai zip bertanda tangan, bukan boot.
+Zip pertama (`20260909_170246`) lolos build tetapi DITOLAK TWRP di assert
+perangkat; lihat §6e. Zip di atas hasil perbaikan itu, dan assert-nya sudah
+diverifikasi memuat `A37f` pada `ro.product.device` maupun `ro.build.product`.
+
+ROM ini **belum pernah boot**. Yang terbukti sampai di sini adalah pipeline
+build dan bahwa paketnya lolos assert TWRP, bukan bahwa perangkatnya menyala.
 
 Fase ini bukan soal menulis kode baru. Pohonnya sudah lengkap setelah Fase 0–4;
 yang tersisa adalah menjalankan `m bacon` sampai tuntas dan menambal apa pun
@@ -20,7 +24,7 @@ LineageOS 24.0 dan **batas mesin** 11,7 GB.
 | | |
 |---|---|
 | Percobaan build | 28 |
-| Celah hulu ditemukan di fase ini | 6 (nomor 6-11) |
+| Celah hulu ditemukan di fase ini | 7 (nomor 6-12) |
 | Repo fork bertambah | 3 (`lineage-sdk`, `hardware_lineage_interfaces`, `packages_modules_adb`) |
 | Zip flashable | **849,8 MB**, `rc=0` |
 | Verifikasi artefak | `ro.adb.secure=0`, `ro.debuggable=1`, `dt_size=210944` |
@@ -265,6 +269,62 @@ Diperbaiki di device tree `1a68b033`.
 
 > Alat tahap pengemasan sudah terbangun di `out/host`. Hipotesis tentangnya bisa
 > diuji dalam detik, bukan dengan siklus build 90 menit.
+
+## 6e. Celah hulu #12 — ditemukan oleh perangkat, bukan oleh build
+
+Build percobaan 28 lolos `rc=0` dan menghasilkan zip bertanda tangan. Zip itu
+tetap gagal di TWRP:
+
+```
+script aborted: E3004: This package is for "A37" devices; this is a "A37f".
+Updater process ended with ERROR: 1
+```
+
+Tidak ada kerusakan: assert berjalan sebelum partisi mana pun disentuh, dan
+`recovery.log` memastikannya lewat "Install took 0 second(s)".
+
+Bukan salah setelan. Device tree SUDAH menyetel:
+
+```make
+TARGET_OTA_ASSERT_DEVICE := A37,a37,a37f,A37f,A37fw,a37fw,A37m,a37m,msm8916,msm8939
+```
+
+tetapi variabel itu nol dibaca di seluruh `build/make` 24.0. Dukungan
+multi-perangkat adalah tambalan LineageOS bertiga bagian, dan ketiganya hilang:
+
+| bagian | fungsi | rujukan 23.2 |
+|---|---|---|
+| `core/Makefile` | pancarkan `ota_override_device` ke misc_info | baris 6239 |
+| `common.py` | baca kunci itu, jatuh ke `ro.product.device` | baris 448 |
+| `edify_generator.py` | pecah daftar koma, periksa juga `ro.build.product` | baris 138-146 |
+
+Diperbaiki di `build/make` `31103b33`, dan `AssertDevice` diuji langsung di
+Python sebelum build ulang alih-alih sesudahnya.
+
+> **Pelajaran yang lebih besar dari tambalannya.** `rc=0` hanya membuktikan
+> pipeline build, bukan bahwa zip-nya bisa dipasang. Kelas kegagalan ini hanya
+> muncul di perangkat, dan hanya menggigit perangkat yang kode variannya berbeda
+> dari nama device tree-nya. Verifikasi artefak sesudah build (properti, dt_size,
+> struktur zip) TIDAK menangkapnya; yang menangkapnya adalah membaca
+> updater-script yang dihasilkan dan membandingkannya dengan `ro.product.device`
+> perangkat sungguhan.
+
+## 6f. Penjaga disk membuktikan dirinya
+
+Percobaan 29 dihentikan penjaga di sisa 5 GB saat pengemasan OTA. Tandanya
+`error: action cancelled when ninja exited` -- pembeda yang dicatat RILIS.md 23.2
+antara build yang DIBUNUH dan galat kompilasi sungguhan.
+
+Yang tertinggal: zip 86,6 MB, dari yang seharusnya 849,8 MB. Tanpa penjaga,
+berkas terpotong itu akan lolos sebagai "sudah dibangun" dan baru ketahuan saat
+flash.
+
+Ruang dibebaskan dengan urutan yang benar, dan urutan itu penting: pertama sisa
+kerja (`out/soong/.temp`, 8,4 GB), lalu **object store** `.repo`
+(`platform/external` + `cts.git`, 9,8 GB). Object store tidak pernah dibaca
+proses build -- hanya `repo sync` -- sehingga menghapusnya aman dan pulih lewat
+sync ulang. Itu justru kebalikan dari kesalahan clang di §6c, di mana yang
+terhapus adalah worktree yang memang dipakai kompilasi dan analisis.
 
 ## 6c. Kesalahan sendiri yang berbiaya
 
