@@ -1,0 +1,91 @@
+From 09645d14c686263d23c9d6dbd6cff9a72607a053 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:42 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I9a4166b8b2e66cbd3f5d97c35e7858f3909ad22a
+---
+ qcwcn/wifi_hal/wifilogger.cpp | 36 +++++++++++++++++++++++++++++++++--
+ 1 file changed, 34 insertions(+), 2 deletions(-)
+
+diff --git a/qcwcn/wifi_hal/wifilogger.cpp b/qcwcn/wifi_hal/wifilogger.cpp
+index 9462d86..5203185 100644
+--- a/qcwcn/wifi_hal/wifilogger.cpp
++++ b/qcwcn/wifi_hal/wifilogger.cpp
+@@ -263,6 +263,25 @@ void WifiLoggerCommand::setFeatureSet(u32 *support) {
+ }
+ 
+ /*  Function to get the supported feature set for logging.*/
++/*
++ * A37: driver prima (msm8916) tidak mengimplementasikan
++ * QCA_NL80211_VENDOR_SUBCMD_GET_LOGGER_FEATURE_SET, jadi panggilan ini SELALU
++ * mengembalikan WIFI_ERROR_NOT_SUPPORTED (-3). Kemampuan driver tidak berubah
++ * saat runtime, tetapi framework memanggilnya pada setiap siklus polling
++ * link-layer stats: terukur di perangkat sekitar 20 kali per menit selama
++ * Wi-Fi tersambung dan layar menyala.
++ *
++ * Tiap panggilan membangun WifiLoggerCommand, menyusun pesan netlink,
++ * mengirimnya, menunggu balasan, lalu mencatat satu baris ALOGE. Hasilnya
++ * sudah pasti dan tidak pernah berubah.
++ *
++ * Setelah driver menjawab NOT_SUPPORTED sekali, hasilnya di-cache sehingga
++ * panggilan berikutnya kembali seketika tanpa netlink dan tanpa log. Pola yang
++ * sama dengan penjaga getLinkLayerStats (patch 0815); bedanya di sini
++ * jawabannya statis, jadi satu kegagalan sudah cukup.
++ */
++static bool sLoggerFeatureSetUnsupported = false;
++
+ wifi_error wifi_get_logger_supported_feature_set(wifi_interface_handle iface,
+                                                  u32 *support)
+ {
+@@ -273,6 +292,12 @@ wifi_error wifi_get_logger_supported_feature_set(wifi_interface_handle iface,
+     interface_info *ifaceInfo = getIfaceInfo(iface);
+     wifi_handle wifiHandle = getWifiHandle(iface);
+ 
++    if (sLoggerFeatureSetUnsupported) {
++        if (support)
++            *support = 0;
++        return WIFI_ERROR_NOT_SUPPORTED;
++    }
++
+     /* No request id from caller, so generate one and pass it on to the driver.
+      * Generate one randomly.
+      */
+@@ -316,8 +341,15 @@ wifi_error wifi_get_logger_supported_feature_set(wifi_interface_handle iface,
+ 
+     /* Send the msg and wait for a response. */
+     ret = wifiLoggerCommand->requestResponse();
+-    if (ret != WIFI_SUCCESS)
+-        ALOGE("%s: Error %d happened. ", __FUNCTION__, ret);
++    if (ret != WIFI_SUCCESS) {
++        if (ret == WIFI_ERROR_NOT_SUPPORTED) {
++            /* A37: jawaban permanen, catat sekali lalu berhenti bertanya. */
++            sLoggerFeatureSetUnsupported = true;
++            ALOGI("%s: tidak didukung driver, hasil di-cache", __FUNCTION__);
++        } else {
++            ALOGE("%s: Error %d happened. ", __FUNCTION__, ret);
++        }
++    }
+ 
+ cleanup:
+     delete wifiLoggerCommand;

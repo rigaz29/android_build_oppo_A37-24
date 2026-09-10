@@ -1,0 +1,67 @@
+From 44d6f09782a4f358ba3358da64e4cc7c961e7c3f Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 02:30:43 +0000
+Subject: [PATCH 3/4] soong: catat bahwa GOMEMLIMIT punya dua jurang, bukan
+ satu
+
+Komentar sebelumnya hanya merekam mode gagal yang satu -- tanpa batas, soong
+dibunuh OOM setelah 33 menit -- sehingga terbaca seolah makin rendah makin
+aman. Ternyata sebaliknya di ujung yang lain.
+
+Dengan SOONG_GOMEMLIMIT=5GiB, analisis A37 tidak pernah selesai. Diukur pada
+menit ke-45: 998.888 major page fault per 20 detik, 4,06 GB dibaca per 20 detik
+dengan nol byte ditulis (total 395 GB), dan nol berkas keluaran soong baru
+selama 10 menit. RSS bertahan di 10,4 GB dan tidak pernah turun ke batas.
+
+Itu pola spiral maut GOMEMLIMIT: live heap di atas batas, jadi Go tidak pernah
+bisa memenuhinya, GC berjalan tanpa henti, dan tiap siklus memindai seluruh
+heap yang saat itu berada di swap.
+
+Yang membuatnya mahal untuk didiagnosis: soong tidak mencetak apa pun selama
+analisis, sehingga spiral ini tampak persis seperti analisis yang lambat.
+Pembedanya bukan waktu, melainkan major fault dan rasio baca/tulis -- kerja
+nyata menulis berkas, spiral hanya membaca.
+
+Karena RSS tidak pernah turun di bawah 10,4 GB, live heap-nya di atas 5GiB,
+kira-kira 9 GB. Nilai yang benar harus di atas live heap dan di bawah
+RAM+swap; di mesin 11,7 GB dengan swap 32 GB, 14GiB memenuhi keduanya.
+
+Kodenya tidak berubah, hanya komentarnya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ ui/build/soong.go | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/ui/build/soong.go b/ui/build/soong.go
+index 5707c5758..23a494d8b 100644
+--- a/ui/build/soong.go
++++ b/ui/build/soong.go
+@@ -229,6 +229,26 @@ func (pb PrimaryBuilderFactory) primaryBuilderInvocation(config Config) bootstra
+ 	// GC; GOMEMLIMIT menekan puncaknya tanpa mengurangi kerja yang dilakukan.
+ 	// Swap tidak menolong karena Go tidak memperlakukan swap sebagai tekanan
+ 	// memori -- heap justru tumbuh selama masih ada tempat.
++	//
++	// PERINGATAN, nilainya punya dua jurang, bukan satu. Menyetelnya terlalu
++	// RENDAH lebih buruk daripada tidak menyetelnya. Bila live heap melebihi
++	// batas, Go tidak bisa pernah memenuhinya, sehingga GC berjalan tanpa henti
++	// dan tiap siklus memindai seluruh heap -- yang saat itu ada di swap.
++	// Dengan 5GiB di mesin 11 GB, gejalanya terukur begini:
++	//
++	//   soong_build 45 menit tanpa satu pun berkas keluaran baru
++	//   998.888 major page fault per 20 detik
++	//   4,06 GB dibaca per 20 detik, 0 byte ditulis, total 395 GB
++	//   RSS tetap 10,4 GB, tidak pernah turun ke batas
++	//
++	// Build itu tidak akan pernah selesai. Diamnya menipu: soong memang tidak
++	// mencetak apa pun selama analisis, jadi spiral ini tampak persis seperti
++	// analisis yang lambat.
++	//
++	// Karena RSS tidak pernah turun di bawah 10,4 GB meski GC terus berjalan,
++	// live heap analisis A37 ada di atas 5GiB, kira-kira 9 GB. Nilainya harus
++	// di ATAS itu supaya GC kembali sesekali, dan cukup di bawah RAM+swap
++	// supaya tidak kena OOM. 14GiB memenuhi keduanya di mesin ini.
+ 	if v := os.Getenv("SOONG_GOMEMLIMIT"); v != "" {
+ 		invocationEnv["GOMEMLIMIT"] = v
+ 	}

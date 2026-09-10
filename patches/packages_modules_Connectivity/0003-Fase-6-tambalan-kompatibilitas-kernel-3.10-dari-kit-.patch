@@ -1,0 +1,84 @@
+From db3a7f12b234e422ab64b1df64a1e4904144fe0f Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:44 +0000
+Subject: [PATCH 3/3] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../util/netlink/RtNetlinkAddressMessage.java | 42 ++++++++++++++++---
+ 1 file changed, 36 insertions(+), 6 deletions(-)
+
+diff --git a/staticlibs/device/com/android/net/module/util/netlink/RtNetlinkAddressMessage.java b/staticlibs/device/com/android/net/module/util/netlink/RtNetlinkAddressMessage.java
+index 4846df7880..3da94cd40d 100644
+--- a/staticlibs/device/com/android/net/module/util/netlink/RtNetlinkAddressMessage.java
++++ b/staticlibs/device/com/android/net/module/util/netlink/RtNetlinkAddressMessage.java
+@@ -130,14 +130,44 @@ public class RtNetlinkAddressMessage extends NetlinkMessage {
+ 
+         // The first 8 bits of flags are in the ifaddrmsg.
+         addrMsg.mFlags = addrMsg.mIfaddrmsg.flags;
+-        // IFA_FLAGS. All the flags are in the IF_FLAGS attribute. This should always be present,
+-        // and will overwrite the flags set above.
++        // IFA_FLAGS. All the flags are in the IF_FLAGS attribute, and will overwrite the flags set
++        // above -- TAPI HANYA KALAU ATRIBUTNYA ADA.
++        //
++        // A37: IFA_FLAGS (8) baru diperkenalkan Linux 3.14. Kernel 3.10 perangkat ini tidak
++        // mengenalnya sama sekali -- enum di include/uapi/linux/if_addr.h berakhir di
++        // IFA_CACHEINFO (6) dan IFA_MULTICAST (7). Kernel tidak pernah mengirimnya, sehingga
++        // `return null` di sini menolak SETIAP RTM_NEWADDR.
++        //
++        // Akibatnya berantai, dan ujungnya sama sekali tidak terlihat seperti masalah netlink:
++        //   NetlinkMonitor mencatat "unparsable netlink msg"
++        //     -> IpClientLinkObserver tidak pernah tahu alamatnya terpasang
++        //     -> IpClient tidak pernah melaporkan provisioning, sukses maupun gagal
++        //     -> agen Wi-Fi tidak pernah CONNECTED
++        //     -> DNS kosong, dan koneksi tidak pernah bisa dipakai
++        // Di layar hanya tampak "obtaining IP address", padahal DHCP sudah lama berhasil.
++        //
++        // CATATAN 23.2: ekor rantainya BERBEDA dari yang tercatat di 22.2. Di sana
++        // networkCreate tidak pernah dipanggil sehingga networkAddRouteParcel ditolak
++        // "no such netId" (ENONET). Di 23.2 rutenya justru BERHASIL --
++        //   networkAddRouteParcel(105, 192.168.0.0/24, isLocalRoute: true)  <0.60ms>
++        //   networkAddRouteParcel(105, 0.0.0.0/0, nextHop: 192.168.0.1)     <0.31ms>
++        // -- tapi "Setting DNS servers for network 105 to []" tetap terjadi. Jadi
++        // perbaikan rute TARGET_NEEDS_NETD_DIRECT_CONNECT_RULE yang dipakai di 22.2
++        // TIDAK diperlukan di sini; yang tersisa murni penolakan IFA_FLAGS ini.
++        //
++        // Pesan yang ditolak di perangkat ini didekode utuh dan sah: RTM_NEWADDR,
++        // 80 byte, AF_INET, prefixlen 24, ifindex 37 (wlan0), 192.168.0.188, dengan
++        // IFA_ADDRESS/IFA_LOCAL/IFA_BROADCAST/IFA_LABEL/IFA_CACHEINFO lengkap dan
++        // IFA_FLAGS memang tidak ada.
++        //
++        // Kalau atributnya tidak ada, flag 8-bit dari ifaddrmsg yang sudah dibaca di atas tetap
++        // dipakai -- itu memang satu-satunya sumber flag sebelum IFA_FLAGS diperkenalkan.
+         byteBuffer.position(baseOffset);
+         nlAttr = StructNlAttr.findNextAttrOfType(IFA_FLAGS, byteBuffer);
+-        if (nlAttr == null) return null;
+-        final Integer value = nlAttr.getValueAsInteger();
+-        if (value == null) return null;
+-        addrMsg.mFlags = value;
++        if (nlAttr != null) {
++            final Integer value = nlAttr.getValueAsInteger();
++            if (value != null) addrMsg.mFlags = value;
++        }
+ 
+         return addrMsg;
+     }

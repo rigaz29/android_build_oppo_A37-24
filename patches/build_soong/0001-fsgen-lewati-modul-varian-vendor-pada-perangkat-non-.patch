@@ -1,0 +1,78 @@
+From 02f4c736db61afab39401ff682a5cb7bce7cd473 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 02:14:58 +0000
+Subject: [PATCH 1/4] fsgen: lewati modul varian vendor pada perangkat
+ non-Treble
+
+Perangkat non-Treble tidak punya partisi vendor: TARGET_COPY_OUT_VENDOR
+bernilai "system/vendor", sehingga PartitionTag() melaporkan "system"
+untuk modul bervarian vendor. Modul seperti itu hanya pernah membangun
+varian vendor, jadi memasukkannya ke daftar dependensi system image
+meminta varian platform yang memang tidak bisa ada:
+
+  dependency "libstdc++_vendor" of "lineage_A37_generated_system_image"
+    missing variant: os:android,arch:arm_armv8-a_cortex-a53
+  available variants:
+    os:android,image:vendor,arch:arm_armv8-a_cortex-a53,link:shared
+
+Hal yang sama terjadi pada android.hardware.health@2.1-impl, dan akan
+terjadi pada SETIAP modul vendor-only di PRODUCT_PACKAGES.
+
+Penyaring systemPartitionFalsePositive memang dibuat untuk kelas masalah
+ini, tetapi daftarnya hanya memuat ramdisk, vendor_ramdisk, dan recovery.
+Penyaring itu sendiri baru ada di 24.0; di 23.2 pemeriksaannya hanya
+Enabled && ExportedToMake tanpa penyaring varian, sehingga perangkat
+non-Treble tidak pernah tersandung.
+
+Uji VendorPath() != "vendor" bukan uji baru: filesystem_creator.go:228
+dan :1497 memakai perbandingan yang sama persis untuk membedakan partisi
+vendor sungguhan dari vendor yang berada di dalam system. Perangkat Treble
+tidak tersentuh sama sekali.
+
+Aman karena Make tetap memasang modul-modul itu ke system/vendor sendiri;
+daftar fsgen hanya dipakai sebagai pembanding selama
+USE_SOONG_DEFINED_SYSTEM_IMAGE tidak aktif.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: I9c2dc7980f1baf887f46c3bf3b4591c4247e07ed
+---
+ fsgen/fsgen_mutators.go | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/fsgen/fsgen_mutators.go b/fsgen/fsgen_mutators.go
+index 080cb39dc..94eb10221 100644
+--- a/fsgen/fsgen_mutators.go
++++ b/fsgen/fsgen_mutators.go
+@@ -447,14 +447,30 @@ func collectDepsMutator(mctx android.BottomUpMutatorContext) {
+ 
+ 	if _, ok := fsGenState.depCandidatesMap[moduleName]; ok {
+ 		installPartition := m.PartitionTag(mctx.DeviceConfig())
+-		systemPartitionFalsePositive := installPartition == "system" && android.InList(m.ImageVariation().Variation, []string{
++		systemPartitionFalsePositive := installPartition == "system" && (android.InList(m.ImageVariation().Variation, []string{
+ 			// cc/image.go marks some ramdisk and recovery modules as platform.
+ 			// https://cs.android.com/android/platform/superproject/main/+/main:build/soong/cc/image.go;l=514-522?q=MakeAsPlatform%20f:build%2Fsoong&ss=android%2Fplatform%2Fsuperproject%2Fmain
+ 			// Skip them in fsgen.
+ 			android.RamdiskVariation,
+ 			android.VendorRamdiskVariation,
+ 			android.RecoveryVariation,
+-		})
++		}) ||
++			// Non-Treble devices have no vendor partition: TARGET_COPY_OUT_VENDOR is
++			// "system/vendor", so PartitionTag() reports "system" for vendor-variant
++			// modules. Those modules only ever build a vendor variant, so adding them
++			// to the system image deps asks for a platform variant that cannot exist:
++			//
++			//   dependency "libstdc++_vendor" of "<product>_generated_system_image"
++			//     missing variant: os:android,arch:arm_armv8-a_cortex-a53
++			//   available variants:
++			//     os:android,image:vendor,arch:arm_armv8-a_cortex-a53,link:shared
++			//
++			// Make installs them under system/vendor on its own, so skipping them
++			// here is safe. The same VendorPath() test is used by
++			// filesystem_creator.go to tell a real vendor partition from an
++			// in-system one.
++			(m.ImageVariation().Variation == android.VendorVariation &&
++				mctx.DeviceConfig().VendorPath() != "vendor"))
+ 		if isEligibleForFsDeps(mctx) && !systemPartitionFalsePositive {
+ 			appendDepIfAppropriate(mctx, fsGenState.fsDeps[installPartition], installPartition, android.NativeBridgeDisabled, mctx.ModuleName())
+ 		}

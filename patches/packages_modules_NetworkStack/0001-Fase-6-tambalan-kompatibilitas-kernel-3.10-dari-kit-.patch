@@ -1,0 +1,75 @@
+From 702164548ccabe81bb2efea77e5369fd2083f730 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:46 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I183be7fc732c16166424cf173960d2b0c3bb15a8
+---
+ .../android/networkstack/netlink/TcpInfo.java | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/src/com/android/networkstack/netlink/TcpInfo.java b/src/com/android/networkstack/netlink/TcpInfo.java
+index 62eab7a7c..fb5ca2d81 100644
+--- a/src/com/android/networkstack/netlink/TcpInfo.java
++++ b/src/com/android/networkstack/netlink/TcpInfo.java
+@@ -159,14 +159,39 @@ public class TcpInfo {
+         mTotalRetrans = totalRetrans;
+     }
+ 
++    /**
++     * A37: panjang tcp_info yang sudah diketahui TERLALU PENDEK di kernel ini.
++     *
++     * Field SEGS_IN baru ditambahkan ke struct tcp_info di kernel 4.2. Kernel 3.10
++     * perangkat ini menyerahkan 108 byte tanpa field itu, sehingga parsing TIDAK
++     * AKAN PERNAH berhasil -- bukan kegagalan sesekali, melainkan permanen.
++     *
++     * Tanpa penjaga ini setiap percobaan membangun IllegalArgumentException,
++     * menelusuri stack, memformatnya, lalu mencatatnya. Terukur di perangkat:
++     * 11 kali per detik terus-menerus, ~2600 baris terakumulasi.
++     *
++     * Nilai disimpan (bukan sekadar boolean) supaya kalau suatu saat kernel
++     * menyerahkan struktur yang lebih panjang, parsing tetap dicoba.
++     */
++    private static volatile int sKnownTooShortLen = -1;
++
+     /** Parse a TcpInfo from a giving ByteBuffer with a specific length. */
+     @Nullable
+     public static TcpInfo parse(@NonNull ByteBuffer bytes, int infolen) {
++        // A37: sudah terbukti terlalu pendek sebelumnya -- jangan bangun exception lagi.
++        final int knownTooShort = sKnownTooShortLen;
++        if (knownTooShort >= 0 && infolen <= knownTooShort) return null;
++
+         try {
+             return new TcpInfo(bytes, infolen);
+         } catch (BufferUnderflowException | BufferOverflowException | IllegalArgumentException
+                 | IndexOutOfBoundsException e) {
+-            Log.e(TAG, "parsing error.", e);
++            if (knownTooShort < 0) {
++                sKnownTooShortLen = infolen;
++                Log.e(TAG, "parsing error; tcp_info dari kernel ini hanya " + infolen
++                        + " byte. Percobaan berikutnya dengan panjang yang sama akan"
++                        + " dilewati tanpa mencatat ulang.", e);
++            }
+             return null;
+         }
+     }

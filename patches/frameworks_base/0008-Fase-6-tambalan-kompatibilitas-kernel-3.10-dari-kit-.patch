@@ -1,0 +1,163 @@
+From b320bf16a956dbef7dc2f9b32514792494a29ff4 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:26 +0000
+Subject: [PATCH 8/8] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I0eb6cf23d2c8f51dc8c1faf488f21a768b13f789
+---
+ core/java/android/os/FileUtils.java           |  1 -
+ .../internal/security/VerityUtils.java        | 14 ++------
+ .../server/power/hint/HintManagerService.java | 23 +++++++++++--
+ .../stats/BluetoothPowerStatsCollector.java   | 33 ++++++++++++++++++-
+ 4 files changed, 55 insertions(+), 16 deletions(-)
+
+diff --git a/core/java/android/os/FileUtils.java b/core/java/android/os/FileUtils.java
+index 197c8be3387f..b38e1a0c7ab6 100644
+--- a/core/java/android/os/FileUtils.java
++++ b/core/java/android/os/FileUtils.java
+@@ -482,7 +482,6 @@ public final class FileUtils {
+                     return copyInternalSpliceSocket(in, out, count, signal, executor, listener);
+                 }
+             } catch (ErrnoException e) {
+-                throw e.rethrowAsIOException();
+             }
+         }
+ 
+diff --git a/core/java/com/android/internal/security/VerityUtils.java b/core/java/com/android/internal/security/VerityUtils.java
+index ac186d0a26b5..7a78cb612761 100644
+--- a/core/java/com/android/internal/security/VerityUtils.java
++++ b/core/java/com/android/internal/security/VerityUtils.java
+@@ -56,25 +56,17 @@ public abstract class VerityUtils {
+     private static final int HASH_SIZE_BYTES = 32;
+ 
+     public static boolean isFsVeritySupported() {
+-        return Build.VERSION.DEVICE_INITIAL_SDK_INT >= Build.VERSION_CODES.R;
++        return false;
+     }
+ 
+     /** Enables fs-verity for the file without signature. */
+     public static void setUpFsverity(@NonNull String filePath) throws IOException {
+-        int errno = enableFsverityNative(filePath);
+-        if (errno != 0) {
+-            throw new IOException("Failed to enable fs-verity on " + filePath + ": "
+-                    + Os.strerror(errno));
+-        }
++        return;
+     }
+ 
+     /** Enables fs-verity for an open file without signature. */
+     public static void setUpFsverity(int fd) throws IOException {
+-        int errno = enableFsverityForFdNative(fd);
+-        if (errno != 0) {
+-            throw new IOException("Failed to enable fs-verity on FD(" + fd + "): "
+-                    + Os.strerror(errno));
+-        }
++        return;
+     }
+ 
+     /** Returns whether the file has fs-verity enabled. */
+diff --git a/services/core/java/com/android/server/power/hint/HintManagerService.java b/services/core/java/com/android/server/power/hint/HintManagerService.java
+index 5d9e51289a1d..662559c0f006 100644
+--- a/services/core/java/com/android/server/power/hint/HintManagerService.java
++++ b/services/core/java/com/android/server/power/hint/HintManagerService.java
+@@ -328,9 +328,26 @@ public final class HintManagerService extends SystemService {
+             try {
+                 mSupportInfo = getSupportInfo();
+             } catch (RemoteException e) {
+-                throw new IllegalStateException("Could not contact PowerHAL!", e);
+-            }
+-        }
++                 Slog.w(TAG, "Could not contact Power HAL, disabling hint support", e);
++    }
++}
++
++/*
++ * Legacy devices may not provide the modern AIDL Power HAL.
++ * Keep HintManagerService alive with all optional features disabled.
++ */
++if (mSupportInfo == null) {
++    Slog.w(TAG, "Power HAL support information unavailable; using legacy fallback");
++    mSupportInfo = new SupportInfo();
++}
++
++if (mSupportInfo.headroom == null) {
++    mSupportInfo.headroom = new SupportInfo.HeadroomSupportInfo();
++}
++
++mSupportInfo.headroom.isCpuSupported = false;
++mSupportInfo.headroom.isGpuSupported = false;
++
+         if (mSupportInfo.headroom.isCpuSupported) {
+             mCpuHeadroomCache = new HeadroomCache<>(2, mSupportInfo.headroom.cpuMinIntervalMillis);
+             mUidToLastUserModeJiffies = new ArrayMap<>();
+diff --git a/services/core/java/com/android/server/power/stats/BluetoothPowerStatsCollector.java b/services/core/java/com/android/server/power/stats/BluetoothPowerStatsCollector.java
+index 64c831ccc770..cb99a81fec56 100644
+--- a/services/core/java/com/android/server/power/stats/BluetoothPowerStatsCollector.java
++++ b/services/core/java/com/android/server/power/stats/BluetoothPowerStatsCollector.java
+@@ -84,6 +84,27 @@ public class BluetoothPowerStatsCollector extends PowerStatsCollector {
+     private long mLastTxTime;
+     private long mLastIdleTime;
+ 
++    /**
++     * A37: berapa kali kegagalan pengambilan BluetoothActivityEnergyInfo masih
++     * dicatat LENGKAP dengan stack trace.
++     *
++     * Controller Bluetooth perangkat ini tidak mendukung pelaporan energi
++     * aktivitas, jadi requestControllerActivityEnergyInfo() SELALU memanggil
++     * onBluetoothActivityEnergyInfoError(). Kegagalannya permanen, bukan
++     * sementara.
++     *
++     * Yang mahal bukan kegagalannya melainkan pencatatannya: tiap siklus
++     * pengumpulan statistik daya membangun RuntimeException, menelusuri stack,
++     * memformatnya, lalu menulis ~25 baris. Terukur di perangkat: 23 kegagalan
++     * menghasilkan 575 baris log.
++     *
++     * Tiga yang pertama tetap lengkap supaya nilai diagnostiknya utuh;
++     * sesudahnya pesannya tetap dicatat (murah) tapi tanpa stack trace. Ini
++     * pola yang sama dengan mDisabledServiceTraceLogged di RIL.java.
++     */
++    private static final int MAX_ACTIVITY_INFO_FAILURE_TRACES = 3;
++    private int mActivityInfoFailures;
++
+     private static class UidStats {
+         public long rxCount;
+         public long lastRxCount;
+@@ -200,7 +221,17 @@ public class BluetoothPowerStatsCollector extends PowerStatsCollector {
+             activityInfo = immediateFuture.get(BLUETOOTH_ACTIVITY_REQUEST_TIMEOUT,
+                     TimeUnit.MILLISECONDS);
+         } catch (Exception e) {
+-            Slog.e(TAG, "Cannot acquire BluetoothActivityEnergyInfo", e);
++            // A37: batasi stack trace, lihat MAX_ACTIVITY_INFO_FAILURE_TRACES.
++            if (mActivityInfoFailures < MAX_ACTIVITY_INFO_FAILURE_TRACES) {
++                mActivityInfoFailures++;
++                Slog.e(TAG, "Cannot acquire BluetoothActivityEnergyInfo", e);
++                if (mActivityInfoFailures == MAX_ACTIVITY_INFO_FAILURE_TRACES) {
++                    Slog.e(TAG, "Cannot acquire BluetoothActivityEnergyInfo:"
++                            + " kegagalan berikutnya dicatat tanpa stack trace");
++                }
++            } else {
++                Slog.w(TAG, "Cannot acquire BluetoothActivityEnergyInfo: " + e);
++            }
+             activityInfo = null;
+         }
+ 

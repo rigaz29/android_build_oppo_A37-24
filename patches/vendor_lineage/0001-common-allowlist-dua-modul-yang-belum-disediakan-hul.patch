@@ -1,0 +1,75 @@
+From 339a2be3e3a655da8261db32974392883fbe4fe3 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 05:18:43 +0000
+Subject: [PATCH 1/3] common: allowlist dua modul yang belum disediakan hulu di
+ 24.0
+
+com.android.ranging dan vendor_tracing_descriptors dirujuk base product AOSP
+tapi sumbernya belum ada di pohon LineageOS 24.0:
+
+  com.android.ranging         base_system.mk:417, digerbangi RELEASE_RANGING_STACK
+                              yang cp2a set true. Nol project di manifest 24.0
+                              menyediakan apex ini; packages/modules/Uwb hanya
+                              mendefinisikan com.android.uwb.
+  vendor_tracing_descriptors  base_vendor.mk:79, tanpa syarat. Hulu menandainya
+                              sendiri di external/perfetto Android.bp:22225:
+                              "Those targets are defined in /system/core and
+                              TODO(primiano): /vendor", dengan padanan system
+                              masih dikomentari menunggu ag/38422283.
+
+Ditambahkan di sini, bukan di device tree, karena kuncinya
+PRODUCTS.<mk-produk-teratas>.<VAR> dan variabelnya .KATI_READONLY
+(product.mk:571-572). Memanggil enforce-product-packages-exist-internal kedua
+kalinya dari device tree menghasilkan kunci yang sama dan langsung galat:
+
+  cannot assign to readonly variable:
+  PRODUCTS.device/oppo/A37/lineage_A37.mk.PRODUCT_ENFORCE_PACKAGES_EXIST
+
+TARGET_DISABLE_EPPE := true sengaja tidak dipakai: knob itu mematikan seluruh
+pemeriksaan, padahal pemeriksaan tersebut sudah menangkap memtrack HIDL,
+libbt-vendor, dan lights HIDL yang hilang di Android 17.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: I7e852fe620021bcd5130e50cbbc44c7a2c64baf2
+---
+ config/common.mk | 27 ++++++++++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
+
+diff --git a/config/common.mk b/config/common.mk
+index 4bfa7949..c444a8a1 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -130,7 +130,32 @@ PRODUCT_RESTRICT_VENDOR_FILES := false
+ 
+ ifneq ($(TARGET_DISABLE_EPPE),true)
+ # Require all requested packages to exist
+-$(call enforce-product-packages-exist-internal,$(lastword $(_include_stack)),product_manifest.xml rild Calendar android.hidl.memory@1.0-impl.vendor vndk_apex_snapshot_package)
++# com.android.ranging dan vendor_tracing_descriptors ditambahkan karena hulunya
++# sendiri BELUM menyediakan modulnya di pohon 24.0:
++#
++#   com.android.ranging         base_system.mk:417, digerbangi RELEASE_RANGING_STACK
++#                               yang cp2a set true. Tidak ada satu pun project di
++#                               manifest 24.0 yang menyediakan apex ini;
++#                               packages/modules/Uwb hanya mendefinisikan
++#                               com.android.uwb.
++#   vendor_tracing_descriptors  base_vendor.mk:79, tanpa syarat. Penyedianya belum
++#                               ditulis di hulu -- external/perfetto Android.bp:22225
++#                               menandainya sendiri: "Those targets are defined in
++#                               /system/core and TODO(primiano): /vendor", dengan
++#                               padanan system pun masih dikomentari menunggu
++#                               ag/38422283.
++#
++# Ditambahkan DI SINI dan bukan di device tree karena kuncinya
++# PRODUCTS.<mk-produk-teratas>.<VAR> dan variabelnya .KATI_READONLY
++# (product.mk:571-572), sehingga hanya boleh ada satu panggilan per produk.
++#
++# Alternatif yang sengaja TIDAK dipakai: TARGET_DISABLE_EPPE := true mematikan
++# pemeriksaan ini seluruhnya. Pemeriksaan itu sudah membuktikan nilainya --
++# menangkap memtrack HIDL, libbt-vendor, dan lights HIDL yang hilang di
++# Android 17 -- jadi jaring pengamannya dipertahankan.
++#
++# CABUT kedua entri ini begitu hulu menyediakannya.
++$(call enforce-product-packages-exist-internal,$(lastword $(_include_stack)),product_manifest.xml rild Calendar android.hidl.memory@1.0-impl.vendor vndk_apex_snapshot_package com.android.ranging vendor_tracing_descriptors)
+ endif
+ 
+ # Bootanimation

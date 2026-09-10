@@ -1,0 +1,104 @@
+From b651210a43adaf6912a03748b2706b62a95b7ce6 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:38 +0000
+Subject: [PATCH 2/2] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ libs/binder/ProcessState.cpp            | 35 ++++++++++++++++++++++---
+ services/gpuservice/gpuwork/GpuWork.cpp |  9 +++++++
+ 2 files changed, 40 insertions(+), 4 deletions(-)
+
+diff --git a/libs/binder/ProcessState.cpp b/libs/binder/ProcessState.cpp
+index 0cc23a9633..6f8d2e1ed3 100644
+--- a/libs/binder/ProcessState.cpp
++++ b/libs/binder/ProcessState.cpp
+@@ -53,11 +53,38 @@
+ #define EXPECT_BINDER_OPEN_SUCCESS
+ #endif
+ 
+-#ifdef __ANDROID_VNDK__
+-const char* kDefaultDriver = "/dev/vndbinder";
+-#else
++// A37: perangkat ini tidak memakai VNDK (ro.vndk.version kosong), jadi domain
++// vendor binder tidak punya guna -- yang dihasilkannya justru membuat SETIAP
++// HAL AIDL vendor mendaftar ke vndservicemanager dan tidak pernah terlihat
++// framework. Terukur di perangkat sebelum perubahan ini:
++//
++//   vndservice list  ->  android.hardware.wifi.IWifi/default
++//                        android.hardware.drm.IDrmFactory/clearkey
++//   service check android.hardware.wifi.IWifi/default  ->  not found
++//   /proc/<pid>/fd   ->  hanya /dev/vndbinder
++//   debuggerd -b     ->  thread bernama "vndbinder:<pid>_*"
++//
++// Akibatnya Wi-Fi tidak bisa menyala dan halaman Wi-Fi di Settings menggantung
++// (Activity pause timeout), sementara prosesnya sendiri sehat.
++//
++// build/soong/cc/compiler.go:476 mendefinisikan __ANDROID_VNDK__ untuk SETIAP
++// varian vendor tanpa syarat, jadi tidak ada jalan mematikannya lewat konfigurasi.
++//
++// Percobaan sebelumnya -- melepas vndbinder dari CONFIG_ANDROID_BINDER_DEVICES --
++// SALAH dan membuat perangkat tidak bisa boot: /dev/vndbinder tinggal symlink
++// menggantung (dibuat init.rc:280 tanpa memeriksa target), sehingga jalan mundur
++// di init() bawah memundurkan vndservicemanager sendiri ke /dev/binder, ia gagal
++// menjadi context manager di sana, abort, lalu restart selamanya -- dan definisi
++// servisnya membawa 'onrestart class_restart main/hal/early_hal'.
++//
++//   Abort message: 'Could not become context manager'
++//
++// Mengubah default di sini jauh lebih sempit: vndservicemanager TIDAK
++// terpengaruh karena ia menerima driver lewat argumen
++// (cmds/servicemanager/main.cpp:153), sehingga tetap melayani /dev/vndbinder
++// seperti biasa. Yang berpindah hanya proses vendor lain, ke domain tempat
++// framework memang mencarinya.
+ const char* kDefaultDriver = "/dev/binder";
+-#endif
+ 
+ // -------------------------------------------------------------------------
+ 
+diff --git a/services/gpuservice/gpuwork/GpuWork.cpp b/services/gpuservice/gpuwork/GpuWork.cpp
+index b176e1518f..066d6d8254 100644
+--- a/services/gpuservice/gpuwork/GpuWork.cpp
++++ b/services/gpuservice/gpuwork/GpuWork.cpp
+@@ -25,6 +25,7 @@
+ #include <bpf/WaitForProgsLoaded.h>
+ #include <libbpf.h>
+ #include <log/log.h>
++#include <sys/stat.h>
+ #include <random>
+ #include <stats_event.h>
+ #include <statslog_gpustats.h>
+@@ -124,6 +125,14 @@ void GpuWork::initialize() {
+     // Workaround b/347947040 by allowing time for statsd / bpf setup.
+     std::this_thread::sleep_for(std::chrono::seconds(30));
+ 
++    // If the gpu_work_period tracepoint does not exist (e.g. older/GSI kernels),
++    // stall this thread forever to prevent gpuservice from crash-looping.
++    struct stat sb;
++    if (stat("/sys/kernel/tracing/events/power/gpu_work_period", &sb) != 0) {
++        ALOGI("gpu_work_period tracepoint not found, stalling");
++        while (true) sleep(1);
++    }
++
+     // Make sure BPF programs are loaded.
+     bpf::waitForProgsLoaded();
+ 

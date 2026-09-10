@@ -1,0 +1,132 @@
+From 032dc1ee7dd7a08390f5fdca03a3f9d31fcd8fa7 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:40 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: Icfb18565b32cefb99c6add5f7c182ef0c454edfe
+---
+ .../com/android/internal/telephony/RIL.java   | 32 ++++++++++++++++--
+ .../telephony/data/PhoneSwitcher.java         | 33 ++++++++++++++++++-
+ 2 files changed, 61 insertions(+), 4 deletions(-)
+
+diff --git a/src/java/com/android/internal/telephony/RIL.java b/src/java/com/android/internal/telephony/RIL.java
+index afb99056ee..26e36609cc 100644
+--- a/src/java/com/android/internal/telephony/RIL.java
++++ b/src/java/com/android/internal/telephony/RIL.java
+@@ -240,6 +240,24 @@ public class RIL extends BaseCommands implements CommandsInterface {
+      */
+     private final SparseArray<Set<Integer>> mDisabledRadioServices = new SparseArray<>();
+ 
++    /**
++     * A37: penanda servis yang stack trace "is disabled"-nya SUDAH dicatat sekali.
++     *
++     * Perangkat ini hanya menyediakan HIDL radio @1.0/@1.1 (lshal: IRadio/slot1 dan
++     * /slot2), sedangkan Android 15 memecah radio HAL menjadi sub-servis AIDL
++     * (DATA, MESSAGING, MODEM, ...). Sub-servis itu tidak pernah ada, jadi ditandai
++     * disabled -- dan pemanggilnya tetap mencoba terus.
++     *
++     * Tanpa penanda ini, SETIAP percobaan membangun new RuntimeException(), menelusuri
++     * stack, memformatnya, lalu mencatatnya. Terukur di perangkat: ~7200 baris log per
++     * detik dan com.android.phone memakan 7 menit 45 detik CPU dalam uptime 8 menit --
++     * satu core terkunci penuh, dan itu sumber baterai boros yang nyata.
++     *
++     * Pesannya tetap dicatat setiap kali (murah); yang dibatasi hanya stack trace-nya,
++     * sehingga nilai diagnostiknya tidak hilang.
++     */
++    private final Set<String> mDisabledServiceTraceLogged = new HashSet<>();
++
+     /* default work source which will blame phone process */
+     private WorkSource mRILDefaultWorkSource;
+ 
+@@ -799,9 +817,17 @@ public class RIL extends BaseCommands implements CommandsInterface {
+ 
+         try {
+             if (mMockModem == null && mDisabledRadioServices.get(service).contains(mPhoneId)) {
+-                riljLoge("getRadioServiceProxy: " + serviceToString(service) + " for "
+-                        + HIDL_SERVICE_NAME[mPhoneId] + " is disabled\n"
+-                        + android.util.Log.getStackTraceString(new RuntimeException()));
++                // A37: stack trace hanya sekali per servis+slot. Lihat komentar pada
++                // mDisabledServiceTraceLogged.
++                final String traceKey = service + "/" + mPhoneId;
++                if (mDisabledServiceTraceLogged.add(traceKey)) {
++                    riljLoge("getRadioServiceProxy: " + serviceToString(service) + " for "
++                            + HIDL_SERVICE_NAME[mPhoneId] + " is disabled\n"
++                            + android.util.Log.getStackTraceString(new RuntimeException()));
++                } else {
++                    riljLoge("getRadioServiceProxy: " + serviceToString(service) + " for "
++                            + HIDL_SERVICE_NAME[mPhoneId] + " is disabled");
++                }
+                 return null;
+             } else {
+                 IBinder binder;
+diff --git a/src/java/com/android/internal/telephony/data/PhoneSwitcher.java b/src/java/com/android/internal/telephony/data/PhoneSwitcher.java
+index 6d2e77d643..a617dc7f8a 100644
+--- a/src/java/com/android/internal/telephony/data/PhoneSwitcher.java
++++ b/src/java/com/android/internal/telephony/data/PhoneSwitcher.java
+@@ -1914,7 +1914,25 @@ public class PhoneSwitcher extends Handler {
+                     hold the retry until sim gets ready */
+                     logl("onDdsSwitchResponse: Wait for SIM to get READY");
+                     return;
+-                } else if (error == CommandException.Error.RADIO_NOT_AVAILABLE) {
++                } else if (error == CommandException.Error.RADIO_NOT_AVAILABLE
++                        && mHalCommandToUse != HAL_COMMAND_ALLOW_DATA) {
++                    // A37: syarat mHalCommandToUse != HAL_COMMAND_ALLOW_DATA ditambahkan.
++                    //
++                    // Fallback ini dirancang terjadi SEKALI: pindah ke ALLOW_DATA lalu coba
++                    // lagi seketika. Tapi tanpa syarat itu, kegagalan berikutnya masuk ke
++                    // cabang yang sama, memanggil sendRilCommands() lagi tanpa jeda, dan
++                    // hasilnya rekursi tak berujung.
++                    //
++                    // Perangkat ini HIDL-only sementara Android 15 memecah radio HAL jadi
++                    // sub-servis AIDL, jadi RADIO_NOT_AVAILABLE bersifat PERMANEN dan
++                    // loop-nya tidak pernah berhenti sendiri. Terukur: com.android.phone
++                    // memakan 12 menit 39 detik CPU dalam uptime 17 menit -- satu core
++                    // terkunci penuh -- dengan RILJ dan PhoneSwitcher menghasilkan jumlah
++                    // baris yang persis sama (7271 : 7271 per 6 detik), ciri khas pasangan
++                    // panggilan-gagal yang berputar.
++                    //
++                    // Dengan syarat ini, percobaan kedua jatuh ke jalur retry berjeda di
++                    // bawah (MODEM_COMMAND_RETRY_PERIOD_MS), persis seperti error lainnya.
+                     logl("onDdsSwitchResponse: Falling back to HAL_COMMAND_ALLOW_DATA");
+                     mHalCommandToUse = HAL_COMMAND_ALLOW_DATA;
+                     sendRilCommands(phoneId);
+@@ -1922,6 +1940,19 @@ public class PhoneSwitcher extends Handler {
+                 }
+             }
+             logl("onDdsSwitchResponse: Scheduling DDS switch retry");
++            // A37: batalkan retry yang masih tertunda untuk phoneId ini sebelum
++            // menjadwalkan yang baru.
++            //
++            // Tanpa ini setiap kegagalan menambah SATU pesan tertunda tanpa pernah
++            // membuang yang lama, sehingga antreannya menumpuk dan jeda efektifnya
++            // menyusut jauh di bawah MODEM_COMMAND_RETRY_PERIOD_MS. Terukur di
++            // perangkat: retry berdatangan tiap 0,2-0,5 detik, bukan 5 detik.
++            //
++            // Di perangkat normal RADIO akhirnya tersedia sehingga badai ini
++            // berhenti sendiri. Di sini kondisinya PERMANEN -- hanya ada HIDL radio
++            // 1.0/1.1 sementara Android 15 memecah radio HAL menjadi sub-servis
++            // AIDL -- jadi tumpukannya tidak pernah surut.
++            removeMessages(EVENT_MODEM_COMMAND_RETRY, phoneId);
+             sendMessageDelayed(Message.obtain(this, EVENT_MODEM_COMMAND_RETRY,
+                         phoneId), MODEM_COMMAND_RETRY_PERIOD_MS);
+             return;

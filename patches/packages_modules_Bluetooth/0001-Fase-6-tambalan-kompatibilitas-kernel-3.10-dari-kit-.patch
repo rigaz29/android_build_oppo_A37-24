@@ -1,0 +1,68 @@
+From 2a9058575cff3d6e6ad0d0c99c81eb6bad2b349d Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:42 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I383d9fba3b0925cad77199c020e45b0201ee52f5
+---
+ system/gd/hci/hci_layer.cc | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/system/gd/hci/hci_layer.cc b/system/gd/hci/hci_layer.cc
+index fd85769d45..848240ede8 100644
+--- a/system/gd/hci/hci_layer.cc
++++ b/system/gd/hci/hci_layer.cc
+@@ -253,6 +253,33 @@ struct HciLayer::impl {
+       common::StopWatch::DumpStopWatchLog();
+       return;
+     }
++    // A37: controller QCOM di msm8916 membalas command complete untuk perintah
++    // VENDOR-SPECIFIC dengan bit OGF dikosongkan.
++    //
++    // Terekam di perangkat:
++    //   hci_layer.cc:234 handle_command_response:
++    //     Waiting for LE_ADV_FILTER(0xfd57), got Unknown OpCode(0x0157)
++    //
++    // 0xfd57 dan 0x0157 punya OCF yang IDENTIK (0x157); yang berbeda hanya OGF
++    // (0x3f vs 0x0). Assertion di bawah menganggapnya perintah lain, memanggil
++    // log::fatal, dan mematikan seluruh proses com.android.bluetooth -- sehingga
++    // Bluetooth tidak pernah bisa menyala (BluetoothManagerService mencatat
++    // "requested to [Disable]. Reason is CRASH" lalu menjadwalkan restart).
++    //
++    // Hanya kasus sempit ini yang ditoleransi: yang ditunggu memang perintah
++    // vendor, yang datang ber-OGF nol, dan OCF-nya sama persis.
++    if (waiting_command_ != op_code) {
++      constexpr uint16_t kOcfMask = 0x03ff;
++      const uint16_t waiting_raw = static_cast<uint16_t>(waiting_command_);
++      const uint16_t received_raw = static_cast<uint16_t>(op_code);
++      if ((waiting_raw >> 10) == 0x3f && (received_raw >> 10) == 0 &&
++          (waiting_raw & kOcfMask) == (received_raw & kOcfMask)) {
++        log::warn("Controller echoed vendor opcode 0x{:04x} without OGF as 0x{:04x}; accepting",
++                  waiting_raw, received_raw);
++        op_code = waiting_command_;
++      }
++    }
++
+     log::assert_that(waiting_command_ == op_code, "Waiting for {}, got {}",
+                      OpCodeText(waiting_command_), OpCodeText(op_code));
+ 

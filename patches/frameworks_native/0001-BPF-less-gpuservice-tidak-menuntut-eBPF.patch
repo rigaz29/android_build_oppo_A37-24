@@ -1,0 +1,27 @@
+From e135b7d679a787af07a0158c6b7f21d847f628e9 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 12:26:55 +0000
+Subject: [PATCH 1/2] BPF-less: gpuservice tidak menuntut eBPF
+
+GpuMem memakai map BPF untuk statistik memori GPU. Pada kernel 3.10 tanpa eBPF
+map itu tidak pernah ada, dan gpuservice gagal berulang.
+
+Diturunkan dari set los-23.2_n7000_bpfless (patch 009).
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ services/gpuservice/gpumem/GpuMem.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/services/gpuservice/gpumem/GpuMem.cpp b/services/gpuservice/gpumem/GpuMem.cpp
+index d0783df109..cdc4094b27 100644
+--- a/services/gpuservice/gpumem/GpuMem.cpp
++++ b/services/gpuservice/gpumem/GpuMem.cpp
+@@ -48,6 +48,7 @@ void GpuMem::initialize() {
+     if (fd < 0) {
+         ALOGE("Failed to retrieve pinned program from %s [%d(%s)]", kGpuMemTotalProgPath, errno,
+               strerror(errno));
++        while(true) sleep(1);
+         return;
+     }
+ 

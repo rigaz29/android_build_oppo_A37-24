@@ -1,0 +1,65 @@
+From 70682556e6c68dd93a153882e2659c885ad2f6fe Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 07:01:54 +0000
+Subject: [PATCH 1/5] core: boot.img bergantung pada dt.img saat
+ BOARD_KERNEL_SEPARATED_DT
+
+Tanpa ini ninja bebas membangun boot.img lebih dulu, dan mkbootimg gagal:
+
+  mkbootimg: error: argument --dt: can't open 'out/target/product/A37/dt.img'
+
+vendor/lineage/build/tasks/dt_image.mk memang menyediakan aturan pembuat
+dt.img dan masih ada di 24.0, tapi tidak ada satu pun yang menyatakan boot.img
+bergantung padanya -- jadi urutannya diserahkan kebetulan.
+
+Dependensinya merujuk jalur berkas langsung, bukan INSTALLED_DTIMAGE_TARGET,
+karena dt_image.mk disertakan SETELAH berkas ini sehingga variabelnya masih
+kosong di titik ini. Aturan pembuat berkasnya boleh muncul belakangan; make
+membaca seluruh makefile dulu sebelum menyelesaikan aturan.
+
+Diwarisi dari kit LineageOS 23.2 A37; menerap bersih ke 24.0.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: Ic3b67fe1605b8c1c92da5bf022084b3715993df2
+---
+ core/Makefile | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index 39cad66a44..0dca0d19c5 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1324,6 +1324,15 @@ endif
+ 
+ INTERNAL_BOOTIMAGE_FILES := $(filter-out --%,$(INTERNAL_BOOTIMAGE_ARGS))
+ 
++# Perangkat Qualcomm legacy menyerahkan tabel device tree lewat mkbootimg --dt
++# (BOARD_MKBOOTIMG_ARGS). Berkasnya dibangun vendor/lineage/build/tasks/dt_image.mk,
++# yang disertakan SETELAH berkas ini, jadi INSTALLED_DTIMAGE_TARGET masih kosong di
++# sini -- jalurnya dirujuk langsung. Aturan pembuatnya boleh muncul belakangan.
++BOOTIMAGE_EXTRA_DEPS :=
++ifeq (true,$(strip $(BOARD_KERNEL_SEPARATED_DT)))
++  BOOTIMAGE_EXTRA_DEPS += $(PRODUCT_OUT)/dt.img
++endif
++
+ # kernel cmdline/base/pagesize in boot.
+ # - If using GKI, use GENERIC_KERNEL_CMDLINE. Remove kernel base and pagesize because they are
+ #   device-specific.
+@@ -1364,7 +1373,7 @@ define build_boot_board_avb_enabled
+   $(call build_boot_from_kernel_avb_enabled,$(1),$(kernel))
+ endef
+ 
+-$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(AVBTOOL) $(INTERNAL_BOOTIMAGE_FILES) $(BOARD_AVB_BOOT_KEY_PATH)
++$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(AVBTOOL) $(INTERNAL_BOOTIMAGE_FILES) $(BOARD_AVB_BOOT_KEY_PATH) $(BOOTIMAGE_EXTRA_DEPS)
+ 	$(call pretty,"Target boot image: $@")
+ 	$(call build_boot_board_avb_enabled,$@)
+ 
+@@ -1386,7 +1395,7 @@ define build_boot_novboot
+   $(call assert-max-image-size,$1,$(call get-bootimage-partition-size,$(1),boot))
+ endef
+ 
+-$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES)
++$(INSTALLED_BOOTIMAGE_TARGET): $(MKBOOTIMG) $(INTERNAL_BOOTIMAGE_FILES) $(BOOTIMAGE_EXTRA_DEPS)
+ 	$(call pretty,"Target boot image: $@")
+ 	$(call build_boot_novboot,$@)
+ 

@@ -1,0 +1,45 @@
+From 7315f09760f4e40891466c9184fca637143af47b Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:42:45 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: Icaaec90cdf00402d8202a06f1670461c625e8077
+---
+ private/network_stack.te | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/private/network_stack.te b/private/network_stack.te
+index 414651982..70f93327a 100644
+--- a/private/network_stack.te
++++ b/private/network_stack.te
+@@ -81,8 +81,8 @@ hal_client_domain(network_stack, hal_tetheroffload)
+ allow network_stack self:netlink_netfilter_socket create_socket_perms_no_ioctl;
+ allow network_stack network_stack_service:service_manager find;
+ # allow Tethering(network_stack process) to run/update/read the eBPF maps to offload tethering traffic by eBPF.
+-allow network_stack { fs_bpf_net_private fs_bpf_net_shared fs_bpf_netd_readonly fs_bpf_netd_shared fs_bpf_tethering }:dir search;
+-allow network_stack { fs_bpf_net_private fs_bpf_net_shared fs_bpf_netd_readonly fs_bpf_netd_shared fs_bpf_tethering }:file { getattr read write };
++allow network_stack { fs_bpf fs_bpf_net_private fs_bpf_net_shared fs_bpf_netd_readonly fs_bpf_netd_shared fs_bpf_tethering }:dir search;
++allow network_stack { fs_bpf fs_bpf_net_private fs_bpf_net_shared fs_bpf_netd_readonly fs_bpf_netd_shared fs_bpf_tethering }:file { getattr read write };
+ allow network_stack bpfloader:bpf prog_run;
+ allow network_stack self:bpf map_create;
+ allow network_stack { bpfloader netd network_stack system_server }:bpf { map_read map_write };

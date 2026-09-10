@@ -1,0 +1,98 @@
+From 886171e91f6d78742212c22aa63081710888e834 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 13:58:42 +0000
+Subject: [PATCH 7/8] DownloadManager: kembalikan @hide restartDownload yang
+ terserobot, dan sembunyikan PAUSED_MANUAL
+
+Metalava api lint menghentikan build percobaan 21 dengan tiga galat:
+
+  DownloadManager.java:311  New API must be flagged with @FlaggedApi:
+                            field PAUSED_MANUAL [UnflaggedApi]
+  DownloadManager.java:1334 Missing nullability on parameter `ids` in
+                            method `restartDownload` [MissingNullability]
+  DownloadManager.java:1334 New API must be flagged with @FlaggedApi:
+                            method restartDownload(long...) [UnflaggedApi]
+
+Dua yang terakhir adalah regresi yang saya perkenalkan sendiri di 80ac42fb40c8,
+dan mekanismenya halus. Commit itu murni penambahan -- 67 sisipan, nol
+penghapusan -- tetapi sisipannya mendarat DI ANTARA blok javadoc milik
+restartDownload dan metodenya sendiri, sehingga hasilnya:
+
+  /**
+   * Restart the given downloads, ...
+   * @hide
+   */
+  /**
+   * [A37] Pause the given downloads, ...
+   */
+  public void pauseDownload(...)
+  ...
+  @UnsupportedAppUsage
+  public void restartDownload(...)      <- kehilangan @hide-nya
+
+Javadoc asli berubah menjadi blok yatim yang menumpuk di atas javadoc
+pauseDownload, dan restartDownload jadi telanjang. Karena @hide-lah yang
+menjaganya di luar permukaan API publik, metalava lalu memperlakukannya sebagai
+API baru -- dan sekalian menuntut anotasi nullability. Jadi kedua galat itu
+bukan soal restartDownload, melainkan bekas serobotan javadoc.
+
+Bahwa diff-nya menunjukkan nol penghapusan itulah yang membuatnya lolos dari
+tinjauan: teks javadoc-nya memang tidak pernah hilang, hanya berpindah pemilik.
+
+Diperbaiki dengan mengembalikan blok itu ke tempatnya, tepat di atas
+@UnsupportedAppUsage, persis seperti sebelum 80ac42fb40c8.
+
+Galat pertama milik saya sendiri: PAUSED_MANUAL memang tidak pernah diberi
+@hide. Konstanta itu internal -- ia ada semata karena DownloadProvider 24.0
+merujuknya sementara hulu tidak pernah mendeklarasikannya -- jadi ia tidak boleh
+masuk permukaan API publik. Ditambahi @hide, sejajar dengan pauseDownload dan
+resumeDownload di commit yang sama.
+
+Diverifikasi sesudah disunting: ketiga metode punya @hide, dan jumlah pembuka
+/** sama dengan penutup */ di rentang yang disunting.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: Ieab036c3a1d43195e1795c3ebf00a444de434ec0
+---
+ core/java/android/app/DownloadManager.java | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/core/java/android/app/DownloadManager.java b/core/java/android/app/DownloadManager.java
+index 64012fcef80e..9f5bc5c2fcfa 100644
+--- a/core/java/android/app/DownloadManager.java
++++ b/core/java/android/app/DownloadManager.java
+@@ -307,6 +307,8 @@ public class DownloadManager {
+      *
+      * Dirujuk DownloadProvider lineage-24.0 (TrampolineActivity) tapi tidak
+      * pernah dideklarasikan di hulu. Nilainya meneruskan dari PAUSED_UNKNOWN.
++     *
++     * @hide
+      */
+     public final static int PAUSED_MANUAL = 5;
+ 
+@@ -1266,12 +1268,6 @@ public class DownloadManager {
+         return null;
+     }
+ 
+-    /**
+-     * Restart the given downloads, which must have already completed (successfully or not).  This
+-     * method will only work when called from within the download manager's process.
+-     * @param ids the IDs of the downloads
+-     * @hide
+-     */
+     /**
+      * [A37] Pause the given downloads, which must be running.
+      *
+@@ -1330,6 +1326,12 @@ public class DownloadManager {
+         mResolver.update(mBaseUri, values, getWhereClauseForIds(ids), getWhereArgsForIds(ids));
+     }
+ 
++    /**
++     * Restart the given downloads, which must have already completed (successfully or not).  This
++     * method will only work when called from within the download manager's process.
++     * @param ids the IDs of the downloads
++     * @hide
++     */
+     @UnsupportedAppUsage
+     public void restartDownload(long... ids) {
+         Cursor cursor = query(new Query().setFilterById(ids));

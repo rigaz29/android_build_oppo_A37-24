@@ -1,0 +1,70 @@
+From f9b06a98a01788cdbdbf6b9d9ac0691f0cea4997 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 19:49:28 +0000
+Subject: [PATCH 1/8] ISystemUiProxy: deklarasikan onLongPressKeyEvent dan
+ onSleepEvent
+
+Launcher3 lineage-24.0 memanggil kedua metode ini, tapi keduanya tidak pernah
+dideklarasikan di ISystemUiProxy.aidl. Akibatnya Launcher3QuickStepLib gagal:
+
+  SystemUiProxy.kt:290:28  error: unresolved reference 'onLongPressKeyEvent'
+  SystemUiProxy.kt:438:28  error: unresolved reference 'onSleepEvent'
+
+Diperiksa, dan keduanya di HEAD hulu masing-masing -- jadi celah hulu yang
+menghadang perangkat LineageOS 24.0 mana pun, bukan pohon yang usang:
+
+  Launcher3        lokal 10315f8e = hulu 10315f8e (2026-08-15)
+  frameworks/base  lokal b19a3e2e = hulu b19a3e2e, nol kecocokan kedua metode
+
+Seluruh 32 pemanggilan ISystemUiProxy di SystemUiProxy.kt disisir sekaligus,
+bukan satu per satu lewat siklus build: tepat dua yang hilang (asBinder bawaan
+setiap interface AIDL, bukan yang hilang).
+
+Tanda tangan mengikuti pola yang sudah ada di berkas ini -- onKeyEvent(int,
+int) = 60 untuk yang pertama, onStatusBarTouchEvent(in MotionEvent) = 9 untuk
+yang kedua. Nomor transaksi 63 dan 64, meneruskan dari 62 yang tertinggi.
+
+Implementasi di sisi SystemUI belum ada, jadi panggilannya menjadi no-op yang
+tercatat lewat executeWithErrorLog milik Launcher3. CABUT begitu hulu
+menyediakannya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+Change-Id: Idbedd61bef6366398349097c7cba391c37e6a45a
+---
+ .../shared/recents/ISystemUiProxy.aidl        | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
+
+diff --git a/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl b/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
+index 48f90b73c512..f083ff2daa46 100644
+--- a/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
++++ b/packages/SystemUI/shared/src/com/android/systemui/shared/recents/ISystemUiProxy.aidl
+@@ -201,5 +201,28 @@ interface ISystemUiProxy {
+      */
+     oneway void onOverviewHidden(int displayId) = 62;
+ 
++    /**
++     * [A37] Dua metode di bawah DIRUJUK Launcher3 lineage-24.0 tapi tidak
++     * pernah dideklarasikan di sini, sehingga Launcher3QuickStepLib gagal:
++     *
++     *   SystemUiProxy.kt:290  unresolved reference 'onLongPressKeyEvent'
++     *   SystemUiProxy.kt:438  unresolved reference 'onSleepEvent'
++     *
++     * Keduanya di HEAD hulu masing-masing (Launcher3 10315f8e,
++     * frameworks/base b19a3e2e), jadi ini celah hulu yang menghadang perangkat
++     * LineageOS 24.0 mana pun -- bukan pohon yang usang.
++     *
++     * Ditambahkan sebagai deklarasi supaya Launcher3 terkompilasi. Implementasi
++     * di sisi SystemUI belum ada, jadi panggilannya menjadi no-op yang tercatat
++     * di log lewat executeWithErrorLog milik Launcher3. CABUT begitu hulu
++     * menyediakannya.
++     */
++    oneway void onLongPressKeyEvent(int keycode, int displayId) = 63;
++
++    /**
++     * [A37] lihat catatan di atas.
++     */
++    oneway void onSleepEvent(in MotionEvent event) = 64;
++
+     // Next id = 63
+ }

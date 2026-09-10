@@ -1,0 +1,64 @@
+From e4bac45e0ab58e1cd31081ab28d515e04fd07752 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 21:25:46 +0000
+Subject: [PATCH 4/8] Downloads: tambahkan STATUS_PAUSED_MANUAL
+
+Menyusul commit sebelumnya. DownloadProvider lineage-24.0 memakai konstanta ini
+di DownloadNotifier dan DownloadThread, tapi tidak pernah dideklarasikan di
+android.provider.Downloads.Impl:
+
+  DownloadNotifier.java:22, :270, :628   cannot find symbol
+  DownloadThread.java:167, :220, :221    cannot find symbol
+
+Nilainya 197 -- celah yang memang kosong antara QUEUED_FOR_WIFI (196) dan
+INSUFFICIENT_SPACE_ERROR (198), bukan menyerobot ujung rentang yang mungkin
+dipakai hulu nanti. Sejajar dengan STATUS_PAUSED_BY_APP (193): keduanya status
+jeda, yang satu atas permintaan aplikasi, yang ini atas permintaan pengguna.
+
+statusToString ikut dilengkapi supaya log tidak menampilkan angka mentah.
+
+Sesudah ini SELURUH anggota kedua kelas disisir terhadap seluruh
+DownloadProvider, bukan hanya berkas yang gagal:
+  Downloads.Impl    86 dipakai, 0 hilang (_ID diwarisi BaseColumns)
+  DownloadManager   36 dipakai, 0 hilang
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+Change-Id: If66ed9c204b9f8764f8a081492b297e72fa0af60
+---
+ core/java/android/provider/Downloads.java | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/core/java/android/provider/Downloads.java b/core/java/android/provider/Downloads.java
+index a3702e43237a..cde2e242e8bf 100644
+--- a/core/java/android/provider/Downloads.java
++++ b/core/java/android/provider/Downloads.java
+@@ -646,6 +646,20 @@ public final class Downloads {
+          */
+         public static final int STATUS_QUEUED_FOR_WIFI = 196;
+ 
++        /**
++         * [A37] This download is paused manually by the user.
++         *
++         * Dirujuk DownloadProvider lineage-24.0 (DownloadNotifier,
++         * DownloadThread) tapi tidak pernah dideklarasikan di hulu. Nilainya
++         * 197, celah yang memang kosong antara QUEUED_FOR_WIFI (196) dan
++         * INSUFFICIENT_SPACE_ERROR (198) -- bukan menyerobot ujung rentang yang
++         * mungkin dipakai hulu nanti.
++         *
++         * Sejajar dengan STATUS_PAUSED_BY_APP (193): keduanya status jeda, yang
++         * satu atas permintaan aplikasi, yang ini atas permintaan pengguna.
++         */
++        public static final int STATUS_PAUSED_MANUAL = 197;
++
+         /**
+          * This download couldn't be completed due to insufficient storage
+          * space.  Typically, this is because the SD card is full.
+@@ -783,6 +797,7 @@ public final class Downloads {
+                 case STATUS_WAITING_TO_RETRY: return "WAITING_TO_RETRY";
+                 case STATUS_WAITING_FOR_NETWORK: return "WAITING_FOR_NETWORK";
+                 case STATUS_QUEUED_FOR_WIFI: return "QUEUED_FOR_WIFI";
++                case STATUS_PAUSED_MANUAL: return "PAUSED_MANUAL";
+                 case STATUS_INSUFFICIENT_SPACE_ERROR: return "INSUFFICIENT_SPACE_ERROR";
+                 case STATUS_DEVICE_NOT_FOUND_ERROR: return "DEVICE_NOT_FOUND_ERROR";
+                 case STATUS_SUCCESS: return "SUCCESS";

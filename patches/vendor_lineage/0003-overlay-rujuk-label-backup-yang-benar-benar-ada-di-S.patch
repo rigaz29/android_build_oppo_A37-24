@@ -1,0 +1,1150 @@
+From 3d51456ed7d6de70e38bcfeff5b6b0dc648279d0 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 01:24:51 +0000
+Subject: [PATCH 3/3] overlay: rujuk label backup yang benar-benar ada di
+ Settings
+
+Overlay no-rro merujuk @string/backup_transport_setting_label, yang tidak ada
+di mana pun di packages/apps/Settings:
+
+  overlay/no-rro/.../Settings/res/values-*/config.xml:9: error: resource
+  string/backup_transport_setting_label not found
+
+86 berkas terdampak -- satu per bahasa. Settings di HEAD hulu (213829fb) dan
+string itu nol kecocokan, jadi celah hulu, bukan pohon usang.
+
+Asalnya c4535991 "lineage: overlay: Exclude backup transport overlays from
+RRO" (2021), yang memindahkan overlay ini ke no-rro dengan rujukan ke string
+yang rupanya tidak pernah ada di Settings LineageOS.
+
+Diganti @string/backup_data_management_title ("Manage backup account"), yang
+memang tersedia dan semantiknya cocok: config_backup_settings_label dibaca
+BackupSettingsHelper.getLabelProvidedByManufacturer() sebagai label item
+pengaturan backup.
+
+Seluruh 86 berkas diverifikasi sesudah disunting: nol rujukan lama tersisa,
+86 rujukan baru, dan XML tiap berkas diparse ulang -- nol rusak.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ overlay/no-rro/packages/apps/Settings/res/values-af/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-am/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ar/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-as/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-az/config.xml  | 2 +-
+ .../packages/apps/Settings/res/values-b+sr+Latn/config.xml      | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-be/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-bg/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-bn/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-bs/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ca/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-cs/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-da/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-de/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-el/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-en-rAU/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-en-rCA/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-en-rGB/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-en-rIN/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-en-rXC/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-es-rUS/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-es/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-et/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-eu/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-fa/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-fi/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-fr-rCA/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-fr/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-gl/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-gu/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-hi/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-hr/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-hu/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-hy/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-in/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-is/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-it/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-iw/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ja/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ka/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-kk/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-km/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-kn/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ko/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ky/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-lo/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-lt/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-lv/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-mk/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ml/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-mn/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-mr/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ms/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-my/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-nb/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ne/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-nl/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-or/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-pa/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-pl/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-pt-rBR/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-pt-rPT/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-pt/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ro/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ru/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-si/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sk/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sl/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sq/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sr/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sv/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-sw/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ta/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-te/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-th/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-tl/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-tr/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-uk/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-ur/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-uz/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-vi/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-zh-rCN/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-zh-rHK/config.xml  | 2 +-
+ .../no-rro/packages/apps/Settings/res/values-zh-rTW/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values-zu/config.xml  | 2 +-
+ overlay/no-rro/packages/apps/Settings/res/values/config.xml     | 2 +-
+ 86 files changed, 86 insertions(+), 86 deletions(-)
+
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-af/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-af/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-af/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-af/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-am/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-am/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-am/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-am/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ar/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ar/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ar/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ar/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-as/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-as/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-as/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-as/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-az/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-az/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-az/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-az/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-b+sr+Latn/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-b+sr+Latn/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-b+sr+Latn/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-b+sr+Latn/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-be/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-be/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-be/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-be/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-bg/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-bg/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-bg/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-bg/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-bn/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-bn/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-bn/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-bn/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-bs/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-bs/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-bs/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-bs/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ca/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ca/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ca/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ca/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-cs/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-cs/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-cs/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-cs/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-da/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-da/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-da/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-da/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-de/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-de/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-de/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-de/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-el/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-el/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-el/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-el/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-en-rAU/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-en-rAU/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-en-rAU/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-en-rAU/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-en-rCA/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-en-rCA/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-en-rCA/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-en-rCA/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-en-rGB/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-en-rGB/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-en-rGB/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-en-rGB/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-en-rIN/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-en-rIN/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-en-rIN/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-en-rIN/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-en-rXC/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-en-rXC/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-en-rXC/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-en-rXC/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-es-rUS/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-es-rUS/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-es-rUS/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-es-rUS/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-es/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-es/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-es/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-es/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-et/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-et/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-et/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-et/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-eu/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-eu/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-eu/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-eu/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-fa/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-fa/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-fa/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-fa/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-fi/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-fi/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-fi/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-fi/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-fr-rCA/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-fr-rCA/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-fr-rCA/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-fr-rCA/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-fr/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-fr/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-fr/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-fr/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-gl/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-gl/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-gl/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-gl/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-gu/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-gu/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-gu/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-gu/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-hi/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-hi/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-hi/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-hi/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-hr/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-hr/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-hr/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-hr/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-hu/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-hu/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-hu/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-hu/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-hy/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-hy/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-hy/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-hy/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-in/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-in/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-in/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-in/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-is/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-is/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-is/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-is/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-it/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-it/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-it/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-it/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-iw/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-iw/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-iw/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-iw/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ja/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ja/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ja/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ja/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ka/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ka/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ka/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ka/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-kk/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-kk/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-kk/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-kk/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-km/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-km/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-km/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-km/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-kn/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-kn/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-kn/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-kn/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ko/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ko/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ko/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ko/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ky/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ky/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ky/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ky/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-lo/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-lo/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-lo/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-lo/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-lt/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-lt/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-lt/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-lt/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-lv/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-lv/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-lv/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-lv/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-mk/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-mk/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-mk/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-mk/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ml/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ml/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ml/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ml/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-mn/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-mn/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-mn/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-mn/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-mr/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-mr/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-mr/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-mr/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ms/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ms/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ms/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ms/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-my/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-my/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-my/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-my/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-nb/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-nb/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-nb/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-nb/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ne/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ne/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ne/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ne/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-nl/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-nl/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-nl/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-nl/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-or/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-or/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-or/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-or/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-pa/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-pa/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-pa/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-pa/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-pl/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-pl/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-pl/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-pl/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-pt-rBR/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-pt-rBR/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-pt-rBR/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-pt-rBR/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-pt-rPT/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-pt-rPT/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-pt-rPT/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-pt-rPT/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-pt/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-pt/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-pt/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-pt/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ro/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ro/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ro/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ro/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ru/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ru/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ru/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ru/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-si/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-si/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-si/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-si/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sk/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sk/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sk/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sk/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sl/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sl/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sl/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sl/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sq/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sq/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sq/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sq/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sr/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sr/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sr/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sr/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sv/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sv/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sv/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sv/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-sw/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-sw/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-sw/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-sw/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ta/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ta/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ta/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ta/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-te/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-te/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-te/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-te/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-th/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-th/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-th/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-th/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-tl/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-tl/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-tl/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-tl/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-tr/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-tr/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-tr/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-tr/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-uk/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-uk/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-uk/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-uk/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-ur/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-ur/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-ur/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-ur/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-uz/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-uz/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-uz/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-uz/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-vi/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-vi/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-vi/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-vi/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-zh-rCN/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-zh-rCN/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-zh-rCN/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-zh-rCN/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-zh-rHK/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-zh-rHK/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-zh-rHK/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-zh-rHK/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-zh-rTW/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-zh-rTW/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-zh-rTW/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-zh-rTW/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values-zu/config.xml b/overlay/no-rro/packages/apps/Settings/res/values-zu/config.xml
+index b35732af..6fc00116 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values-zu/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values-zu/config.xml
+@@ -6,6 +6,6 @@
+ <resources>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" msgid="1623475653989899715">@string/backup_data_management_title</string>
+ 
+ </resources>
+diff --git a/overlay/no-rro/packages/apps/Settings/res/values/config.xml b/overlay/no-rro/packages/apps/Settings/res/values/config.xml
+index 8e8e3331..3e990e86 100644
+--- a/overlay/no-rro/packages/apps/Settings/res/values/config.xml
++++ b/overlay/no-rro/packages/apps/Settings/res/values/config.xml
+@@ -9,6 +9,6 @@
+     <string name="config_backup_settings_intent" translatable="false">settings://com.android.settings.backup.transport</string>
+ 
+     <!-- Manufacturer backup settings label -->
+-    <string name="config_backup_settings_label" translatable="true">@string/backup_transport_setting_label</string>
++    <string name="config_backup_settings_label" translatable="true">@string/backup_data_management_title</string>
+ 
+ </resources>

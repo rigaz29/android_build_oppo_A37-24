@@ -1,0 +1,49 @@
+From 754487d2b1d46a99248f145d2f6638dadbdf435c Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 08:49:12 +0000
+Subject: [PATCH] memtrack: %ld salah untuk int64_t di userspace 32-bit
+
+  memtrack_kgsl.cpp:116:13: error: format specifies type 'long' but the
+  argument has type 'int64_t' (aka 'long long') [-Werror,-Wformat]
+
+MemtrackRecord::sizeInBytes bertipe int64_t. Di arm64 int64_t adalah long,
+sehingga %ld benar dan berkas ini terkompilasi tanpa keluhan; di arm 32-bit
+int64_t adalah long long, dan %ld menjadi salah tipe.
+
+A37 memakai userspace 32-bit (TARGET_ARCH := arm) dengan HAL 64-bit, jadi
+justru perangkat seperti inilah yang membongkarnya. Karena -Wformat diangkat
+ke -Werror, ini menghentikan build, bukan sekadar peringatan.
+
+Dipakai PRId64 dari <cinttypes>, yang memilih specifier benar di kedua lebar
+kata, bukan %lld yang hanya memindahkan kesalahan ke sisi 64-bit.
+
+Seluruh berkas disapu untuk pola yang sama: tiga situs sizeInBytes lain
+(baris 77, 85, 108) adalah penugasan, bukan format, dan tiga fscanf memakai
+%zu terhadap size_t yang memang cocok. Hanya satu situs yang perlu diperbaiki.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ memtrack/memtrack_kgsl.cpp | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/memtrack/memtrack_kgsl.cpp b/memtrack/memtrack_kgsl.cpp
+index 76d542b..23b535b 100644
+--- a/memtrack/memtrack_kgsl.cpp
++++ b/memtrack/memtrack_kgsl.cpp
+@@ -23,6 +23,7 @@
+  * SPDX-License-Identifier: BSD-3-Clause-Clear
+  */
+ #include "memtrack_kgsl.h"
++#include <cinttypes>
+ #include <errno.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+@@ -111,7 +112,7 @@ int getKgslMemory(int pid, MemtrackType type,
+   }
+   if (records && !records->empty()) {
+     for (auto &v : *records) {
+-      ALOGI_IF(DEBUG, "getKgslMemory: pid: %d type: %s flags: 0x%x size: %ld bytes", pid,
++      ALOGI_IF(DEBUG, "getKgslMemory: pid: %d type: %s flags: 0x%x size: %" PRId64 " bytes", pid,
+             aidl::android::hardware::memtrack::toString(type).c_str(), v.flags,
+             v.sizeInBytes);
+     }

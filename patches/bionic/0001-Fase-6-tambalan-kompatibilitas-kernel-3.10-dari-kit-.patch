@@ -1,0 +1,239 @@
+From 5e2c72620086035c219ae7204b9c2b9dd624507f Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:21 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ libc/SYSCALLS.TXT                             |  1 +
+ libc/bionic/pthread_internal.cpp              |  2 +-
+ libc/bionic/rename.cpp                        |  6 +--
+ libc/bionic/sys_epoll.cpp                     | 12 ++++-
+ libc/bionic/system_property_api.cpp           | 18 +++++++-
+ libc/system_properties/system_properties.cpp  | 21 +++++++--
+ .../android/include/arc4random.h              | 46 ++++++++++++++++++-
+ 7 files changed, 92 insertions(+), 14 deletions(-)
+
+diff --git a/libc/SYSCALLS.TXT b/libc/SYSCALLS.TXT
+index 3622ca4f4..aa4eb4ed4 100644
+--- a/libc/SYSCALLS.TXT
++++ b/libc/SYSCALLS.TXT
+@@ -168,6 +168,7 @@ linkat(int, const char*, int, const char*, int)  all
+ mkdirat(int, const char*, mode_t)  all
+ mknodat(int, const char*, mode_t, dev_t)  all
+ readlinkat(int, const char*, char*, size_t)  all
++renameat(int, const char*, int, const char*)  all
+ renameat2(int, const char*, int, const char*, unsigned)  all
+ symlinkat(const char*, int, const char*)  all
+ unlinkat(int, const char*, int)   all
+diff --git a/libc/bionic/pthread_internal.cpp b/libc/bionic/pthread_internal.cpp
+index 7c66c7531..e156bc00b 100644
+--- a/libc/bionic/pthread_internal.cpp
++++ b/libc/bionic/pthread_internal.cpp
+@@ -118,7 +118,7 @@ pthread_internal_t* __pthread_internal_find(pthread_t thread_id, const char* cal
+       // TODO: try getting rid of this when Treble lets us keep vendor blobs on an old API level.
+       async_safe_format_log(ANDROID_LOG_WARN, "libc", "invalid pthread_t (0) passed to %s", caller);
+     } else {
+-      async_safe_fatal("invalid pthread_t %p passed to %s", thread, caller);
++     async_safe_format_log(ANDROID_LOG_WARN, "libc", "invalid pthread_t (0) passed to %s", caller);
+     }
+   }
+   return nullptr;
+diff --git a/libc/bionic/rename.cpp b/libc/bionic/rename.cpp
+index 89786f7a0..82955596b 100644
+--- a/libc/bionic/rename.cpp
++++ b/libc/bionic/rename.cpp
+@@ -30,9 +30,5 @@
+ #include <stdio.h>
+ 
+ int rename(const char* old_path, const char* new_path) {
+-  return renameat2(AT_FDCWD, old_path, AT_FDCWD, new_path, 0);
+-}
+-
+-int renameat(int old_dir_fd, const char* old_path, int new_dir_fd, const char* new_path) {
+-  return renameat2(old_dir_fd, old_path, new_dir_fd, new_path, 0);
++  return renameat(AT_FDCWD, old_path, AT_FDCWD, new_path);
+ }
+diff --git a/libc/bionic/sys_epoll.cpp b/libc/bionic/sys_epoll.cpp
+index be97818da..d3d841e89 100644
+--- a/libc/bionic/sys_epoll.cpp
++++ b/libc/bionic/sys_epoll.cpp
+@@ -80,7 +80,17 @@ int epoll_pwait2_64(int fd, epoll_event* events, int max_events, const timespec*
+     kts_ptr = &kts;
+   }
+ #endif
+-  return __epoll_pwait2(fd, events, max_events, kts_ptr, ss, sizeof(*ss));
++  int result = __epoll_pwait2(fd, events, max_events, kts_ptr, ss, sizeof(*ss));
++  if (result == -1 && errno == ENOSYS) {
++    // Fall back to epoll_pwait for kernels that don't support epoll_pwait2 (< 5.11).
++    // The only loss is timeout precision (milliseconds instead of nanoseconds).
++    int timeout_ms = -1;
++    if (timeout) {
++      timeout_ms = static_cast<int>(timeout->tv_sec * 1000 + timeout->tv_nsec / 1000000);
++    }
++    result = __epoll_pwait(fd, events, max_events, timeout_ms, ss, sizeof(*ss));
++  }
++  return result;
+ }
+ 
+ int epoll_wait(int fd, struct epoll_event* events, int max_events, int timeout) {
+diff --git a/libc/bionic/system_property_api.cpp b/libc/bionic/system_property_api.cpp
+index 34438e7af..0b0c8e502 100644
+--- a/libc/bionic/system_property_api.cpp
++++ b/libc/bionic/system_property_api.cpp
+@@ -29,6 +29,7 @@
+ #include <sys/system_properties.h>
+ 
+ #include <async_safe/CHECK.h>
++#include <async_safe/log.h>
+ #include <system_properties/prop_area.h>
+ #include <system_properties/system_properties.h>
+ 
+@@ -56,7 +57,22 @@ int __system_property_set_filename(const char*) {
+ __BIONIC_WEAK_FOR_NATIVE_BRIDGE
+ int __system_property_area_init() {
+   bool fsetxattr_fail = false;
+-  return system_properties.AreaInit(PROP_DIRNAME, &fsetxattr_fail) && !fsetxattr_fail ? 0 : -1;
++  if (!system_properties.AreaInit(PROP_DIRNAME, &fsetxattr_fail)) {
++    // on old vendor kernels (e.g. 4.14) fsetxattr failures inside AreaInit
++    // can cascade: context_node Open() succeeds but sets fsetxattr_failed,
++    // which causes ContextsSerialized::Initialize to report open_failed and
++    // return false.  the property system may still be partially functional
++    // -- try to continue rather than letting init abort into recovery.
++    async_safe_format_log(ANDROID_LOG_ERROR, "libc",
++                          "property area init AreaInit failed, "
++                          "continuing anyway to avoid boot loop");
++  }
++  if (fsetxattr_fail) {
++    async_safe_format_log(ANDROID_LOG_WARN, "libc",
++                          "fsetxattr failed during property area init, "
++                          "continuing without SELinux property labels");
++  }
++  return 0;
+ }
+ 
+ __BIONIC_WEAK_FOR_NATIVE_BRIDGE
+diff --git a/libc/system_properties/system_properties.cpp b/libc/system_properties/system_properties.cpp
+index ca286e8ee..521a39e10 100644
+--- a/libc/system_properties/system_properties.cpp
++++ b/libc/system_properties/system_properties.cpp
+@@ -129,10 +129,23 @@ bool SystemProperties::AreaInit(const char* filename, bool* fsetxattr_failed,
+   appcompat_override_contexts_ = nullptr;
+   if (access(appcompat_filename_.c_str(), F_OK) != -1) {
+     auto* appcompat_contexts = new (appcompat_override_contexts_data_) ContextsSerialized();
+-    if (!appcompat_contexts->Initialize(true, appcompat_filename_.c_str(), fsetxattr_failed,
+-                                        load_default_path)) {
+-      // The appcompat folder exists, but initializing it failed
+-      return false;
++    // on old vendor kernels (e.g. 4.14 with VNDK 30) fsetxattr on tmpfs may
++    // fail with ENOTSUP for the appcompat_override property area because the
++    // SELinux context doesn't exist in the vendor's policy.  this is non-fatal
++    // -- all callsites already null-check appcompat_override_contexts_.
++    bool appcompat_fsetxattr_failed = false;
++    if (!appcompat_contexts->Initialize(true, appcompat_filename_.c_str(),
++                                        &appcompat_fsetxattr_failed, load_default_path)) {
++      // the appcompat folder exists, but initialising it failed -- continue
++      // without appcompat override support rather than aborting init
++      async_safe_format_log(ANDROID_LOG_WARN, "libc",
++                            "Failed to initialise appcompat_override property area, continuing without it");
++    } else if (appcompat_fsetxattr_failed) {
++      // initialisation succeeded but SELinux labelling failed -- still usable
++      // but don't propagate the failure to the caller as fatal
++      async_safe_format_log(ANDROID_LOG_WARN, "libc",
++                            "appcompat_override fsetxattr failed, continuing without SELinux labels");
++      appcompat_override_contexts_ = appcompat_contexts;
+     } else {
+       appcompat_override_contexts_ = appcompat_contexts;
+     }
+diff --git a/libc/upstream-openbsd/android/include/arc4random.h b/libc/upstream-openbsd/android/include/arc4random.h
+index 1940398ba..c63ef885d 100644
+--- a/libc/upstream-openbsd/android/include/arc4random.h
++++ b/libc/upstream-openbsd/android/include/arc4random.h
+@@ -21,6 +21,11 @@
+ #include <pthread.h>
+ #include <sys/mman.h>
+ #include <sys/prctl.h>
++#include <sys/types.h>
++#include <unistd.h>
++#include <errno.h>
++#include <stddef.h>
++#include <string.h>
+ 
+ #include <async_safe/log.h>
+ 
+@@ -41,8 +46,30 @@ static inline void _getentropy_fail(void) {
+   async_safe_fatal("getentropy failed: %m");
+ }
+ 
++// Disetel false bila kernel tidak mengenal MADV_WIPEONFORK (fitur itu masuk
++// Linux 4.14). Lihat _rs_allocate di bawah.
++static int g_arc4random_wipeonfork_works = 1;
++
+ static inline void _rs_forkdetect(void) {
+-  // Not needed thanks to the MADV_WIPEONFORK below.
++  // Normalnya tidak diperlukan: MADV_WIPEONFORK di _rs_allocate sudah menjamin
++  // pool di-nol-kan pada anak setelah fork.
++  //
++  // Pada kernel yang tidak mengenal MADV_WIPEONFORK, jaminan itu tidak ada, dan
++  // anak akan mewarisi keystream induknya -- keduanya menghasilkan urutan acak
++  // yang sama sampai reseed berikutnya. Karena itu di sana deteksi fork
++  // dikembalikan secara manual lewat perbandingan PID.
++  if (g_arc4random_wipeonfork_works) return;
++
++  static pid_t last_pid = 0;
++  pid_t pid = getpid();
++  if (pid == last_pid) return;
++  last_pid = pid;
++
++  // Tiru persis akibat MADV_WIPEONFORK: seluruh mapping (rs DAN rsx) di-nol-kan,
++  // sehingga _rs_stir_if_needed() melihat rs_count == 0 lalu memaksa _rs_stir()
++  // yang mengambil entropi baru dan me-rekey chacha.
++  if (rs != NULL) memset(rs, 0, sizeof(*rs));
++  if (rsx != NULL) memset(rsx, 0, sizeof(*rsx));
+ }
+ 
+ static inline int _rs_allocate(struct _rs** rsp, struct _rsx** rsxp) {
+@@ -60,8 +87,23 @@ static inline int _rs_allocate(struct _rs** rsp, struct _rsx** rsxp) {
+   }
+ 
+   // Equivalent to OpenBSD's minherit(MAP_INHERIT_ZERO).
++  //
++  // MADV_WIPEONFORK baru ada sejak Linux 4.14. Pada kernel yang lebih tua
++  // madvise() menjawab EINVAL, dan meng-abort di sini membuat SETIAP proses
++  // gagal start -- arc4random dipakai saat inisialisasi hampir semua proses.
++  // Gejalanya terlihat pertama kali saat memasang ROM lewat recovery lama:
++  //   arc4random data MADV_WIPEONFORK failed: Invalid argument
++  //   Updater process ended with signal: 6
++  //
++  // Kegagalan itu ditoleransi, TAPI jaminannya tidak dibuang: _rs_forkdetect()
++  // di atas mengambil alih dengan deteksi berbasis PID. Kesalahan lain tetap
++  // fatal, karena itu menandakan hal yang benar-benar tak terduga.
+   if (madvise(p, size, MADV_WIPEONFORK) == -1) {
+-    async_safe_fatal("arc4random data MADV_WIPEONFORK failed: %m");
++    if (errno == EINVAL || errno == ENOSYS) {
++      g_arc4random_wipeonfork_works = 0;
++    } else {
++      async_safe_fatal("arc4random data MADV_WIPEONFORK failed: %m");
++    }
+   }
+ 
+   // Give the allocation a name to make tombstones more intelligible.

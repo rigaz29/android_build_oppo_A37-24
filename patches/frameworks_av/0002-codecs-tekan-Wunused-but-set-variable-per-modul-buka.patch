@@ -1,0 +1,137 @@
+From 8a654780f8c2d1f6b423a7df98b09cebc30dcdb6 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 23:47:12 +0000
+Subject: [PATCH 2/3] codecs: tekan -Wunused-but-set-variable per modul, bukan
+ per baris
+
+Menggantikan pendekatan sebelumnya, yang MERUSAK kode.
+
+Commit 38c53897 menyisipkan (void) cast di delapan tempat lewat skrip. Sisipan
+di SoftHEVC.cpp mendarat DI TENGAH pemanggilan fungsi multi-baris:
+
+    status = ivdec_api_function(mCodecCtx, (void *)&s_dec_ip,
+    (void)  status;   <-- di sini
+            (void *)&s_dec_op);
+
+menghasilkan "expected ')'" dan "extraneous ')' before ';'". Deteksi "baris
+terakhir tempat variabel ditulis" buta terhadap pernyataan yang membentang
+beberapa baris, dan verifikasi saya pun tertipu karena hanya melihat SATU baris
+sebelum sisipan. Commit itu di-reset, bukan ditambal.
+
+Pendekatan yang dipakai sekarang: -Wno-unused-but-set-variable di lima
+Android.bp. Alasannya bukan sekadar lebih aman, tapi lebih tepat -- kode ini
+arsip codec era lama yang dikembalikan APA ADANYA oleh Revert "Remove source
+code of all the OMX software codec plugins". Kita tidak merawat isinya, dan
+menyuntingnya memperkenalkan risiko yang baru saja terbukti nyata.
+
+Preseden ada di pohon ini sendiri: hevcdec dan mpeg2dec SUDAH memakai
+-Wno-unused-variable untuk alasan yang sama.
+
+Kelima Android.bp punya bentuk berbeda-beda (avcenc bahkan tanpa blok cflags),
+jadi masing-masing disunting terpisah lalu diperiksa keseimbangan kurungnya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+---
+ media/libstagefright/codecs/avcdec/Android.bp   | 11 +++++++++++
+ media/libstagefright/codecs/avcenc/Android.bp   |  9 +++++++++
+ media/libstagefright/codecs/hevcdec/Android.bp  |  6 ++++++
+ media/libstagefright/codecs/mpeg2dec/Android.bp |  6 ++++++
+ media/libstagefright/codecs/xaacdec/Android.bp  |  8 +++++++-
+ 5 files changed, 39 insertions(+), 1 deletion(-)
+
+diff --git a/media/libstagefright/codecs/avcdec/Android.bp b/media/libstagefright/codecs/avcdec/Android.bp
+index 1c2f9beb00..3aded5a310 100644
+--- a/media/libstagefright/codecs/avcdec/Android.bp
++++ b/media/libstagefright/codecs/avcdec/Android.bp
+@@ -16,6 +16,17 @@ cc_library_shared {
+ 
+     cflags: [
+         "-Wall",
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip
++        // (Revert "Remove source code of all the OMX software codec plugins"),
++        // dan clang r596125 menolak variabel yang ditulis tapi tidak dibaca --
++        // pola yang lazim di kode era itu, mis. nilai balik ivdec_api_function
++        // yang sengaja diabaikan.
++        //
++        // Menekan warning per modul, BUKAN menyunting isinya: percobaan
++        // menyunting satu per satu justru MERUSAK SoftHEVC.cpp, karena sisipan
++        // otomatis mendarat di tengah pemanggilan fungsi multi-baris. Untuk
++        // kode arsip yang tidak kita rawat, risikonya tidak sepadan.
++        "-Wno-unused-but-set-variable",
+     ],
+ 
+     version_script: "exports.lds",
+diff --git a/media/libstagefright/codecs/avcenc/Android.bp b/media/libstagefright/codecs/avcenc/Android.bp
+index 586088c6f1..7f8f90160d 100644
+--- a/media/libstagefright/codecs/avcenc/Android.bp
++++ b/media/libstagefright/codecs/avcenc/Android.bp
+@@ -14,6 +14,15 @@ cc_library_shared {
+     static_libs: ["libavcenc"],
+     srcs: ["SoftAVCEnc.cpp"],
+ 
++    cflags: [
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
++        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
++        // lazim di kode era itu (mis. nilai balik ivdec_api_function yang
++        // sengaja diabaikan). Ditekan per modul, mengikuti pola
++        // -Wno-unused-variable di modul codec tetangga.
++        "-Wno-unused-but-set-variable",
++    ],
++
+     sanitize: {
+         misc_undefined: [
+             "signed-integer-overflow",
+diff --git a/media/libstagefright/codecs/hevcdec/Android.bp b/media/libstagefright/codecs/hevcdec/Android.bp
+index 2c4091bcf3..09f7774a81 100644
+--- a/media/libstagefright/codecs/hevcdec/Android.bp
++++ b/media/libstagefright/codecs/hevcdec/Android.bp
+@@ -17,6 +17,12 @@ cc_library_shared {
+     cflags: [
+         "-Wall",
+         "-Wno-unused-variable",
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
++        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
++        // lazim di kode era itu (mis. nilai balik ivdec_api_function yang
++        // sengaja diabaikan). Ditekan per modul, sejalan dengan
++        // -Wno-unused-variable yang memang sudah ada di sini.
++        "-Wno-unused-but-set-variable",
+     ],
+ 
+     version_script: "exports.lds",
+diff --git a/media/libstagefright/codecs/mpeg2dec/Android.bp b/media/libstagefright/codecs/mpeg2dec/Android.bp
+index abd1379c9d..0ca9e0df41 100644
+--- a/media/libstagefright/codecs/mpeg2dec/Android.bp
++++ b/media/libstagefright/codecs/mpeg2dec/Android.bp
+@@ -17,6 +17,12 @@ cc_library_shared {
+     cflags: [
+         "-Wall",
+         "-Wno-unused-variable",
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
++        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
++        // lazim di kode era itu (mis. nilai balik ivdec_api_function yang
++        // sengaja diabaikan). Ditekan per modul, sejalan dengan
++        // -Wno-unused-variable yang memang sudah ada di sini.
++        "-Wno-unused-but-set-variable",
+     ],
+ 
+     version_script: "exports.lds",
+diff --git a/media/libstagefright/codecs/xaacdec/Android.bp b/media/libstagefright/codecs/xaacdec/Android.bp
+index 1d03c16bbd..f497fd814d 100644
+--- a/media/libstagefright/codecs/xaacdec/Android.bp
++++ b/media/libstagefright/codecs/xaacdec/Android.bp
+@@ -16,7 +16,13 @@ cc_library_shared {
+     ],
+ 
+     cflags: [
+-        "-DENABLE_MPEG_D_DRC"
++        "-DENABLE_MPEG_D_DRC",
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
++        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
++        // lazim di kode era itu (mis. nilai balik ivdec_api_function yang
++        // sengaja diabaikan). Ditekan per modul, sejalan dengan
++        // -Wno-unused-variable yang memang sudah ada di sini.
++        "-Wno-unused-but-set-variable",
+     ],
+ 
+     sanitize: {

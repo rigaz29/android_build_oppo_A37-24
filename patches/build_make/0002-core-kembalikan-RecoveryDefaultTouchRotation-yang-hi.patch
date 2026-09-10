@@ -1,0 +1,55 @@
+From 7d28b4508b8a2870d852bf1477875325f5e19ad1 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 04:50:40 +0000
+Subject: [PATCH 2/5] core: kembalikan RecoveryDefaultTouchRotation yang hilang
+ saat rebase 24.0
+
+Empat target build.prop gagal begini:
+
+  FAILED: .../build/soong/system-build.prop/android_common/build.prop
+  gen_build_prop.py, line 452, in append_additional_vendor_props
+  KeyError: 'RecoveryDefaultTouchRotation'
+
+Konsumennya ada, produsennya tidak. gen_build_prop.py membaca dua kunci
+bersaudara:
+
+  449  if config["RecoveryDefaultRotation"]:      -> ro.minui.default_rotation
+  452  if config["RecoveryDefaultTouchRotation"]: -> ro.minui.default_touch_rotation
+
+sementara soong_extra_config.mk hanya memancarkan yang pertama, sehingga
+product_config.json berisi RecoveryDefaultRotation, RecoveryOverscanPercent
+dan RecoveryPixelFormat, tanpa RecoveryDefaultTouchRotation.
+
+Kedua paruh tambalan LineageOS ini tinggal di repo berbeda -- konsumennya di
+build/soong, produsennya di build/make -- dan hanya satu yang ikut terbawa ke
+24.0. Dibandingkan dengan lineage-23.2:
+
+  23.2 core/soong_extra_config.mk:50  RecoveryDefaultRotation
+  23.2 core/soong_extra_config.mk:51  RecoveryDefaultTouchRotation
+  24.0 core/soong_extra_config.mk:48  RecoveryDefaultRotation
+  24.0                                (barisnya hilang)
+
+Sedangkan gen_build_prop.py 23.2 baris 441-442 identik dengan 24.0 baris
+452-453, jadi yang berubah memang cuma sisi build/make.
+
+Barisnya dikembalikan persis seperti di 23.2, di antara kedua tetangganya.
+A37 tidak menyetel TARGET_RECOVERY_DEFAULT_TOUCH_ROTATION, jadi nilainya
+kosong dan gen_build_prop melewatinya -- yang penting kuncinya ada.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ core/soong_extra_config.mk | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/soong_extra_config.mk b/core/soong_extra_config.mk
+index 03fcc961dd..574e3c86f3 100644
+--- a/core/soong_extra_config.mk
++++ b/core/soong_extra_config.mk
+@@ -46,6 +46,7 @@ $(call add_json_str, SystemServerCompilerFilter, $(PRODUCT_SYSTEM_SERVER_COMPILE
+ $(call add_json_bool, Product16KDeveloperOption, $(filter true,$(PRODUCT_16K_DEVELOPER_OPTION)))
+ 
+ $(call add_json_str, RecoveryDefaultRotation, $(TARGET_RECOVERY_DEFAULT_ROTATION))
++$(call add_json_str, RecoveryDefaultTouchRotation, $(TARGET_RECOVERY_DEFAULT_TOUCH_ROTATION))
+ $(call add_json_str, RecoveryOverscanPercent, $(TARGET_RECOVERY_OVERSCAN_PERCENT))
+ $(call add_json_str, RecoveryPixelFormat, $(TARGET_RECOVERY_PIXEL_FORMAT))
+ ifdef TARGET_RECOVERY_NO_INITIAL_MODSET_FLUSH

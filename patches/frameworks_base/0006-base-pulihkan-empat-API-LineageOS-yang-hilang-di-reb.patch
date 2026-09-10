@@ -1,0 +1,276 @@
+From 8939b15f5bbff24fc92800eef72a8f669ddd3bd4 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 01:40:11 +0000
+Subject: [PATCH 6/8] base: pulihkan empat API LineageOS yang hilang di rebase
+ 24.0
+
+LineageParts gagal dikompilasi dengan 9 galat yang berpangkal pada empat
+simbol kerangka kerja yang ada di lineage-23.2 tetapi nol di lineage-24.0:
+
+  atv/KeyHandler.java:15,21        com.android.internal.os.DeviceKeyHandler
+  gestures/KeyHandler.java:42,48   idem
+  hardware/DisplayRotation.java:66,122
+                                   Settings.System.ACCELEROMETER_ROTATION_ANGLES
+  input/ButtonSettings.java:389,623
+                                   Settings.System.VOLUME_KEY_CURSOR_CONTROL
+  input/BacklightTimeoutSeekBar.java:47
+                                   AbsSeekBar.updateTouchProgress
+
+Ini celah hulu, bukan pohon usang: lineage-sdk 24.0 masih menyimpan
+LineageButtons.java dan config_deviceKeyHandlerClasses, jadi yang tertinggal
+hanya sisi frameworks/base saat rebase ke Android 17.
+
+Yang dipulihkan di sini (semua diambil dari lineage-23.2 35ad1f68):
+
+1. DeviceKeyHandler.java -- identik byte-per-byte dengan 23.2.
+2. AbsSeekBar.updateTouchProgress -- kaitan lengkap: situs panggil di
+   trackTouchEvent plus metode protected. Fitur ini utuh kembali; itulah
+   yang dioverride BacklightTimeoutSeekBar.
+3. Settings.System.ACCELEROMETER_ROTATION_ANGLES dan VOLUME_KEY_CURSOR_CONTROL,
+   berikut validator NON_NEGATIVE_INTEGER untuk yang pertama (23.2 juga hanya
+   memvalidasi yang pertama).
+4. Penegakan sudut rotasi: RotationPolicy.isRotationAllowed() dikembalikan,
+   dan DisplayRotation memakainya lagi -- medan mUserRotationAngles, observer
+   setelan, pembacaan di updateSettings, dan situs keputusan rotasi.
+
+Perilaku bawaan tidak berubah. Bila pengguna belum menyetel mask,
+isRotationAllowed memakai (1|2|8) saat config_allowAllRotations salah dan
+(1|2|4|8) saat benar -- persis padanan syarat lama
+"sensorRotation != ROTATION_180 || getAllowAllRotations() == ENABLED".
+getAllowAllRotations() menyelesaikan UNDEFINED secara malas, sehingga
+"!= DISABLED" yang dipakai 23.2 setara dengan "== ENABLED" yang dipakai 24.0.
+
+Belum dipulihkan, sengaja: pengiriman tombol ke DeviceKeyHandler di
+PhoneWindowManager dan lapisan LineageButtons-nya, serta konsumen
+VOLUME_KEY_CURSOR_CONTROL. Antarmukanya kini terkompilasi dan setelannya
+tersimpan, tetapi belum ada yang membacanya di kerangka kerja. Itu port
+tersendiri ke PhoneWindowManager Android 17 dan tidak diperlukan untuk boot.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: Ia464ad03ef62c8c1075a487a569f9949eb0ae0af
+---
+ core/java/android/provider/Settings.java      | 22 +++++++++++++
+ core/java/android/widget/AbsSeekBar.java      |  9 +++++-
+ .../android/internal/os/DeviceKeyHandler.java | 31 +++++++++++++++++++
+ .../android/internal/view/RotationPolicy.java | 31 +++++++++++++++++++
+ .../validators/SystemSettingsValidators.java  |  1 +
+ .../android/server/wm/DisplayRotation.java    | 25 ++++++++++++---
+ 6 files changed, 114 insertions(+), 5 deletions(-)
+ create mode 100644 core/java/com/android/internal/os/DeviceKeyHandler.java
+
+diff --git a/core/java/android/provider/Settings.java b/core/java/android/provider/Settings.java
+index ea1dfe84b2bb..d1d16e36d37b 100644
+--- a/core/java/android/provider/Settings.java
++++ b/core/java/android/provider/Settings.java
+@@ -5860,6 +5860,16 @@ public final class Settings {
+         @Readable
+         public static final String VOLUME_BLUETOOTH_SCO = "volume_bluetooth_sco";
+ 
++        /**
++         * Volume keys control cursor in text fields (default is 0)
++         * 0 - Disabled
++         * 1 - Volume up/down moves cursor left/right
++         * 2 - Volume up/down moves cursor right/left
++         * @hide
++         */
++        @Readable
++        public static final String VOLUME_KEY_CURSOR_CONTROL = "volume_key_cursor_control";
++
+         /**
+          * @hide
+          * Acessibility volume. This is used internally, changing this
+@@ -6209,6 +6219,18 @@ public final class Settings {
+         @Readable
+         public static final String ACCELEROMETER_ROTATION = "accelerometer_rotation";
+ 
++        /**
++         * Control the set of rotation angles the accelerometer may rotate to.
++         * Value is a bitwise combination of
++         * 1 = 0 degrees (portrait)
++         * 2 = 90 degrees (left)
++         * 4 = 180 degrees (inverted portrait)
++         * 8 = 270 degrees (right)
++         * Setting to 0 is effectively orientation lock
++         * @hide
++         */
++        public static final String ACCELEROMETER_ROTATION_ANGLES = "accelerometer_rotation_angles";
++
+         /**
+          * Default screen rotation when no other policy applies.
+          * When {@link #ACCELEROMETER_ROTATION} is zero and no on-screen Activity expresses a
+diff --git a/core/java/android/widget/AbsSeekBar.java b/core/java/android/widget/AbsSeekBar.java
+index e45f27be6bbb..951af3fe05e1 100644
+--- a/core/java/android/widget/AbsSeekBar.java
++++ b/core/java/android/widget/AbsSeekBar.java
+@@ -1027,7 +1027,14 @@ public abstract class AbsSeekBar extends ProgressBar {
+         progress += scale * range + getMin();
+ 
+         setHotspot(x, y);
+-        setProgressInternal(Math.round(progress), true, false);
++        setProgressInternal(updateTouchProgress(getProgress(), Math.round(progress)), true, false);
++    }
++
++    /**
++     * @hide
++     */
++    protected int updateTouchProgress(int lastProgress, int newProgress) {
++        return newProgress;
+     }
+ 
+     /**
+diff --git a/core/java/com/android/internal/os/DeviceKeyHandler.java b/core/java/com/android/internal/os/DeviceKeyHandler.java
+new file mode 100644
+index 000000000000..8902337f3ebb
+--- /dev/null
++++ b/core/java/com/android/internal/os/DeviceKeyHandler.java
+@@ -0,0 +1,31 @@
++/*
++ * Copyright (C) 2012 The CyanogenMod Project
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package com.android.internal.os;
++
++import android.view.KeyEvent;
++
++public interface DeviceKeyHandler {
++
++    /**
++     * Invoked when an unknown key was detected by the system, letting the device handle
++     * this special keys prior to pass the key to the active app.
++     *
++     * @param event The key event to be handled
++     * @return null if event is consumed, KeyEvent to be handled otherwise
++     */
++    public KeyEvent handleKeyEvent(KeyEvent event);
++}
+diff --git a/core/java/com/android/internal/view/RotationPolicy.java b/core/java/com/android/internal/view/RotationPolicy.java
+index 074327370767..791119632f83 100644
+--- a/core/java/com/android/internal/view/RotationPolicy.java
++++ b/core/java/com/android/internal/view/RotationPolicy.java
+@@ -180,6 +180,37 @@ public final class RotationPolicy {
+         return context.getResources().getBoolean(R.bool.config_allowAllRotations);
+     }
+ 
++    /**
++     * Whether the given rotation is permitted by the user's rotation-angle mask.
++     *
++     * @param rotation           the candidate {@link Surface} rotation
++     * @param userRotationAngles bitmask from
++     *                           {@link android.provider.Settings.System#ACCELEROMETER_ROTATION_ANGLES},
++     *                           or a negative value when the user has not set one
++     * @param allowAllRotations  fallback used when the user has not set a mask
++     * @hide
++     */
++    public static boolean isRotationAllowed(int rotation,
++            int userRotationAngles, boolean allowAllRotations) {
++        if (userRotationAngles < 0) {
++            // Not set by user so use these defaults
++            userRotationAngles = allowAllRotations ?
++                    (1 | 2 | 4 | 8) : // All angles
++                    (1 | 2 | 8); // All except 180
++        }
++        switch (rotation) {
++            case Surface.ROTATION_0:
++                return (userRotationAngles & 1) != 0;
++            case Surface.ROTATION_90:
++                return (userRotationAngles & 2) != 0;
++            case Surface.ROTATION_180:
++                return (userRotationAngles & 4) != 0;
++            case Surface.ROTATION_270:
++                return (userRotationAngles & 8) != 0;
++        }
++        return false;
++    }
++
+     /**
+      * If false and config_allowAllRotations is false, the screen will rotate to the natural
+      * orientation of the device when the auto-rotate policy is toggled.
+diff --git a/packages/SettingsProvider/src/android/provider/settings/validators/SystemSettingsValidators.java b/packages/SettingsProvider/src/android/provider/settings/validators/SystemSettingsValidators.java
+index 1032a60ae504..ab029e49744b 100644
+--- a/packages/SettingsProvider/src/android/provider/settings/validators/SystemSettingsValidators.java
++++ b/packages/SettingsProvider/src/android/provider/settings/validators/SystemSettingsValidators.java
+@@ -180,6 +180,7 @@ public class SystemSettingsValidators {
+                 System.TIME_12_24, new DiscreteValueValidator(new String[] {"12", "24", null}));
+         VALIDATORS.put(System.SETUP_WIZARD_HAS_RUN, BOOLEAN_VALIDATOR);
+         VALIDATORS.put(System.ACCELEROMETER_ROTATION, BOOLEAN_VALIDATOR);
++        VALIDATORS.put(System.ACCELEROMETER_ROTATION_ANGLES, NON_NEGATIVE_INTEGER_VALIDATOR);
+         VALIDATORS.put(System.USER_ROTATION, new InclusiveIntegerRangeValidator(0, 3));
+         VALIDATORS.put(System.DTMF_TONE_WHEN_DIALING, BOOLEAN_VALIDATOR);
+         VALIDATORS.put(System.SOUND_EFFECTS_ENABLED, BOOLEAN_VALIDATOR);
+diff --git a/services/core/java/com/android/server/wm/DisplayRotation.java b/services/core/java/com/android/server/wm/DisplayRotation.java
+index c0cc25fcf51b..5c5b47c03977 100644
+--- a/services/core/java/com/android/server/wm/DisplayRotation.java
++++ b/services/core/java/com/android/server/wm/DisplayRotation.java
+@@ -79,6 +79,7 @@ import com.android.internal.R;
+ import com.android.internal.annotations.VisibleForTesting;
+ import com.android.internal.os.BackgroundThread;
+ import com.android.internal.protolog.ProtoLog;
++import com.android.internal.view.RotationPolicy;
+ import com.android.server.UiThread;
+ import com.android.server.policy.WindowManagerPolicy;
+ import com.android.server.statusbar.StatusBarManagerInternal;
+@@ -208,6 +209,9 @@ public class DisplayRotation {
+     @AllowAllRotations
+     private int mAllowAllRotations = ALLOW_ALL_ROTATIONS_UNDEFINED;
+ 
++    /** Bitmask of rotations the user permits; negative means "not set by the user". */
++    private int mUserRotationAngles = -1;
++
+     @WindowManagerPolicy.UserRotationMode
+     private int mUserRotationMode = WindowManagerPolicy.USER_ROTATION_FREE;
+ 
+@@ -1210,10 +1214,13 @@ public class DisplayRotation {
+                 || orientation == ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT) {
+             // Otherwise, use sensor only if requested by the application or enabled
+             // by default for USER or UNSPECIFIED modes.  Does not apply to NOSENSOR.
+-            if (sensorRotation != Surface.ROTATION_180
+-                    || getAllowAllRotations() == ALLOW_ALL_ROTATIONS_ENABLED
+-                    || orientation == ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
+-                    || orientation == ActivityInfo.SCREEN_ORIENTATION_FULL_USER) {
++            boolean allowed = true;
++            if (orientation != ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR
++                    && orientation != ActivityInfo.SCREEN_ORIENTATION_FULL_USER) {
++                allowed = RotationPolicy.isRotationAllowed(sensorRotation, mUserRotationAngles,
++                        getAllowAllRotations() != ALLOW_ALL_ROTATIONS_DISABLED);
++            }
++            if (allowed) {
+                 preferredRotation = sensorRotation;
+             } else {
+                 preferredRotation = lastRotation;
+@@ -1504,6 +1511,13 @@ public class DisplayRotation {
+                 shouldUpdateRotation = true;
+             }
+ 
++            final int userRotationAngles = Settings.System.getIntForUser(resolver,
++                    Settings.System.ACCELEROMETER_ROTATION_ANGLES, -1, UserHandle.USER_CURRENT);
++            if (mUserRotationAngles != userRotationAngles) {
++                mUserRotationAngles = userRotationAngles;
++                shouldUpdateRotation = true;
++            }
++
+             final int userRotationMode = Settings.System.getIntForUser(resolver,
+                     Settings.System.ACCELEROMETER_ROTATION, 0, UserHandle.USER_CURRENT) != 0
+                             ? WindowManagerPolicy.USER_ROTATION_FREE
+@@ -2117,6 +2131,9 @@ public class DisplayRotation {
+             resolver.registerContentObserver(Settings.System.getUriFor(
+                     Settings.System.ACCELEROMETER_ROTATION), false, this,
+                     UserHandle.USER_ALL);
++            resolver.registerContentObserver(Settings.System.getUriFor(
++                    Settings.System.ACCELEROMETER_ROTATION_ANGLES), false, this,
++                    UserHandle.USER_ALL);
+             resolver.registerContentObserver(Settings.System.getUriFor(
+                     Settings.System.USER_ROTATION), false, this,
+                     UserHandle.USER_ALL);

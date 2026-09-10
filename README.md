@@ -25,7 +25,8 @@ pohon — konfirmasi `KERNEL_CC` benar-benar dipakai.
 | [`FASE-3.md`](FASE-3.md) | Forward-port 21 commit ULH ke 24.0 di 9 repo fork sendiri |
 | [`FASE-4.md`](FASE-4.md) | Rantai BPF-less: 22 patch, 13 di-port, kompilasi terverifikasi |
 | [`FASE-5.md`](FASE-5.md) | Build ROM: zip flashable 849,8 MB, 6 celah hulu, 28 patch Fase 6 |
-| [`patches/`](patches) | 22 patch rantai BPF-less, disalin agar tidak bergantung repo pihak ketiga |
+| [`patches/`](patches) | **53 patch** di 31 repo: seluruh perubahan atas hulu LineageOS/AOSP |
+| [`tools/apply-patches.sh`](tools/apply-patches.sh) | Terapkan seluruh patch ke pohon hasil `repo sync` |
 | [`tools/sync.sh`](tools/sync.sh) | `repo sync` dengan percobaan ulang dan catatan disk |
 | [`A37-24.xml`](A37-24.xml) | Draf local manifest LOS 24.0 — sudah divalidasi parser XML |
 

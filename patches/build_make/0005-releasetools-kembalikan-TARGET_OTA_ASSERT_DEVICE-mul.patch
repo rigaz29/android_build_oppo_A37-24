@@ -1,0 +1,109 @@
+From 31103b334df2175808fd0f22f7100a7eaea470c7 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 22:56:19 +0000
+Subject: [PATCH 5/5] releasetools: kembalikan TARGET_OTA_ASSERT_DEVICE
+ multi-perangkat
+
+Flash pertama gugur di TWRP:
+
+  script aborted: E3004: This package is for "A37" devices; this is a "A37f".
+  Updater process ended with ERROR: 1
+
+Perangkat melaporkan ro.product.device=A37f, sedangkan updater-script hanya
+menerima "A37". Bukan salah setelan: device tree SUDAH menyetel
+
+  TARGET_OTA_ASSERT_DEVICE := A37,a37,a37f,A37f,A37fw,a37fw,A37m,a37m,msm8916,msm8939
+
+tetapi variabel itu tidak dibaca siapa pun di 24.0 -- nol kecocokan di seluruh
+build/make. Mekanismenya tambalan LineageOS yang terdiri dari tiga bagian, dan
+ketiganya hilang saat rebase:
+
+  core/Makefile                     pancarkan ota_override_device ke misc_info
+  common.py                         baca ota_override_device, jatuh ke
+                                    ro.product.device bila kosong
+  edify_generator.py AssertDevice   pecah daftar koma, dan periksa juga
+                                    ro.build.product
+
+Ketiganya dikembalikan mengikuti lineage-23.2 (Makefile:6239, common.py:448,
+edify_generator.py:138-146). Pemeriksaan ro.build.product ikut dibawa karena
+sebagian perangkat lawas hanya menyetel properti itu.
+
+Diuji sebelum build ulang: AssertDevice dijalankan langsung di Python dengan
+daftar A37 milik perangkat ini, dan keluarannya memuat cabang untuk A37f pada
+kedua properti. Sebelumnya keluarannya satu perbandingan tunggal terhadap "A37".
+
+Kegagalan ini tidak merusak apa pun. Assert berjalan sebelum partisi mana pun
+disentuh, dan recovery.log memastikan tidak ada penulisan: "Install took 0
+second(s)" lalu "Error installing zip file".
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ core/Makefile                         |  3 +++
+ tools/releasetools/common.py          |  6 +++++-
+ tools/releasetools/edify_generator.py | 21 +++++++++++++++------
+ 3 files changed, 23 insertions(+), 7 deletions(-)
+
+diff --git a/core/Makefile b/core/Makefile
+index 0dca0d19c5..277d0ec0f5 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -6098,6 +6098,9 @@ $(INSTALLED_MISC_INFO_TARGET):
+ 	$(call pretty,"Target misc_info.txt: $@")
+ 	$(hide) echo "recovery_api_version=$(RECOVERY_API_VERSION)" >> $@
+ 	$(hide) echo "fstab_version=$(RECOVERY_FSTAB_VERSION)" >> $@
++ifneq ($(TARGET_OTA_ASSERT_DEVICE),)
++	$(hide) echo "ota_override_device=$(TARGET_OTA_ASSERT_DEVICE)" >> $@
++endif
+ ifdef BOARD_FLASH_BLOCK_SIZE
+ 	$(hide) echo "blocksize=$(BOARD_FLASH_BLOCK_SIZE)" >> $@
+ endif
+diff --git a/tools/releasetools/common.py b/tools/releasetools/common.py
+index 24c4db6ff3..b4623e7f11 100644
+--- a/tools/releasetools/common.py
++++ b/tools/releasetools/common.py
+@@ -449,7 +449,11 @@ class BuildInfo(object):
+           "system_other"] = self._partition_fingerprints["system"]
+ 
+     # These two should be computed only after setting self._oem_props.
+-    self._device = self.GetOemProperty("ro.product.device")
++    # ota_override_device memuat daftar kode perangkat yang dipisah koma, dari
++    # TARGET_OTA_ASSERT_DEVICE. Diperlukan perangkat yang satu device tree-nya
++    # melayani beberapa varian, misalnya A37/A37f/A37fw/A37m.
++    self._device = self.info_dict.get("ota_override_device",
++                                      self.GetOemProperty("ro.product.device"))
+     self._fingerprint = self.CalculateFingerprint()
+     check_fingerprint(self._fingerprint)
+ 
+diff --git a/tools/releasetools/edify_generator.py b/tools/releasetools/edify_generator.py
+index 033c02e60c..87b02ad7bf 100644
+--- a/tools/releasetools/edify_generator.py
++++ b/tools/releasetools/edify_generator.py
+@@ -136,12 +136,21 @@ class EdifyGenerator(object):
+              timestamp, common.ErrorCode.OLDER_BUILD, timestamp_text))
+ 
+   def AssertDevice(self, device):
+-    """Assert that the device identifier is the given string."""
+-    cmd = ('getprop("ro.product.device") == "%s" || '
+-           'abort("E%d: This package is for \\"%s\\" devices; '
+-           'this is a \\"" + getprop("ro.product.device") + "\\".");') % (
+-               device, common.ErrorCode.DEVICE_MISMATCH, device)
+-    self.script.append(cmd)
++    """Assert that the device identifier is one of the given strings.
++
++    `device` boleh berisi beberapa kode perangkat yang dipisah koma, berasal
++    dari TARGET_OTA_ASSERT_DEVICE lewat ota_override_device. Diperiksa juga
++    ro.build.product, karena sebagian perangkat lawas hanya menyetel itu.
++    """
++    cmd = ('assert(' +
++           ' || \0'.join(
++               ['getprop("ro.product.device") == "%s" || '
++                'getprop("ro.build.product") == "%s"' % (i, i)
++                for i in device.split(",")]) +
++           ' || abort("E%d: This package is for device: %s; '
++           'this device is " + getprop("ro.product.device") + ".");' +
++           ');') % (common.ErrorCode.DEVICE_MISMATCH, device)
++    self.script.append(self.WordWrap(cmd))
+ 
+   def AssertSomeBootloader(self, *bootloaders):
+     """Asert that the bootloader version is one of *bootloaders."""

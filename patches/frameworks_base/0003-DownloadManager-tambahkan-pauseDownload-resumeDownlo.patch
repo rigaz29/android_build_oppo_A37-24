@@ -1,0 +1,122 @@
+From 80ac42fb40c817de47bd7f4014c44f680bc39c7a Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 20:48:43 +0000
+Subject: [PATCH 3/8] DownloadManager: tambahkan pauseDownload, resumeDownload,
+ PAUSED_MANUAL
+
+DownloadProvider lineage-24.0 memakai ketiganya di TrampolineActivity, tapi
+tak satu pun dideklarasikan di DownloadManager:
+
+  TrampolineActivity.java:115  cannot find symbol  pauseDownload(long)
+  TrampolineActivity.java:122  cannot find symbol  resumeDownload(long)
+  TrampolineActivity.java:124  cannot find symbol  PAUSED_MANUAL
+
+Keduanya di HEAD hulu masing-masing (DownloadProvider d60d5fc0), jadi celah
+hulu yang menghadang perangkat LineageOS 24.0 mana pun.
+
+Seluruh 24 anggota DownloadManager yang dipakai TrampolineActivity disisir
+sekaligus: tepat tiga yang hilang.
+
+Diimplementasikan SUNGGUHAN, bukan stub, karena infrastrukturnya memang sudah
+ada di android.provider.Downloads.Impl:
+  CONTROL_PAUSED / CONTROL_RUN   (:542, :547)
+  STATUS_PAUSED_BY_APP           (:631)
+
+Polanya menyalin restartDownload di berkas yang sama: query dulu untuk
+memvalidasi status, lempar IllegalArgumentException kalau tidak sesuai, lalu
+update lewat ContentResolver dengan helper getWhereClauseForIds yang sudah ada.
+
+PAUSED_MANUAL bernilai 5, meneruskan dari PAUSED_UNKNOWN = 4.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+Change-Id: Iffaf09550d806ce3bf491fb78596d2bcfefc28dc
+---
+ core/java/android/app/DownloadManager.java | 67 ++++++++++++++++++++++
+ 1 file changed, 67 insertions(+)
+
+diff --git a/core/java/android/app/DownloadManager.java b/core/java/android/app/DownloadManager.java
+index c12f48c1c0c1..64012fcef80e 100644
+--- a/core/java/android/app/DownloadManager.java
++++ b/core/java/android/app/DownloadManager.java
+@@ -301,6 +301,15 @@ public class DownloadManager {
+      */
+     public final static int PAUSED_UNKNOWN = 4;
+ 
++    /**
++     * [A37] Value of {@link #COLUMN_REASON} when the download is paused because
++     * the user paused it manually.
++     *
++     * Dirujuk DownloadProvider lineage-24.0 (TrampolineActivity) tapi tidak
++     * pernah dideklarasikan di hulu. Nilainya meneruskan dari PAUSED_UNKNOWN.
++     */
++    public final static int PAUSED_MANUAL = 5;
++
+     /**
+      * Broadcast intent action sent by the download manager when a download completes.
+      */
+@@ -1263,6 +1272,64 @@ public class DownloadManager {
+      * @param ids the IDs of the downloads
+      * @hide
+      */
++    /**
++     * [A37] Pause the given downloads, which must be running.
++     *
++     * Dirujuk DownloadProvider lineage-24.0 tapi tidak pernah dideklarasikan di
++     * hulu. Diimplementasikan memakai infrastruktur yang memang sudah ada:
++     * Downloads.Impl.CONTROL_PAUSED dan STATUS_PAUSED_BY_APP.
++     *
++     * @param ids the IDs of the downloads
++     * @hide
++     */
++    public void pauseDownload(long... ids) {
++        Cursor cursor = query(new Query().setFilterById(ids));
++        try {
++            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
++                int status = cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS));
++                if (status != STATUS_RUNNING && status != STATUS_PENDING) {
++                    throw new IllegalArgumentException("Cannot pause download: "
++                            + cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
++                }
++            }
++        } finally {
++            cursor.close();
++        }
++
++        ContentValues values = new ContentValues();
++        values.put(Downloads.Impl.COLUMN_CONTROL, Downloads.Impl.CONTROL_PAUSED);
++        values.put(Downloads.Impl.COLUMN_STATUS, Downloads.Impl.STATUS_PAUSED_BY_APP);
++        mResolver.update(mBaseUri, values, getWhereClauseForIds(ids), getWhereArgsForIds(ids));
++    }
++
++    /**
++     * [A37] Resume the given downloads, which must be paused.
++     *
++     * Lihat catatan di pauseDownload.
++     *
++     * @param ids the IDs of the downloads
++     * @hide
++     */
++    public void resumeDownload(long... ids) {
++        Cursor cursor = query(new Query().setFilterById(ids));
++        try {
++            for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
++                int status = cursor.getInt(cursor.getColumnIndex(COLUMN_STATUS));
++                if (status != STATUS_PAUSED) {
++                    throw new IllegalArgumentException("Cannot resume download: "
++                            + cursor.getLong(cursor.getColumnIndex(COLUMN_ID)));
++                }
++            }
++        } finally {
++            cursor.close();
++        }
++
++        ContentValues values = new ContentValues();
++        values.put(Downloads.Impl.COLUMN_CONTROL, Downloads.Impl.CONTROL_RUN);
++        values.put(Downloads.Impl.COLUMN_STATUS, Downloads.Impl.STATUS_PENDING);
++        mResolver.update(mBaseUri, values, getWhereClauseForIds(ids), getWhereArgsForIds(ids));
++    }
++
+     @UnsupportedAppUsage
+     public void restartDownload(long... ids) {
+         Cursor cursor = query(new Query().setFilterById(ids));

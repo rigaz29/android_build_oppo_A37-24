@@ -1,0 +1,79 @@
+From 53e225be9032f2490c4f10244eb7614e6342e422 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 01:48:10 +0000
+Subject: [PATCH] LineageSettingsProvider: dua setelan AOSP pindah rumah di
+ Android 17
+
+LineageDatabaseHelper merujuk dua konstanta yang tidak ada lagi di
+android.provider.Settings pada 24.0:
+
+  baris 303  Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
+  baris 313  Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS
+  baris 318  idem
+
+Berbeda dengan celah frameworks/base yang lain, ini bukan tambalan LineageOS
+yang tertinggal saat rebase. Keduanya milik AOSP dan AOSP sendiri yang
+memindahkannya di Android 17:
+
+  UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
+      -> android.net.ConnectivitySettingsManager
+         (packages/modules/Connectivity, @SystemApi MODULE_LIBRARIES --
+         tidak terjangkau aplikasi sistem biasa seperti provider ini)
+  TETHERING_ALLOW_VPN_UPSTREAMS
+      -> konstanta privat di Tethering.java
+         (Tethering/src/com/android/networkstack/tethering/Tethering.java:193)
+
+Jadi menambahkannya kembali ke Settings.java salah arah: nilainya kini dimiliki
+modul, bukan kerangka kerja. Yang benar adalah memakai nama kuncinya langsung,
+persis seperti yang AOSP lakukan di Tethering.java.
+
+Berkas ini sudah memakai idiom itu untuk kasus serupa sebelumnya
+(baris 279 dan 290, "sfps_require_screen_on_to_auth_enabled" dengan komentar
+"Previously Settings.Secure..."), jadi tambalan ini hanya mengikuti konvensi
+yang sudah ada di berkas yang sama.
+
+Nama kunci tidak berubah, sehingga jalur upgrade basis data tetap membaca dan
+menulis baris yang sama seperti sebelumnya. Sesudah disunting, nol rujukan
+tersisa di baris yang dikompilasi; tiga kecocokan yang masih ada semuanya
+komentar.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I4c587849c69fa8196352d40f9981c5ffe025d085
+---
+ .../lineageos/lineagesettings/LineageDatabaseHelper.java | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+index 2057bee0..237d7fd6 100644
+--- a/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
++++ b/packages/LineageSettingsProvider/src/org/lineageos/lineagesettings/LineageDatabaseHelper.java
+@@ -297,10 +297,10 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
+         }
+ 
+         if (upgradeVersion < 20) {
+-            // Clear Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
++            // Previously Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
+             if (mUserHandle == UserHandle.USER_SYSTEM) {
+                 Settings.Global.putString(mContext.getContentResolver(),
+-                        Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS, "");
++                        "uids_allowed_on_restricted_networks", "");
+             }
+             upgradeVersion = 20;
+         }
+@@ -310,12 +310,13 @@ public class LineageDatabaseHelper extends SQLiteOpenHelper{
+             SQLiteStatement stmt = null;
+             try {
+                 stmt = db.compileStatement("SELECT value FROM secure WHERE name=?");
+-                stmt.bindString(1, Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS);
++                // Previously Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS
++                stmt.bindString(1, "tethering_allow_vpn_upstreams");
+                 long value = stmt.simpleQueryForLong();
+ 
+                 if (value != 0) {
+                     Settings.Secure.putInt(mContext.getContentResolver(),
+-                            Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS, (int) value);
++                            "tethering_allow_vpn_upstreams", (int) value);
+                 }
+             } catch (SQLiteDoneException ex) {
+                 // LineageSettings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS is not set

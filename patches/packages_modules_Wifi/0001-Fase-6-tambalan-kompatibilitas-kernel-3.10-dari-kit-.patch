@@ -1,0 +1,92 @@
+From 4d70072f3b8422d01e1e6e2741418d5a5d46e540 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Thu, 10 Sep 2026 14:41:59 +0000
+Subject: [PATCH] Fase 6: tambalan kompatibilitas kernel 3.10 dari kit 23.2
+
+Boot 24.0 keempat berhasil melewati init tahap pertama dan masuk tahap kedua --
+/system dan /data ter-mount, logd, servicemanager dan vold jalan -- lalu berhenti
+maju tanpa panic dan tanpa reboot. Zygote dan system_server tidak pernah muncul.
+
+Jejak kernel menunjuk kelas cgroup:
+
+  libprocessgroup: Failed to apply NormalIoPriority process profile
+  init: createProcessGroup(1000, 394) failed for service (servicemanager)
+  init: createProcessGroup(1000, 396) failed for service (vndservicemanager)
+  init: Command (start console) failed: Could not start service
+
+Kernel 3.10 A37 tidak punya cgroup v2, dan libprocessgroup 24.0 memperlakukan
+kegagalannya sebagai fatal per layanan.
+
+Tambalan ini diambil dari kit LOS 23.2 perangkat yang sama, tempat semuanya sudah
+terbukti di perangkat nyata. Yang diterapkan hanya yang menempel MULUS ke pohon
+24.0, artinya kodenya memang belum tersentuh sama sekali; tidak ada yang dipaksa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I82492ee316f3eac2ef60e2412a3f45a48f9fa0a5
+---
+ .../server/wifi/hal/WifiStaIfaceAidlImpl.java | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
+
+diff --git a/service/java/com/android/server/wifi/hal/WifiStaIfaceAidlImpl.java b/service/java/com/android/server/wifi/hal/WifiStaIfaceAidlImpl.java
+index 4a6c0c3db6..621e75cd43 100644
+--- a/service/java/com/android/server/wifi/hal/WifiStaIfaceAidlImpl.java
++++ b/service/java/com/android/server/wifi/hal/WifiStaIfaceAidlImpl.java
+@@ -99,6 +99,32 @@ public class WifiStaIfaceAidlImpl implements IWifiStaIface {
+     private final boolean mWifiLinkLayerAllRadiosStatsAggregationEnabled;
+     private boolean mIsGetCachedScanDataSupported = true;
+ 
++    /**
++     * A37: HAL Wi-Fi legacy msm8916 menolak getLinkLayerStats secara PERMANEN.
++     *
++     * Penyebabnya terbaca di lapisan bawah, berulang persis sebelum tiap
++     * kegagalan: "get_wifi_interface_info:
++     * QCA_WLAN_VENDOR_ATTR_LL_STATS_IFACE_INFO_TS_DUTY_CYCLE not found".
++     * Atribut vendor QCA itu tidak pernah dipancarkan driver era 2016 ini,
++     * jadi penolakannya tidak akan pernah berubah.
++     *
++     * Berbeda dari getCachedScanData di atas, kodenya bukan ERROR_NOT_SUPPORTED
++     * melainkan ERROR_INVALID_ARGS (7), yang menurut definisinya BISA transien.
++     * Karena itu jangan dimatikan pada kegagalan pertama; hitung kegagalan
++     * berturut-turut dan berhenti hanya setelah jelas polanya. Penghitung
++     * direset setiap kali panggilan berhasil.
++     *
++     * Cakupannya aman: objek ini dibuat baru untuk tiap antarmuka STA
++     * (WifiStaIface.java:183), jadi mematikan-menyalakan Wi-Fi otomatis
++     * mencoba lagi dari awal.
++     *
++     * Terukur di perangkat sebelum penjaga ini: 58 kegagalan dalam 33 menit,
++     * masing-masing satu perjalanan binder plus pembangunan exception.
++     */
++    private static final int LINK_LAYER_STATS_FAILURE_LIMIT = 5;
++    private int mLinkLayerStatsFailures = 0;
++    private boolean mIsLinkLayerStatsSupported = true;
++
+     public WifiStaIfaceAidlImpl(@NonNull android.hardware.wifi.IWifiStaIface staIface,
+             @NonNull Context context, @NonNull SsidTranslator ssidTranslator) {
+         mWifiStaIface = staIface;
+@@ -426,13 +452,24 @@ public class WifiStaIfaceAidlImpl implements IWifiStaIface {
+     public WifiLinkLayerStats getLinkLayerStats() {
+         final String methodStr = "getLinkLayerStats";
+         synchronized (mLock) {
++            // A37: sudah terbukti ditolak berulang kali oleh HAL ini.
++            if (!mIsLinkLayerStatsSupported) return null;
++
+             try {
+                 if (!checkIfaceAndLogFailure(methodStr)) return null;
+                 StaLinkLayerStats halStats = mWifiStaIface.getLinkLayerStats();
++                // A37: berhasil -- polanya bukan kegagalan permanen.
++                mLinkLayerStatsFailures = 0;
+                 return halToFrameworkLinkLayerStats(halStats);
+             } catch (RemoteException e) {
+                 handleRemoteException(e, methodStr);
+             } catch (ServiceSpecificException e) {
++                // A37: hitung kegagalan berturut-turut, berhenti setelah jelas polanya.
++                if (++mLinkLayerStatsFailures >= LINK_LAYER_STATS_FAILURE_LIMIT) {
++                    mIsLinkLayerStatsSupported = false;
++                    Log.e(TAG, methodStr + " failed " + LINK_LAYER_STATS_FAILURE_LIMIT
++                            + " times in a row; disabling until the interface is set up again.");
++                }
+                 handleServiceSpecificException(e, methodStr);
+             } catch (IllegalArgumentException e) {
+                 // May indicate a malformed return value in the HAL.

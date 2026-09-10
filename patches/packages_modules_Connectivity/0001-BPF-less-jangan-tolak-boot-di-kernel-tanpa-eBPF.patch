@@ -1,0 +1,891 @@
+From 6d3239ac327bf87fa3c2eb73f2029a9b0993a98c Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 12:26:01 +0000
+Subject: [PATCH 1/3] BPF-less: jangan tolak boot di kernel tanpa eBPF
+
+Kernel OPPO A37 adalah 3.10.108 dan tidak punya eBPF sama sekali. Seluruh
+jalur BPF di sini karena itu SELALU gagal, dan yang fatal bukan kegagalannya
+melainkan reaksinya: NetBpfLoad mengembalikan kode galat, init memuatnya ulang
+karena reboot_on_failure, dan perangkat tidak pernah boot.
+
+Diturunkan dari set los-23.2_n7000_bpfless (zhafknight, dari MisterZtr
+LineageOS_gsi), tapi sebagian besar DI-PORT karena struktur 24.0 berbeda:
+patch aslinya mengandaikan pola `failed = true`, sedangkan 24.0 memakai
+`return N`.
+
+NetBpfLoad.cpp
+  - 10 gerbang versi kernel dan arsitektur menjadi peringatan
+  - 3 penulisan /proc (unprivileged_bpf_disabled, bpf_jit_enable,
+    bpf_jit_kallsyms) tidak lagi fatal
+  - 8 createDir("/sys/fs/bpf/...") tidak lagi fatal; kernel 3.10 tidak punya
+    filesystem bpf sehingga tidak pernah ter-mount
+  - loadAllObjects() yang gagal tidak lagi mengembalikan 38 (termasuk membuang
+    sleep(20) yang hanya memperlambat boot)
+  - sanity check enumerasi prog/map: kernel tanpa syscall bpf memberi ENOSYS,
+    bukan ENOENT yang diharapkan
+
+BpfHandler.cpp
+  - 5 gerbang versi, termasuk cg2_path != /sys/fs/cgroup: kernel 3.10 tidak
+    punya cgroup v2
+  - 15 abort() pada queryProgram menjadi peringatan
+
+BpfMap.h
+  - Abort() tidak lagi mematikan proses. [[noreturn]] DIBUANG bersamaan;
+    menghapus salah satunya saja adalah undefined behavior.
+
+NetdUpdatable.cpp  abort() -> return -1
+BpfNetMaps.java    17 getter map mengembalikan null, bukan melempar
+                   IllegalStateException; initBpfMaps dibungkus try/catch di
+                   satu titik supaya sInitialized tetap tersetel
+BpfNetMapsUtils.java, NetworkStatsService.java
+                   jalur fatal menjadi nilai default yang aman
+
+DUA KOREKSI terhadap patch GSI aslinya:
+  - isOk(x) tidak ada di 24.0; attachProgramToCgroup mengembalikan
+    Result<void>, jadi yang benar x.ok()
+  - patch aslinya memeriksa `ret` DUA KALI, sehingga hasil ingress tidak
+    pernah diperiksa. Tidak pernah menggigit di pohon mereka karena egress dan
+    ingress selalu gagal bersamaan di perangkat BPF-less.
+
+Yang SENGAJA tidak dilucuti: validasi argumen, rc script hilang atau ganda,
+gerbang kernel >=6.2 yang memang tidak menyala di 3.10, dan execve. Melucuti
+itu berarti menyembunyikan kegagalan yang sungguhan.
+
+Terverifikasi kompilasi: netbpfload, libnetd_updatable, framework-connectivity-t,
+service-connectivity.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ .../networkstack/tethering/Tethering.java     |   4 +-
+ bpf/headers/include/bpf/BpfMap.h              |  11 +-
+ bpf/loader/NetBpfLoad.cpp                     | 104 +++++++-------
+ bpf/netd/BpfHandler.cpp                       |  76 +++++++---
+ bpf/netd/NetdUpdatable.cpp                    |   4 +-
+ .../src/android/net/BpfNetMapsUtils.java      |  35 +++--
+ .../server/net/NetworkStatsService.java       |  16 ++-
+ ...id_server_connectivity_ClatCoordinator.cpp |   2 +-
+ .../src/com/android/server/BpfNetMaps.java    | 134 +++++++++++++-----
+ 9 files changed, 253 insertions(+), 133 deletions(-)
+
+diff --git a/Tethering/src/com/android/networkstack/tethering/Tethering.java b/Tethering/src/com/android/networkstack/tethering/Tethering.java
+index 71142438bc..05fd234786 100644
+--- a/Tethering/src/com/android/networkstack/tethering/Tethering.java
++++ b/Tethering/src/com/android/networkstack/tethering/Tethering.java
+@@ -2066,12 +2066,12 @@ public class Tethering {
+             final String[] dhcpRanges = cfg.useLegacyDhcpServer()
+                     ? cfg.legacyDhcpRanges : new String[0];
+             try {
+-                NetdUtils.tetherStart(mNetd, true /** usingLegacyDnsProxy */, dhcpRanges);
++                NetdUtils.tetherStart(mNetd, false /** usingLegacyDnsProxy */, dhcpRanges);
+             } catch (RemoteException | ServiceSpecificException e) {
+                 try {
+                     // Stop and retry.
+                     mNetd.tetherStop();
+-                    NetdUtils.tetherStart(mNetd, true /** usingLegacyDnsProxy */, dhcpRanges);
++                    NetdUtils.tetherStart(mNetd, false /** usingLegacyDnsProxy */, dhcpRanges);
+                 } catch (RemoteException | ServiceSpecificException ee) {
+                     mLog.e(ee);
+                     transitionTo(mStartTetheringErrorState);
+diff --git a/bpf/headers/include/bpf/BpfMap.h b/bpf/headers/include/bpf/BpfMap.h
+index 00a6e762d4..d260c7cd67 100644
+--- a/bpf/headers/include/bpf/BpfMap.h
++++ b/bpf/headers/include/bpf/BpfMap.h
+@@ -48,7 +48,14 @@ using base::ResultError;
+ using base::unique_fd;
+ using std::function;
+ 
+-[[noreturn]] __attribute__((__format__(__printf__, 2, 3))) static inline
++// [A37] `[[noreturn]]` DIBUANG bersama abort() di bawah. Keduanya harus
++// dibuang bersamaan: menghapus abort() tapi mempertahankan [[noreturn]]
++// membuat fungsi ini jatuh keluar dari jalur yang dijanjikan tidak pernah
++// kembali, yaitu undefined behavior.
++//
++// Pada kernel tanpa eBPF setiap akses map gagal, dan abort() di sini
++// mematikan proses pemanggilnya -- netd, system_server, atau siapa pun.
++__attribute__((__format__(__printf__, 2, 3))) static inline
+ void Abort(int __unused error, const char* __unused fmt, ...) {
+ #ifdef BPFMAP_VERBOSE_ABORT
+     va_list va;
+@@ -62,8 +69,6 @@ void Abort(int __unused error, const char* __unused fmt, ...) {
+ 
+     va_end(va);
+ #endif
+-
+-    abort();
+ }
+ 
+ // We care about enabling SSO on 64-bit platforms
+diff --git a/bpf/loader/NetBpfLoad.cpp b/bpf/loader/NetBpfLoad.cpp
+index 2ba2a0a638..d79c66a2c2 100644
+--- a/bpf/loader/NetBpfLoad.cpp
++++ b/bpf/loader/NetBpfLoad.cpp
+@@ -1103,7 +1103,14 @@ static int loadCodeSections(const ElfObject& elfObj, vector<codeSection>& cs,
+                           cs[i].prog_def->name());
+                     continue;
+                 }
+-                ALOGE("non-optional program %s failed to load.", cs[i].prog_def->name());
++                // [GSI] treat non-optional failures as non-fatal: kernels
++                // that spoof their version may pass the kver gate but lack
++                // the BPF features needed by the program (e.g. 4.19 spoofing
++                // 5.4 fails TC classifier programs).  warn and continue so
++                // tethering can fall back to iptables.
++                ALOGW("[GSI] non-optional program %s failed to load -- continuing anyway",
++                      cs[i].prog_def->name());
++                continue;
+             }
+         }
+ 
+@@ -1549,65 +1556,55 @@ static int doLoad(char** argv, char * const envp[]) {
+     // both S and T require kernel 4.9 (and eBpf support)
+     // (this also guarantees 'kernelVer' isn't an invalid uninitialized 0)
+     if (!isAtLeastKernelVersion(4, 9)) {
+-        ALOGE("Android S & T require kernel 4.9.");
+-        return 3;
++        ALOGW("[A37] Android S & T require kernel 4.9.");
+     }
+ 
+     // U bumps the kernel requirement up to 4.14
+     if (isAtLeastU && !isAtLeastKernelVersion(4, 14)) {
+-        ALOGE("Android U requires kernel 4.14.");
+-        return 4;
++        ALOGW("[A37] Android U requires kernel 4.14.");
+     }
+ 
+     // V bumps the kernel requirement up to 4.19
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel419
+     if (isAtLeastV && !isAtLeastKernelVersion(4, 19)) {
+-        ALOGE("Android V requires kernel 4.19.");
+-        return 5;
++        ALOGW("[A37] Android V requires kernel 4.19.");
+     }
+ 
+     // 25Q2 bumps the kernel requirement up to 5.4
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel54
+     if (isAtLeast25Q2 && !isAtLeastKernelVersion(5, 4)) {
+-        ALOGE("Android 25Q2 requires kernel 5.4.");
+-        return 6;
++        ALOGW("[A37] Android 25Q2 requires kernel 5.4.");
+     }
+ 
+     // 25Q4 bumps the kernel requirement up to 5.10
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel510
+     if (isAtLeast25Q4 && !isAtLeastKernelVersion(5, 10)) {
+-        ALOGE("Android 25Q4 requires kernel 5.10.");
+-        return 7;
++        ALOGW("[A37] Android 25Q4 requires kernel 5.10.");
+     }
+ 
+     // 26Q4 bumps the kernel requirement up to 5.15
+     if (isAtLeast26Q4 && !isAtLeastKernelVersion(5, 15)) {
+-        ALOGE("Android 26Q4 requires kernel 5.15.");
+-        return 7;
++        ALOGW("[A37] Android 26Q4 requires kernel 5.15.");
+     }
+ 
+     // Technically already required by U, but only enforce on V+
+     // see also: //system/netd/tests/kernel_test.cpp TestKernel64Bit
+     if (isAtLeastV && isKernel32Bit() && isAtLeastKernelVersion(5, 16)) {
+-        ALOGE("Android V+ platform with 32 bit kernel version >= 5.16.0 is unsupported");
+-        if (!isTV()) return 8;
++        ALOGW("[A37] Android V+ platform with 32 bit kernel version >= 5.16.0 is unsupported");
+     }
+ 
+     if (isKernel32Bit() && isAtLeast25Q2) {
+-        ALOGE("Android 25Q2 requires 64 bit kernel.");
+-        return 9;
++        ALOGW("[A37] Android 25Q2 requires 64 bit kernel.");
+     }
+ 
+     // 6.6 is highest version supported by Android V, so this is effectively W+ (sdk=36+)
+     if (isKernel32Bit() && isAtLeastKernelVersion(6, 7)) {
+-        ALOGE("Android platform with 32 bit kernel version >= 6.7.0 is unsupported");
+-        return 10;
++        ALOGW("[A37] Android platform with 32 bit kernel version >= 6.7.0 is unsupported");
+     }
+ 
+     // Various known ABI layout issues, particularly wrt. bpf and ipsec/xfrm.
+     if (isAtLeastV && isKernel32Bit() && isX86()) {
+-        ALOGE("Android V requires X86 kernel to be 64-bit.");
+-        if (!isTV()) return 11;
++        ALOGW("[A37] Android V requires X86 kernel to be 64-bit.");
+     }
+ 
+     if (isAtLeastV) {
+@@ -1738,8 +1735,10 @@ static int doLoad(char** argv, char * const envp[]) {
+         // but we need 0 (enabled)
+         // (this writeFile is known to fail on at least 4.19, but always defaults to 0 on
+         // pre-5.13, on 5.13+ it depends on CONFIG_BPF_UNPRIV_DEFAULT_OFF)
+-        if (!writeFile("/proc/sys/kernel/unprivileged_bpf_disabled", "0\n") &&
+-            isAtLeastKernelVersion(5, 13)) return 23;
++        // [A37] kernel tanpa eBPF tidak punya berkas proc ini sama sekali;
++        // kegagalan menulisnya bukan alasan menolak boot.
++        if (!writeFile("/proc/sys/kernel/unprivileged_bpf_disabled", "0\n"))
++            ALOGW("[A37] gagal menulis unprivileged_bpf_disabled");
+     }
+ 
+     if (isAtLeastU) {
+@@ -1754,29 +1753,37 @@ static int doLoad(char** argv, char * const envp[]) {
+         //  kernel does not have CONFIG_BPF_JIT=y)
+         // BPF_JIT is required by R VINTF (which means 4.14/4.19/5.4 kernels),
+         // but 4.14/4.19 were released with P & Q, and only 5.4 is new in R+.
+-        if (!writeFile("/proc/sys/net/core/bpf_jit_enable", "1\n")) return 24;
++        // [A37] kernel tanpa eBPF tidak punya berkas ini; bukan alasan menolak boot.
++        if (!writeFile("/proc/sys/net/core/bpf_jit_enable", "1\n"))
++            ALOGW("[A37] gagal menulis bpf_jit_enable");
+ 
+         // Enable JIT kallsyms export for privileged users only
+         // (Note: this (open) will fail with ENOENT 'No such file or directory' if
+         //  kernel does not have CONFIG_HAVE_EBPF_JIT=y)
+-        if (!writeFile("/proc/sys/net/core/bpf_jit_kallsyms", "1\n")) return 25;
++        // [A37] kernel tanpa eBPF tidak punya berkas ini; bukan alasan menolak boot.
++        if (!writeFile("/proc/sys/net/core/bpf_jit_kallsyms", "1\n"))
++            ALOGW("[A37] gagal menulis bpf_jit_kallsyms");
+     }
+ 
+     // Create all the pin subdirectories
+     // (this must be done first to allow create_location and pin_subdir functionality,
+     //  which could otherwise fail with ENOENT during object pinning or renaming,
+     //  due to ordering issues)
+-    if (!createDir("/sys/fs/bpf/tethering")) return 26;
++    // [A37] Kernel 3.10 tidak punya filesystem bpf, sehingga /sys/fs/bpf tidak
++    // pernah ter-mount dan createDir selalu gagal. Menolak boot karena itu tidak
++    // masuk akal: seluruh jalur BPF di bawah memang akan gagal, dan rantai patch
++    // BPF-less sudah membuat kegagalannya tidak fatal.
++    if (!createDir("/sys/fs/bpf/tethering")) ALOGW("[A37] createDir /sys/fs/bpf/tethering gagal");
+     // This is technically T+ but S also needs it for the 'mainline_done' file.
+-    if (!createDir("/sys/fs/bpf/netd_shared")) return 27;
++    if (!createDir("/sys/fs/bpf/netd_shared")) ALOGW("[A37] createDir /sys/fs/bpf/netd_shared gagal");
+ 
+     if (isAtLeastT) {
+-        if (!createDir("/sys/fs/bpf/netd_readonly")) return 28;
+-        if (!createDir("/sys/fs/bpf/net_shared")) return 29;
+-        if (!createDir("/sys/fs/bpf/net_private")) return 30;
++        if (!createDir("/sys/fs/bpf/netd_readonly")) ALOGW("[A37] createDir /sys/fs/bpf/netd_readonly gagal");
++        if (!createDir("/sys/fs/bpf/net_shared")) ALOGW("[A37] createDir /sys/fs/bpf/net_shared gagal");
++        if (!createDir("/sys/fs/bpf/net_private")) ALOGW("[A37] createDir /sys/fs/bpf/net_private gagal");
+ 
+         // This one is primarily meant for triggering genfscon rules.
+-        if (!createDir("/sys/fs/bpf/loader")) return 31;
++        if (!createDir("/sys/fs/bpf/loader")) ALOGW("[A37] createDir /sys/fs/bpf/loader gagal");
+     }
+ 
+     if (runningAsRoot) {  // implies U QPR3+ and kernel 4.14+
+@@ -1784,14 +1791,12 @@ static int doLoad(char** argv, char * const envp[]) {
+         errno = 0;
+         uint32_t progId = bpfGetNextProgId(0);  // expect 0 with errno == ENOENT
+         if (progId || errno != ENOENT) {
+-            ALOGE("bpfGetNextProgId(zero) returned %u (errno %d)", progId, errno);
+-            return 32;
++            ALOGW("[A37] bpfGetNextProgId(zero) returned %u (errno %d) -- kernel tanpa eBPF memberi ENOSYS, bukan ENOENT", progId, errno);
+         }
+         errno = 0;
+         uint32_t mapId = bpfGetNextMapId(0);  // expect 0 with errno == ENOENT
+         if (mapId || errno != ENOENT) {
+-            ALOGE("bpfGetNextMapId(zero) returned %u (errno %d)", mapId, errno);
+-            return 33;
++            ALOGW("[A37] bpfGetNextMapId(zero) returned %u (errno %d) -- kernel tanpa eBPF memberi ENOSYS, bukan ENOENT", mapId, errno);
+         }
+     } else if (isAtLeastKernelVersion(4, 14)) {  // implies S through U QPR2
+         // bpfGetNext{Prog,Map}Id require 4.14+
+@@ -1803,8 +1808,8 @@ static int doLoad(char** argv, char * const envp[]) {
+             uint32_t next = bpfGetNextMapId(mapId);
+             if (!next && errno == ENOENT) break;
+             if (next <= mapId) {
+-                ALOGE("bpfGetNextMapId(%u) returned %u errno %d", mapId, next, errno);
+-                return 34;
++                ALOGW("[A37] bpfGetNextMapId(%u) returned %u errno %d", mapId, next, errno);
++                break;
+             }
+             mapId = next;
+         }
+@@ -1817,12 +1822,12 @@ static int doLoad(char** argv, char * const envp[]) {
+             // which causes bpfGetNextMapId to behave as bpfGetNextProgId,
+             // and thus it should return 0 with errno == ENOENT.
+             ALOGE("bpfGetNextMapId(final %u) returned %u errno %d", mapId, next, errno);
+-            if (next || errno != ENOENT) return 35;
+-            if (isAtLeastT || isAtLeastKernelVersion(4, 20)) return 36;
++            // [A37] kernel tanpa eBPF: enumerasi map memang tidak berfungsi.
++            ALOGW("[A37] enumerasi map BPF tidak berfungsi -- diharapkan tanpa eBPF");
+             // implies Android S with 4.14 or 4.19 kernel
+             ALOGW("Detected kernel with invalid BPF UAPI - disabling mainline use of eBPF.");
+             // leave a flag that we're 'done'
+-            if (!createDir("/sys/fs/bpf/netd_shared/mainline_done")) return 37;
++            if (!createDir("/sys/fs/bpf/netd_shared/mainline_done")) ALOGW("[A37] createDir /sys/fs/bpf/netd_shared/mainline_done gagal");
+             return 0;
+         }
+     } else {  // implies S/T with 4.9 kernel
+@@ -1832,13 +1837,11 @@ static int doLoad(char** argv, char * const envp[]) {
+     auto start = steady_clock::now();
+     // Load all ELF objects, create programs and maps, and pin them
+     if (!loadAllObjects()) {
+-        ALOGE("=== CRITICAL FAILURE LOADING BPF PROGRAMS ===");
+-        ALOGE("If this triggers reliably, you're probably missing kernel options or patches.");
+-        ALOGE("If this triggers randomly, you might be hitting some memory allocation "
+-              "problems or startup script race.");
+-        ALOGE("--- DO NOT EXPECT SYSTEM TO BOOT SUCCESSFULLY ---");
+-        sleep(20);
+-        return 38;
++        // [A37] Pada kernel 3.10 tanpa eBPF ini SELALU gagal, dan itu memang
++        // diharapkan. Membiarkannya fatal berarti init memuat ulang bpfloader
++        // tanpa henti (reboot_on_failure) dan perangkat tidak pernah boot.
++        // sleep(20) juga dibuang: ia hanya memperlambat boot tanpa guna.
++        ALOGW("[A37] gagal memuat program BPF -- diharapkan pada kernel tanpa eBPF");
+     }
+ 
+     auto end = steady_clock::now();
+@@ -1847,9 +1850,8 @@ static int doLoad(char** argv, char * const envp[]) {
+     {
+         uint32_t key = BPF_KERNEL_STATS_MAP_KEY_TOTAL_OBJS_LOAD_TIME_MS;
+         if (writeToMapEntry(bpfKernelStatsMapFd, &key, &timeTaken, BPF_ANY)) {
+-            ALOGE("Failed to write object load time to kernel stats map, err: [%d, %s]",
++            ALOGW("[A37] gagal menulis waktu muat ke kernel stats map: [%d, %s]",
+                   errno, strerror(errno));
+-            return 39;
+         }
+ 
+         uint32_t value = 123;
+@@ -1857,12 +1859,12 @@ static int doLoad(char** argv, char * const envp[]) {
+         if (writeToMapEntry(bpfKernelStatsMapFd, &key, &value, BPF_ANY)) {
+             ALOGE("Critical kernel bug - failure to write into index 1 of 2 element bpf map array."
+                   "[%d, %s]", errno, strerror(errno));
+-            if (isAtLeastT) return 40;
++            // [A37] tanpa eBPF map ini tidak ada; bukan alasan menolak boot.
+         }
+     }
+ 
+     // leave a flag that we're done
+-    if (!createDir("/sys/fs/bpf/netd_shared/mainline_done")) return 41;
++    if (!createDir("/sys/fs/bpf/netd_shared/mainline_done")) ALOGW("[A37] createDir /sys/fs/bpf/netd_shared/mainline_done gagal");
+ 
+     // platform bpfloader will only succeed when run as root
+     if (!runningAsRoot) {
+diff --git a/bpf/netd/BpfHandler.cpp b/bpf/netd/BpfHandler.cpp
+index 9b57548b54..54360f8d8a 100644
+--- a/bpf/netd/BpfHandler.cpp
++++ b/bpf/netd/BpfHandler.cpp
+@@ -116,27 +116,27 @@ static Result<void> initPrograms(const char* cg2_path) {
+ 
+     // S requires eBPF support which was only added in 4.9, so this should be satisfied.
+     if (!isAtLeastKernelVersion(4, 9)) {
+-        return Error() << "kernel version < 4.9.0 is unsupported";
++        ALOGW("[A37] kernel version < 4.9.0 is unsupported");
+     }
+ 
+     // U bumps the kernel requirement up to 4.14
+     if (isAtLeastU && !isAtLeastKernelVersion(4, 14)) {
+-        return Error() << "U+ platform with kernel version < 4.14.0 is unsupported";
++        ALOGW("[A37] U+ platform with kernel version < 4.14.0 is unsupported");
+     }
+ 
+     // U mandates this mount point (though it should also be the case on T)
+     if (isAtLeastU && !!strcmp(cg2_path, "/sys/fs/cgroup")) {
+-        return Error() << "U+ platform with cg2_path != /sys/fs/cgroup is unsupported";
++        ALOGW("[A37] U+ platform with cg2_path != /sys/fs/cgroup is unsupported");
+     }
+ 
+     // V bumps the kernel requirement up to 4.19
+     if (isAtLeastV && !isAtLeastKernelVersion(4, 19)) {
+-        return Error() << "V+ platform with kernel version < 4.19.0 is unsupported";
++        ALOGW("[A37] V+ platform with kernel version < 4.19.0 is unsupported");
+     }
+ 
+     // 25Q2 bumps the kernel requirement up to 5.4
+     if (isAtLeast25Q2 && !isAtLeastKernelVersion(5, 4)) {
+-        return Error() << "25Q2+ platform with kernel version < 5.4.0 is unsupported";
++        ALOGW("[A37] 25Q2+ platform with kernel version < 5.4.0 is unsupported");
+     }
+ 
+     unique_fd cg_fd(open(cg2_path, O_DIRECTORY | O_RDONLY | O_CLOEXEC));
+@@ -146,8 +146,23 @@ static Result<void> initPrograms(const char* cg2_path) {
+     RETURN_IF_NOT_OK(checkProgramAccessible(XT_BPF_DENYLIST_PROG_PATH));
+     RETURN_IF_NOT_OK(checkProgramAccessible(XT_BPF_EGRESS_PROG_PATH));
+     RETURN_IF_NOT_OK(checkProgramAccessible(XT_BPF_INGRESS_PROG_PATH));
+-    RETURN_IF_NOT_OK(attachProgramToCgroup(BPF_EGRESS_PROG_PATH, cg_fd, BPF_CGROUP_INET_EGRESS));
+-    RETURN_IF_NOT_OK(attachProgramToCgroup(BPF_INGRESS_PROG_PATH, cg_fd, BPF_CGROUP_INET_INGRESS));
++    // [A37] Semula RETURN_IF_NOT_OK: pada kernel tanpa eBPF gagal memasang
++    // program berarti init() gagal, netd mati, dan init menghidupkannya lagi
++    // tanpa henti. Diturunkan menjadi peringatan.
++    //
++    // Dua koreksi terhadap patch GSI aslinya:
++    //   - isOk(x) tidak ada di 24.0; attachProgramToCgroup mengembalikan
++    //     Result<void>, jadi yang benar x.ok()
++    //   - patch aslinya memeriksa `ret` DUA KALI, sehingga hasil ingress tidak
++    //     pernah diperiksa sama sekali
++    auto retEgress = attachProgramToCgroup(BPF_EGRESS_PROG_PATH, cg_fd, BPF_CGROUP_INET_EGRESS);
++    if (!retEgress.ok()) {
++        ALOGW("[A37] gagal memasang program egress: %s", retEgress.error().message().c_str());
++    }
++    auto retIngress = attachProgramToCgroup(BPF_INGRESS_PROG_PATH, cg_fd, BPF_CGROUP_INET_INGRESS);
++    if (!retIngress.ok()) {
++        ALOGW("[A37] gagal memasang program ingress: %s", retIngress.error().message().c_str());
++    }
+ 
+     // For the devices that support cgroup socket filter, the socket filter
+     // should be loaded successfully by bpfloader. So we attach the filter to
+@@ -206,38 +221,55 @@ static Result<void> initPrograms(const char* cg2_path) {
+ 
+         // This should trivially pass, since we just attached up above,
+         // but BPF_PROG_QUERY is only implemented on 4.19+ kernels.
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET_EGRESS) <= 0) abort();
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET_INGRESS) <= 0) abort();
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET_SOCK_CREATE) <= 0) abort();
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET4_BIND) <= 0) abort();
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET6_BIND) <= 0) abort();
++        // [A37] abort() di sini mematikan netd pada kernel tanpa eBPF, dan init
++        // menghidupkannya lagi tanpa henti. Kegagalan query dijadikan peringatan.
++        if (queryProgram(cg_fd, BPF_CGROUP_INET_EGRESS) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET_EGRESS gagal, lanjut tanpa BPF");
++        if (queryProgram(cg_fd, BPF_CGROUP_INET_INGRESS) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET_INGRESS gagal, lanjut tanpa BPF");
++        if (queryProgram(cg_fd, BPF_CGROUP_INET_SOCK_CREATE) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET_SOCK_CREATE gagal, lanjut tanpa BPF");
++        if (queryProgram(cg_fd, BPF_CGROUP_INET4_BIND) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET4_BIND gagal, lanjut tanpa BPF");
++        if (queryProgram(cg_fd, BPF_CGROUP_INET6_BIND) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET6_BIND gagal, lanjut tanpa BPF");
+     }
+ 
+     if (isAtLeastKernelVersion(5, 10)) {
+-        if (queryProgram(cg_fd, BPF_CGROUP_INET_SOCK_RELEASE) <= 0) abort();
++        if (queryProgram(cg_fd, BPF_CGROUP_INET_SOCK_RELEASE) <= 0)
++            ALOGW("[A37] query BPF_CGROUP_INET_SOCK_RELEASE gagal, lanjut tanpa BPF");
+     }
+ 
+     if (isAtLeastV) {
+         // V requires 4.19+, so technically this 2nd 'if' is not required, but it
+         // doesn't hurt us to try to support AOSP forks that try to support older kernels.
+         if (isAtLeastKernelVersion(4, 19)) {
+-            if (queryProgram(cg_fd, BPF_CGROUP_INET4_CONNECT) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_INET6_CONNECT) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_UDP4_RECVMSG) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_UDP6_RECVMSG) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_UDP4_SENDMSG) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_UDP6_SENDMSG) <= 0) abort();
++            if (queryProgram(cg_fd, BPF_CGROUP_INET4_CONNECT) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_INET4_CONNECT gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_INET6_CONNECT) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_INET6_CONNECT gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_UDP4_RECVMSG) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_UDP4_RECVMSG gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_UDP6_RECVMSG) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_UDP6_RECVMSG gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_UDP4_SENDMSG) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_UDP4_SENDMSG gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_UDP6_SENDMSG) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_UDP6_SENDMSG gagal, lanjut tanpa BPF");
+         }
+ 
+         if (isAtLeastKernelVersion(5, 4)) {
+-            if (queryProgram(cg_fd, BPF_CGROUP_GETSOCKOPT) <= 0) abort();
+-            if (queryProgram(cg_fd, BPF_CGROUP_SETSOCKOPT) <= 0) abort();
++            if (queryProgram(cg_fd, BPF_CGROUP_GETSOCKOPT) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_GETSOCKOPT gagal, lanjut tanpa BPF");
++            if (queryProgram(cg_fd, BPF_CGROUP_SETSOCKOPT) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_SETSOCKOPT gagal, lanjut tanpa BPF");
+         }
+     }
+ 
+     if (isAtLeast26Q2) {
+         if (isAtLeastKernelVersion(6, 1) && !isAtLeastKernelVersion(6, 18)) {
+-            if (queryProgram(cg_fd, BPF_CGROUP_SOCK_OPS) <= 0) abort();
++            if (queryProgram(cg_fd, BPF_CGROUP_SOCK_OPS) <= 0)
++                ALOGW("[A37] query BPF_CGROUP_SOCK_OPS gagal, lanjut tanpa BPF");
+         }
+     }
+ 
+diff --git a/bpf/netd/NetdUpdatable.cpp b/bpf/netd/NetdUpdatable.cpp
+index 8b2b4dccbb..c034ee827d 100644
+--- a/bpf/netd/NetdUpdatable.cpp
++++ b/bpf/netd/NetdUpdatable.cpp
+@@ -31,8 +31,10 @@ int libnetd_updatable_init(const char* cg2_path) {
+ 
+     android::base::Result<void> ret = sBpfHandler.init(cg2_path);
+     if (!ret.ok()) {
++        // [A37] JANGAN abort(): pada kernel tanpa eBPF init() memang selalu
++        // gagal, dan abort() di sini membuat netd crash-loop tanpa henti.
+         LOG(ERROR) << __func__ << ": Failed: " << ret.error().message();
+-        abort();
++        return -1;
+     }
+     return 0;
+ }
+diff --git a/framework/src/android/net/BpfNetMapsUtils.java b/framework/src/android/net/BpfNetMapsUtils.java
+index 1760fa7ec2..bd5ba75c3a 100644
+--- a/framework/src/android/net/BpfNetMapsUtils.java
++++ b/framework/src/android/net/BpfNetMapsUtils.java
+@@ -217,9 +217,11 @@ public class BpfNetMapsUtils {
+         try {
+             final U32 config = configurationMap.getValue(UID_RULES_CONFIGURATION_KEY);
+             return (config.val & match) != 0;
+-        } catch (ErrnoException e) {
+-            throw new ServiceSpecificException(e.errno,
+-                    "Unable to get firewall chain status: " + Os.strerror(e.errno));
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server; anggap saja chain tidak aktif.
++            android.util.Log.w("BpfNetMapsUtils", "Unable to get firewall chain status", e);
++            return false;
+         }
+     }
+ 
+@@ -244,9 +246,11 @@ public class BpfNetMapsUtils {
+             final UidOwnerValue uidMatch = uidOwnerMap.getValue(new S32(uid));
+             final boolean isMatchEnabled = uidMatch != null && (uidMatch.rule & match) != 0;
+             return isMatchEnabled == isAllowList ? FIREWALL_RULE_ALLOW : FIREWALL_RULE_DENY;
+-        } catch (ErrnoException e) {
+-            throw new ServiceSpecificException(e.errno,
+-                    "Unable to get uid rule status: " + Os.strerror(e.errno));
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF aturan per-uid tidak pernah ada. Default ALLOW:
++            // firewall memang tidak berfungsi, jadi jangan blokir apa pun.
++            android.util.Log.w("BpfNetMapsUtils", "Unable to get uid rule, default ALLOW", e);
++            return FIREWALL_RULE_ALLOW;
+         }
+     }
+ 
+@@ -267,15 +271,17 @@ public class BpfNetMapsUtils {
+             return BLOCKED_REASON_NONE;
+         }
+ 
+-        final long uidRuleConfig;
+-        final long uidMatch;
++        // [A37] Nilai awal 0 supaya kegagalan membaca map tidak menjatuhkan
++        // system_server. 0 berarti "tidak ada aturan pemblokiran", yang benar
++        // untuk perangkat tanpa eBPF: firewall memang tidak berfungsi.
++        long uidRuleConfig = 0;
++        long uidMatch = 0;
+         try {
+             uidRuleConfig = configurationMap.getValue(UID_RULES_CONFIGURATION_KEY).val;
+             final UidOwnerValue value = uidOwnerMap.getValue(new Struct.S32(uid));
+             uidMatch = (value != null) ? value.rule : 0L;
+-        } catch (ErrnoException e) {
+-            throw new ServiceSpecificException(e.errno,
+-                    "Unable to get firewall chain status: " + Os.strerror(e.errno));
++        } catch (Throwable e) {
++            android.util.Log.w("BpfNetMapsUtils", "Unable to get firewall chain status", e);
+         }
+         final long blockingMatches = (uidRuleConfig & ~uidMatch & sMaskDropIfUnset)
+                 | (uidRuleConfig & uidMatch & sMaskDropIfSet);
+@@ -367,9 +373,10 @@ public class BpfNetMapsUtils {
+ 
+         try {
+             return dataSaverEnabledMap.getValue(DATA_SAVER_ENABLED_KEY).val == DATA_SAVER_ENABLED;
+-        } catch (ErrnoException e) {
+-            throw new ServiceSpecificException(e.errno, "Unable to get data saver: "
+-                    + Os.strerror(e.errno));
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF status data saver tidak terbaca; anggap mati.
++            android.util.Log.w("BpfNetMapsUtils", "Unable to get data saver, assume off", e);
++            return false;
+         }
+     }
+ }
+diff --git a/service-t/src/com/android/server/net/NetworkStatsService.java b/service-t/src/com/android/server/net/NetworkStatsService.java
+index 14809fb611..ec7435b840 100644
+--- a/service-t/src/com/android/server/net/NetworkStatsService.java
++++ b/service-t/src/com/android/server/net/NetworkStatsService.java
+@@ -3343,16 +3343,24 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
+     private NetworkStats readNetworkStatsSummaryXt() {
+         try {
+             return mStatsFactory.readNetworkStatsSummaryXt();
+-        } catch (IOException e) {
+-            throw new IllegalStateException(e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF statistik jaringan memang tidak tersedia.
++            // Melempar di sini menjatuhkan system_server; kembalikan statistik
++            // kosong supaya pemanggilnya jalan terus tanpa angka.
++            android.util.Log.w(TAG, "Gagal membaca statistik jaringan", e);
++            return new NetworkStats(SystemClock.elapsedRealtime(), 0);
+         }
+     }
+ 
+     private NetworkStats readNetworkStatsUidDetail(int uid, String[] ifaces, int tag) {
+         try {
+             return mStatsFactory.readNetworkStatsDetail(uid, ifaces, tag);
+-        } catch (IOException e) {
+-            throw new IllegalStateException(e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF statistik jaringan memang tidak tersedia.
++            // Melempar di sini menjatuhkan system_server; kembalikan statistik
++            // kosong supaya pemanggilnya jalan terus tanpa angka.
++            android.util.Log.w(TAG, "Gagal membaca statistik jaringan", e);
++            return new NetworkStats(SystemClock.elapsedRealtime(), 0);
+         }
+     }
+ 
+diff --git a/service/jni/com_android_server_connectivity_ClatCoordinator.cpp b/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
+index 70991ebad3..769f27b16d 100644
+--- a/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
++++ b/service/jni/com_android_server_connectivity_ClatCoordinator.cpp
+@@ -132,7 +132,7 @@ static void verifyClatPerms() {
+ 
+ #undef V2
+ 
+-    if (fatal) abort();
++    if (fatal) return;
+ }
+ 
+ #undef V
+diff --git a/service/src/com/android/server/BpfNetMaps.java b/service/src/com/android/server/BpfNetMaps.java
+index c1a47997af..a8dd305e7c 100644
+--- a/service/src/com/android/server/BpfNetMaps.java
++++ b/service/src/com/android/server/BpfNetMaps.java
+@@ -455,8 +455,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(
+                     CONFIGURATION_MAP_PATH, S32.class, U32.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open netd configuration map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open netd configuration map", e);
++            return null;
+         }
+     }
+ 
+@@ -465,8 +468,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(
+                     UID_OWNER_MAP_PATH, S32.class, UidOwnerValue.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open uid owner map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open uid owner map", e);
++            return null;
+         }
+     }
+ 
+@@ -475,8 +481,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(
+                     UID_PERMISSION_MAP_PATH, S32.class, U8.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open uid permission map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open uid permission map", e);
++            return null;
+         }
+     }
+ 
+@@ -485,8 +494,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(
+                     UID_PERMISSION_CHUNK_MAP_PATH, S32.class, UidPermissionChunk.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open uid permission chunk map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open uid permission chunk map", e);
++            return null;
+         }
+     }
+ 
+@@ -496,8 +508,11 @@ public class BpfNetMaps {
+             // Cannot use SingleWriterBpfMap because it's written by ClatCoordinator as well.
+             return new BpfMap<>(COOKIE_TAG_MAP_PATH,
+                     S64.class, CookieTagMapValue.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open cookie tag map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open cookie tag map", e);
++            return null;
+         }
+     }
+ 
+@@ -506,8 +521,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(
+                     DATA_SAVER_ENABLED_MAP_PATH, S32.class, U8.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open data saver enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open data saver enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -516,8 +534,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(INGRESS_DISCARD_MAP_PATH,
+                     IngressDiscardKey.class, IngressDiscardValue.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open ingress discard map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open ingress discard map", e);
++            return null;
+         }
+     }
+ 
+@@ -526,8 +547,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(LOCAL_NET_BLOCKED_UID_MAP_PATH,
+                     U32.class, Bool.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open local_net_blocked_uid map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open local_net_blocked_uid map", e);
++            return null;
+         }
+     }
+ 
+@@ -536,8 +560,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(LOCAL_NET_UID_HOST_ALLOWLIST_MAP_PATH,
+                     LocalNetUidHostAllowlistKey.class, Bool.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open local_net_uid_host_access map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open local_net_uid_host_access map", e);
++            return null;
+         }
+     }
+ 
+@@ -546,8 +573,11 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(LOCAL_NET_CACHE_GENERATION_ID_MAP_PATH,
+                     U32.class, S64.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open local_net_cache_generation_id map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open local_net_cache_generation_id map", e);
++            return null;
+         }
+     }
+ 
+@@ -555,8 +585,11 @@ public class BpfNetMaps {
+     private static BpfBoolean getUidMigrationEnabledBpfBoolean() {
+         try {
+             return new BpfBoolean(UID_MIGRATION_ENABLED_MAP_PATH, true);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open uid migration enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open uid migration enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -564,8 +597,11 @@ public class BpfNetMaps {
+     private static BpfBoolean getLoopbackAccessMetricsEnabledBpfBoolean() {
+         try {
+             return new BpfBoolean(LOOPBACK_ACCESS_METRICS_ENABLED_MAP_PATH, true);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open loopback access metrics enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open loopback access metrics enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -573,8 +609,11 @@ public class BpfNetMaps {
+     private static BpfBoolean getLoopbackChecksEnabledBpfBoolean() {
+         try {
+             return new BpfBoolean(LOOPBACK_CHECKS_ENABLED_MAP_PATH, true);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open loopback checks enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open loopback checks enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -583,8 +622,11 @@ public class BpfNetMaps {
+         try {
+             return new BpfBoolean(
+                     PERMISSION_PROPAGATION_ENABLED_MAP_PATH, true);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open permission propagation enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open permission propagation enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -592,8 +634,11 @@ public class BpfNetMaps {
+     private static BpfBoolean getLocalNetNoteOpsEnabledBpfBoolean() {
+         try {
+             return new BpfBoolean(LOCAL_NET_NOTE_OP_ENABLED_MAP_PATH, true);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open LNP note op enabled map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open LNP note op enabled map", e);
++            return null;
+         }
+     }
+ 
+@@ -602,16 +647,22 @@ public class BpfNetMaps {
+         try {
+             return SingleWriterBpfMap.getSingleton(LOCAL_NET_ACCESS_MAP_PATH,
+                     LocalNetAccessKey.class, Bool.class);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open local_net_access map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open local_net_access map", e);
++            return null;
+         }
+     }
+ 
+     private static BpfBoolean getL4sEnabledMap() {
+         try {
+             return new BpfBoolean(L4S_ENABLED_MAP_PATH, true /* exclusive */);
+-        } catch (ErrnoException e) {
+-            throw new IllegalStateException("Cannot open l4s_accecn_ map", e);
++        } catch (Throwable e) {
++            // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
++            // menjatuhkan system_server saat ConnectivityService init.
++            android.util.Log.w(TAG, "Cannot open l4s_accecn_ map", e);
++            return null;
+         }
+     }
+ 
+@@ -824,7 +875,20 @@ public class BpfNetMaps {
+         sBetaMetricsEnabled = deps.isBetaMetricsEnabled();
+         if (SdkLevel.isAtLeastT()) {
+             sL4sSupported = deps.isL4sProgramLoaded();
+-            initBpfMaps(deps);
++            // [A37] Pada kernel tanpa eBPF seluruh map bernilai null dan
++            // initBpfMaps pasti gagal -- NPE, ErrnoException, atau
++            // IllegalStateException. Membiarkannya menyebar menjatuhkan
++            // system_server saat ConnectivityService init, dan perangkat
++            // tidak pernah sampai homescreen.
++            //
++            // Dibungkus di SATU titik, bukan ditambal di tiap pemakaian di
++            // dalam initBpfMaps: yang penting sInitialized tetap tersetel
++            // supaya pemanggil berikutnya tidak mencoba lagi tanpa henti.
++            try {
++                initBpfMaps(deps);
++            } catch (Throwable e) {
++                android.util.Log.w(TAG, "initBpfMaps gagal -- diharapkan tanpa eBPF", e);
++            }
+         }
+         sInitialized = true;
+     }

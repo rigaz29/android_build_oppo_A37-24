@@ -1,0 +1,127 @@
+From a67e3ddad6c5edf3f3cd7185b25d655bb1dadaa3 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 12:26:30 +0000
+Subject: [PATCH] BPF-less:bpfloader: panic! critical diturunkan jadi galat
+ tercatat
+
+Kernel OPPO A37 3.10.108 tidak punya eBPF sama sekali; jalur BPF di sini selalu
+gagal. Yang fatal bukan kegagalannya melainkan reaksinya -- proses mati, init
+menghidupkannya lagi, dan perangkat tidak pernah boot.
+
+Diturunkan dari set los-23.2_n7000_bpfless.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: If27f3eb3382267c444948f6afd6610b7a103b9b3
+---
+ loader/Loader.cpp               |  2 --
+ loader/bpfloader.rs             | 28 ++++++++++++++++++++--------
+ loader/include/libbpf_android.h |  2 +-
+ 3 files changed, 21 insertions(+), 11 deletions(-)
+
+diff --git a/loader/Loader.cpp b/loader/Loader.cpp
+index 08c6b6d..cd16c66 100644
+--- a/loader/Loader.cpp
++++ b/loader/Loader.cpp
+@@ -602,8 +602,6 @@ void vendorBpfLoader() {
+         ALOGE("If this triggers randomly, you might be hitting some memory allocation "
+               "problems or startup script race.");
+         ALOGE("--- DO NOT EXPECT SYSTEM TO BOOT SUCCESSFULLY ---");
+-        sleep(20);
+-        exit(121);
+     }
+ 
+     const char* args[] = {"/apex/com.android.tethering/bin/netbpfload", "done", NULL};
+diff --git a/loader/bpfloader.rs b/loader/bpfloader.rs
+index f23d882..5b1f97f 100644
+--- a/loader/bpfloader.rs
++++ b/loader/bpfloader.rs
+@@ -148,6 +148,7 @@ fn libbpf_print(level: PrintLevel, mut msg: String) {
+     }
+ }
+ 
++#[allow(dead_code)]
+ struct MapDesc {
+     name: &'static str,
+     perms: mode_t,
+@@ -168,6 +169,7 @@ impl MapDesc {
+     }
+ }
+ 
++#[allow(dead_code)]
+ struct ProgDesc {
+     name: &'static str,
+     owner: u32,
+@@ -513,15 +515,21 @@ fn set_skip_loading(
+ ) -> Result<(), anyhow::Error> {
+     let kvers = kernel_version()?;
+ 
++    // Skip everything on kernels below 4.9 where eBPF is not usable
++    let skip_all = kvers < kver(4, 9, 0);
++    if skip_all {
++        info!("Kernel < 4.9, skipping all BPF programs and maps");
++    }
++
+     for mut map in open_file.maps_mut() {
+         let name =
+             map.name().to_str().ok_or_else(|| anyhow!("Failed to parse map name into UTF-8"))?;
+         for map_desc in file_desc.maps {
+             if map_desc.name == name {
+-                if kvers < map_desc.min_kver || kvers >= map_desc.max_kver {
++                if skip_all || kvers >= map_desc.max_kver {
+                     info!(
+-                        "skipping map {} min_kver:{:x} max_kver:{:x} kvers:{:x}",
+-                        name, map_desc.min_kver, map_desc.max_kver, kvers
++                        "skipping map {} max_kver:{:x} kvers:{:x}",
++                        name, map_desc.max_kver, kvers
+                     );
+                     map.set_autocreate(false)?;
+                 }
+@@ -535,10 +543,10 @@ fn set_skip_loading(
+             prog.name().to_str().ok_or_else(|| anyhow!("Failed to parse prog name into UTF-8"))?;
+         for prog_desc in file_desc.progs {
+             if prog_desc.name == name {
+-                if kvers < prog_desc.min_kver || kvers >= prog_desc.max_kver {
++                if skip_all || kvers >= prog_desc.max_kver {
+                     info!(
+-                        "skipping program {} min_kver:{:x} max_kver:{:x} kvers:{:x}",
+-                        name, prog_desc.min_kver, prog_desc.max_kver, kvers
++                        "skipping program {} max_kver:{:x} kvers:{:x}",
++                        name, prog_desc.max_kver, kvers
+                     );
+                     prog.set_autoload(false);
+                 }
+@@ -732,8 +740,12 @@ fn load_libbpf_progs() {
+ 
+     for file_desc in file_vec {
+         if let Err(e) = libbpf_worker(&file_desc) {
++            // [A37] panic! di sini mematikan bpfloader, dan init menghidupkannya
++            // lagi tanpa henti. Pada kernel tanpa eBPF SEMUA objek gagal dimuat,
++            // termasuk yang ditandai critical -- jadi tandanya diturunkan
++            // menjadi galat yang dicatat, bukan yang mematikan proses.
+             if file_desc.critical {
+-                panic!("Error when loading {0}: {e}", file_desc.filename);
++                error!("[A37] 'critical' error when loading {0}: {e}", file_desc.filename);
+             } else {
+                 error!("Error when loading {0}: {e}", file_desc.filename);
+             }
+@@ -762,7 +774,7 @@ fn main() {
+     info!("Loading legacy BPF progs");
+ 
+     if let Err(e) = create_dir(Path::new("/sys/fs/bpf/vendor")) {
+-        panic!("Error during mkdir /sys/fs/bpf/vendor: {e}");
++        error!("Failed to mkdir /sys/fs/bpf/vendor: {e} -- continuing anyway");
+     };
+ 
+     // SAFETY: Linking in the existing legacy vendor bpfloader functionality.
+diff --git a/loader/include/libbpf_android.h b/loader/include/libbpf_android.h
+index 706c0e8..d5a25bd 100644
+--- a/loader/include/libbpf_android.h
++++ b/loader/include/libbpf_android.h
+@@ -19,6 +19,6 @@
+ 
+ // The C++ portion of the BpfLoader is exposed as a terminal function.
+ #ifdef __cplusplus
+-extern "C" __noreturn
++extern "C"
+ #endif
+ void vendorBpfLoader();

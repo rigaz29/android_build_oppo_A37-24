@@ -1,0 +1,68 @@
+From 5badd46449f52031b3e09ef4e452b0a8209b6f8b Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 14:22:25 +0000
+Subject: [PATCH 3/5] releasetools: jangan tulis disable_ublk pada perangkat
+ tanpa dynamic partitions
+
+Pengemasan OTA -- langkah terakhir sebelum zip flashable -- gagal begini:
+
+  FAILED: out/target/product/A37/lineage_A37-ota.zip
+  ota_from_target_files.py, line 584, in ModifyTargetFilesDynamicPartitionInfo
+  FileNotFoundError: [Errno 2] No such file or directory:
+    '.../lineage_A37-target_files/META/dynamic_partitions_info.txt'
+
+Rantainya begini. Baris 1332-1334 menyalakan disable_ublk secara otomatis untuk
+perangkat yang tidak mendukung ublk:
+
+  if not target_info.supports_ublk:
+      logger.info("Target build does not support ublk, disabling ublk")
+      OPTIONS.disable_ublk = True
+
+lalu baris 1452 bertindak atas flag itu tanpa syarat, dan
+ModifyTargetFilesDynamicPartitionInfo membuka META/dynamic_partitions_info.txt
+dengan open(..., "r") tanpa penjaga apa pun.
+
+Masalahnya, kedua sisi itu saling meniadakan pada perangkat lawas. supports_ublk
+membaca ro.virtual_ab.ublk.enabled (common.py:516-519), yakni properti Virtual
+A/B; dan Virtual A/B mensyaratkan dynamic partitions. Jadi justru perangkat yang
+TIDAK punya dynamic partitions -- yang berkas itu memang tidak pernah dihasilkan
+untuknya -- adalah perangkat yang pasti masuk cabang ini. Makin lawas
+perangkatnya, makin pasti gagal.
+
+A37 non-A/B, non-dynamic-partitions, tanpa super partition, jadi ia kena telak.
+
+Ditambahkan penjaga memakai cek yang sudah menjadi kanon di berkas yang sama --
+baris 1381-1382 memakai info_dict.get("use_dynamic_partitions") == "true" untuk
+maksud serupa. Menulis disable_ublk ke berkas info dynamic partition memang
+tidak punya arti bagi perangkat yang tidak memilikinya.
+
+Tidak ditindaklanjuti, sengaja: UnicodeDecodeError dari unpack_bootimg pada
+boot.img kami beberapa baris di atasnya. Itu peringatan, bukan penyebab --
+common.py menangkapnya sebagai "Unable to get boot image build props" dan
+melanjutkan. Sebabnya boot header v0 kami membawa tabel device tree QCDT
+(dt_size di offset 40), yang tidak dipahami unpack_bootimg AOSP 17; itu akar
+yang sama dengan yang menuntut tambalan --dt pada mkbootimg.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ tools/releasetools/ota_from_target_files.py | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/tools/releasetools/ota_from_target_files.py b/tools/releasetools/ota_from_target_files.py
+index add76ef08e..2386f39d65 100755
+--- a/tools/releasetools/ota_from_target_files.py
++++ b/tools/releasetools/ota_from_target_files.py
+@@ -1449,7 +1449,12 @@ def main(argv):
+                        " detected. Please only pass in this flag if you want a"
+                        " SPL downgrade. Target SPL: {} Source SPL: {}"
+                        .format(target_spl, source_spl))
+-  if OPTIONS.disable_ublk:
++  # ublk adalah fitur Virtual A/B, dan Virtual A/B mensyaratkan dynamic
++  # partitions. Pada perangkat tanpa keduanya, META/dynamic_partitions_info.txt
++  # memang tidak pernah dihasilkan, sehingga menulis disable_ublk ke dalamnya
++  # bukan cuma sia-sia -- ia menghentikan pembuatan paket OTA sama sekali.
++  if OPTIONS.disable_ublk and \
++      OPTIONS.info_dict.get("use_dynamic_partitions") == "true":
+     logger.info("Disabling UBLK as requested")
+     args[0] = ModifyTargetFilesDynamicPartitionInfo(
+         args[0], "disable_ublk", "true")

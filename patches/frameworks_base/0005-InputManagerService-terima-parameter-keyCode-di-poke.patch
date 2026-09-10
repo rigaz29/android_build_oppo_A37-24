@@ -1,0 +1,82 @@
+From 141712a50f6352a24d9e7d6a1a829b5859954b0e Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 01:13:30 +0000
+Subject: [PATCH 5/8] InputManagerService: terima parameter keyCode di
+ pokeUserActivity
+
+frameworks/native menuntut tanda tangan empat parameter, frameworks/base hanya
+punya tiga:
+
+  InputManagerService.cpp:477  non-virtual member function marked 'override'
+                               hides virtual member function
+  InputManagerService.cpp:2466 allocating an object of abstract class type
+                               'NativeInputManager'
+
+Keduanya di HEAD hulu masing-masing -- ketidakkonsistenan hulu KEEMPAT yang
+ditemui di porting ini, sesudah NetworkPolicyManager, ISystemUiProxy, dan
+DownloadManager.
+
+Asalnya fitur LineageOS 2017 (frameworks/native a937bfe7b2 "InputDispatcher:
+On keypress, deliver keycode to pokeUserActivity"): keycode diteruskan supaya
+PowerManager bisa membedakan tombol mana yang membangunkan layar. Sisi native
+sudah mengirimnya sejak itu; sisi base tidak pernah menerimanya.
+
+keyCode DITERIMA LALU DIABAIKAN, dan itu disebut terus terang di komentar.
+Meneruskannya sampai Java menuntut perubahan berantai di
+android_server_PowerManagerService_userActivity, PowerManagerService.java, dan
+Notifier -- jauh melampaui yang dibutuhkan agar pohon terbangun, dan berisiko
+mengubah perilaku wakeup yang tidak bisa diuji di sini. Perilaku wakeup persis
+seperti sebelumnya.
+
+Memakai idiom /* keyCode */ mengikuti konvensi berkas ini sendiri (:1291
+uint32_t /* policyFlags */), bukan __unused yang tidak dipakai di mana pun.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I370f6f49efa9c586592f1b24073705388d80caa0
+---
+ ...droid_server_input_InputManagerService.cpp | 23 +++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/services/core/jni/com_android_server_input_InputManagerService.cpp b/services/core/jni/com_android_server_input_InputManagerService.cpp
+index 994d27a4a780..00b8c3a3d744 100644
+--- a/services/core/jni/com_android_server_input_InputManagerService.cpp
++++ b/services/core/jni/com_android_server_input_InputManagerService.cpp
+@@ -474,7 +474,7 @@ public:
+     std::optional<KeyEvent> dispatchUnhandledKey(const sp<IBinder>& token, const KeyEvent& keyEvent,
+                                                  uint32_t policyFlags) override;
+     void pokeUserActivity(nsecs_t eventTime, int32_t eventType,
+-                          ui::LogicalDisplayId displayId) override;
++                          ui::LogicalDisplayId displayId, int32_t keyCode) override;
+     void onPointerDownOutsideFocus(const sp<IBinder>& touchedToken) override;
+     void setPointerCapture(const PointerCaptureRequest& request) override;
+     void notifyDropWindow(const sp<IBinder>& token, vec2 location, vec2 rawLocation) override;
+@@ -2169,8 +2169,27 @@ std::optional<KeyEvent> NativeInputManager::dispatchUnhandledKey(const sp<IBinde
+ }
+ 
+ void NativeInputManager::pokeUserActivity(nsecs_t eventTime, int32_t eventType,
+-                                          ui::LogicalDisplayId displayId) {
++                                          ui::LogicalDisplayId displayId,
++                                          int32_t /* keyCode */) {
+     ATRACE_CALL();
++    // [A37] keyCode DITERIMA TAPI DIABAIKAN.
++    //
++    // InputDispatcherPolicyInterface.h:138 di frameworks/native menuntut
++    // parameter keempat ini, tapi frameworks/base tidak pernah menyediakannya --
++    // keduanya di HEAD hulu masing-masing, jadi celah hulu yang menghadang
++    // perangkat LineageOS 24.0 mana pun.
++    //
++    // Asalnya fitur LineageOS 2017 (a937bfe7b2 "InputDispatcher: On keypress,
++    // deliver keycode to pokeUserActivity"): keycode diteruskan supaya
++    // PowerManager bisa membedakan tombol mana yang membangunkan layar. Sisi
++    // native sudah mengirim, sisi base belum pernah menerimanya.
++    //
++    // Meneruskannya sampai Java menuntut perubahan berantai di
++    // android_server_PowerManagerService_userActivity, PowerManagerService.java,
++    // dan Notifier -- jauh melampaui yang dibutuhkan agar pohon ini terbangun,
++    // dan berisiko mengubah perilaku wakeup yang tidak bisa diuji di sini.
++    // Diterima lalu diabaikan supaya tanda tangannya cocok; perilaku wakeup
++    // persis seperti sebelumnya.
+     android_server_PowerManagerService_userActivity(eventTime, eventType, displayId);
+ }
+ 

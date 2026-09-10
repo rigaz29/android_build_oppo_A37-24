@@ -1,0 +1,60 @@
+From 45c6e1c4a66f30e57fd892f5ba85d6c7893bce84 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 02:46:12 +0000
+Subject: [PATCH 2/4] soong_ui: teruskan SOONG_GOMEMLIMIT ke soong_build
+
+soong_build dijalankan lewat `cd / && env -i "$BUILDER"`, sehingga
+GOMEMLIMIT dari lingkungan luar tidak pernah sampai kepadanya. Akibatnya
+menyetel SOONG_GOMEMLIMIT di shell tidak berpengaruh sama sekali -- yang
+sempat menyesatkan, karena variabelnya tampak terpasang.
+
+Di mesin 11 GB, analisis soong untuk OPPO A37 dibunuh OOM killer setelah
+33 menit:
+
+  stderr: Killed
+  1 steps failed: exit=137 # signal:killed
+
+didahului memory stall berulang 500-750 ms/s selama analisis.
+
+Go dengan GOGC=100 default membiarkan heap tumbuh 2x live heap sebelum GC;
+GOMEMLIMIT menekan puncaknya tanpa mengurangi kerja yang dilakukan. Menambah
+swap tidak menolong karena Go tidak memperlakukan swap sebagai tekanan
+memori -- heap justru tumbuh selama masih ada tempat, terukur di kit 23.2:
+RSS 10,4 GB + swap 30,3 GB sebelum OOM.
+
+Diwarisi dari kit LineageOS 23.2 A37, di mana patch yang sama diperlukan.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: Ifa88995136264f02b07e526d2344d00de80edc7f
+---
+ ui/build/soong.go | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/ui/build/soong.go b/ui/build/soong.go
+index 4521b4abe..5707c5758 100644
+--- a/ui/build/soong.go
++++ b/ui/build/soong.go
+@@ -215,6 +215,23 @@ func (pb PrimaryBuilderFactory) primaryBuilderInvocation(config Config) bootstra
+ 
+ 	commonArgs = append(commonArgs, "-l", filepath.Join(pb.config.FileListDir(), "Android.bp.list"))
+ 	invocationEnv := make(map[string]string)
++	// soong_build dijalankan lewat `cd / && env -i "$BUILDER"`, sehingga
++	// GOMEMLIMIT dari lingkungan luar TIDAK PERNAH sampai kepadanya. Tanpa ini,
++	// menyetel SOONG_GOMEMLIMIT di shell tidak berpengaruh sama sekali.
++	//
++	// Di mesin 11 GB, analisis soong untuk A37 memuncak melewati RAM yang ada
++	// dan dibunuh OOM killer setelah 33 menit:
++	//
++	//   stderr: Killed
++	//   1 steps failed: exit=137 # signal:killed
++	//
++	// Go dengan GOGC=100 default membiarkan heap tumbuh 2x live heap sebelum
++	// GC; GOMEMLIMIT menekan puncaknya tanpa mengurangi kerja yang dilakukan.
++	// Swap tidak menolong karena Go tidak memperlakukan swap sebagai tekanan
++	// memori -- heap justru tumbuh selama masih ada tempat.
++	if v := os.Getenv("SOONG_GOMEMLIMIT"); v != "" {
++		invocationEnv["GOMEMLIMIT"] = v
++	}
+ 	if pb.debugPort != "" {
+ 		//debug mode
+ 		commonArgs = append(commonArgs, "--delve_listen", pb.debugPort,

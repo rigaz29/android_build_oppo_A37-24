@@ -1,0 +1,56 @@
+From 70adb3361aadb6d10b7dd0aa47a1612209a930e2 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 23:25:48 +0000
+Subject: [PATCH 1/3] SoftAVCEnc: buang total_size yang tidak pernah dibaca
+
+Konsekuensi dari mengembalikan OMX software codec (e0b8d0eb): kode era lama
+kini dikompilasi clang r596125 yang jauh lebih ketat.
+
+  SoftAVCEnc.cpp:736:16: error: variable 'total_size' set but not used
+  [-Werror,-Wunused-but-set-variable]
+
+Variabelnya memang hanya diakumulasi lalu dibuang -- diperiksa, tiga
+kemunculan: deklarasi, inisialisasi nol, dan satu +=. Tidak pernah dibaca.
+
+Menghapusnya lebih tepat daripada menambah -Wno-unused-but-set-variable ke
+Android.bp: yang terakhir melonggarkan seluruh modul dan menyembunyikan
+kesalahan serupa yang mungkin sungguhan.
+
+Kelas galat yang sama tercatat sebagai kegagalan build #5 saat porting 23.2
+(property_get dengan argumen `false` untuk parameter const char*). Catatan itu
+memperingatkan bahwa kelas ini "biasanya datang bergerombol" -- karena itu
+seluruh media/libstagefright/codecs ikut disisir untuk pola yang sama: nol
+kandidat lain.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+---
+ media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp b/media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp
+index 01174c9834..ada8622155 100644
+--- a/media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp
++++ b/media/libstagefright/codecs/avcenc/SoftAVCEnc.cpp
+@@ -733,9 +733,10 @@ OMX_ERRORTYPE SoftAVC::initEncoder() {
+ 
+     /* Allocating Memory for Mem Records */
+     {
+-        WORD32 total_size;
++        // [A37] total_size dibuang: hanya diakumulasi lalu tidak pernah dibaca.
++        // Clang r596125 menolaknya dengan -Werror,-Wunused-but-set-variable.
++        // Menghapusnya lebih tepat daripada melonggarkan warning seluruh modul.
+         iv_mem_rec_t *ps_mem_rec;
+-        total_size = 0;
+         ps_mem_rec = mMemRecords;
+ 
+         for (size_t i = 0; i < mNumMemRecords; i++) {
+@@ -749,8 +750,6 @@ OMX_ERRORTYPE SoftAVC::initEncoder() {
+                 return OMX_ErrorUndefined;
+ 
+             }
+-            total_size += ps_mem_rec->u4_mem_size;
+-
+             ps_mem_rec++;
+         }
+     }

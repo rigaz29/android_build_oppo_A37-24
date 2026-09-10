@@ -1,0 +1,55 @@
+From 629aa1d01fdffb965a713d0f81ac389307cfce0f Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 23:57:33 +0000
+Subject: [PATCH 3/3] avcenc: perbaiki blok cflags ganda
+
+Kesalahan di commit sebelumnya. avcenc SUDAH punya blok cflags di baris 36 --
+lengkap dengan -Wno-unused-variable, persis pola yang saya cari -- tapi saya
+hanya memeriksa baris 15-24 lalu menyimpulkan blok itu tidak ada dan membuat
+yang baru. Soong menolak:
+
+  Android.bp:36:11: property "cflags" already defined
+  Android.bp:17:11: <-- previous definition here
+
+Blok tambahan dihapus; flag dipindah ke blok yang memang sudah ada.
+
+Kelima Android.bp lalu diaudit ulang untuk jumlah blok cflags, bukan hanya
+keberadaan flag: semuanya 1 blok, 1 flag.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ media/libstagefright/codecs/avcenc/Android.bp | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
+
+diff --git a/media/libstagefright/codecs/avcenc/Android.bp b/media/libstagefright/codecs/avcenc/Android.bp
+index 7f8f90160d..84f1b48f5d 100644
+--- a/media/libstagefright/codecs/avcenc/Android.bp
++++ b/media/libstagefright/codecs/avcenc/Android.bp
+@@ -14,15 +14,6 @@ cc_library_shared {
+     static_libs: ["libavcenc"],
+     srcs: ["SoftAVCEnc.cpp"],
+ 
+-    cflags: [
+-        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
+-        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
+-        // lazim di kode era itu (mis. nilai balik ivdec_api_function yang
+-        // sengaja diabaikan). Ditekan per modul, mengikuti pola
+-        // -Wno-unused-variable di modul codec tetangga.
+-        "-Wno-unused-but-set-variable",
+-    ],
+-
+     sanitize: {
+         misc_undefined: [
+             "signed-integer-overflow",
+@@ -36,6 +27,10 @@ cc_library_shared {
+     cflags: [
+         "-Wall",
+         "-Wno-unused-variable",
++        // [A37] Codec OMX software ini dikembalikan apa adanya dari arsip, dan
++        // clang r596125 menolak variabel yang ditulis tapi tidak dibaca -- pola
++        // lazim di kode era itu. Sejalan dengan -Wno-unused-variable di atas.
++        "-Wno-unused-but-set-variable",
+     ],
+     ldflags: ["-Wl,-Bsymbolic"],
+ 

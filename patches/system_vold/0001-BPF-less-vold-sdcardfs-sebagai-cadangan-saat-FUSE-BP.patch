@@ -1,0 +1,48 @@
+From ef2c1ff68a94887ac07d4486f730e8ca0290858d Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 12:26:41 +0000
+Subject: [PATCH] BPF-less:vold: sdcardfs sebagai cadangan saat FUSE-BPF tak
+ ada
+
+Kernel OPPO A37 3.10.108 tidak punya eBPF sama sekali; jalur BPF di sini selalu
+gagal. Yang fatal bukan kegagalannya melainkan reaksinya -- proses mati, init
+menghidupkannya lagi, dan perangkat tidak pernah boot.
+
+Diturunkan dari set los-23.2_n7000_bpfless.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: I3315e813cab203f9e986b9126a420691e0fa1bf9
+---
+ model/EmulatedVolume.cpp | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
+
+diff --git a/model/EmulatedVolume.cpp b/model/EmulatedVolume.cpp
+index 2df35cb..5ea7e57 100644
+--- a/model/EmulatedVolume.cpp
++++ b/model/EmulatedVolume.cpp
+@@ -54,6 +54,14 @@ EmulatedVolume::EmulatedVolume(const std::string& rawPath, int userId)
+     mLabel = "emulated";
+     mFuseMounted = false;
+     mUseSdcardFs = IsSdcardfsUsed();
++    // When FUSE BPF is unavailable, the legacy FUSE daemon path in
++    // Android 16 QPR2 does not correctly handle writes -- /sdcard/ will be
++    // unreliable until sdcardfs is used as a fallback.  Force sdcardfs if
++    // the kernel supports it; if not, legacy FUSE is kept as a last resort.
++    if (!mUseSdcardFs && !IsFuseBpfEnabled() && IsFilesystemSupported("sdcardfs")) {
++        LOG(INFO) << "FUSE BPF unavailable and sdcardfs supported; forcing sdcardfs";
++        mUseSdcardFs = true;
++    }
+     mAppDataIsolationEnabled = base::GetBoolProperty(kVoldAppDataIsolationEnabled, false);
+ }
+ 
+@@ -65,6 +73,10 @@ EmulatedVolume::EmulatedVolume(const std::string& rawPath, dev_t device, const s
+     mLabel = fsUuid;
+     mFuseMounted = false;
+     mUseSdcardFs = IsSdcardfsUsed();
++    if (!mUseSdcardFs && !IsFuseBpfEnabled() && IsFilesystemSupported("sdcardfs")) {
++        LOG(INFO) << "FUSE BPF unavailable and sdcardfs supported; forcing sdcardfs";
++        mUseSdcardFs = true;
++    }
+     mAppDataIsolationEnabled = base::GetBoolProperty(kVoldAppDataIsolationEnabled, false);
+ }
+ 

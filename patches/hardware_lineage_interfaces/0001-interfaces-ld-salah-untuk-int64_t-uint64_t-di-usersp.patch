@@ -1,0 +1,114 @@
+From b9401fd75d97e4442503ae00727bc6e2a7c213f3 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 10:54:12 +0000
+Subject: [PATCH] interfaces: %ld salah untuk int64_t/uint64_t di userspace
+ 32-bit
+
+  FastCharge.cpp:74:55: error: format specifies type 'long' but the argument
+  has type 'int64_t' (aka 'long long') [-Werror,-Wformat]
+
+Di arm64 int64_t adalah long sehingga %ld benar; di arm 32-bit ia long long.
+A37 memakai userspace 32-bit dengan HAL 64-bit, jadi perangkat seperti inilah
+yang membongkarnya, dan karena -Wformat diangkat ke -Werror ini menghentikan
+build.
+
+Kompilator baru menunjukkan satu situs, tetapi seluruh repo disapu supaya tidak
+membayar satu siklus build per situs -- di mesin ini tiap siklus berharga 90
+menit analisis soong. Ada enam, dan tipenya campur sehingga specifier-nya tidak
+bisa disamaratakan:
+
+  health/aidl/default/FastCharge.cpp:74     int64_t   -> PRId64
+  biometrics/.../Session.cpp:35             uint64_t  -> PRIu64
+  biometrics/.../Session.cpp:42             int64_t   -> PRId64
+  biometrics/.../Session.cpp:107            uint64_t  -> PRIu64
+  biometrics/.../Session.cpp:114            uint64_t  -> PRIu64
+  biometrics/.../Session.cpp:279            int64_t   -> PRId64
+
+Dipakai makro PRI dari <cinttypes>, yang memilih specifier benar di kedua lebar
+kata, bukan %lld yang hanya memindahkan kesalahan ke sisi 64-bit. Sesudah
+disunting nol %ld/%lu/%lx tersisa di repo ini.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Change-Id: I82d3d70e5ec34b468f0f78a8cd0da9341fea5f7f
+---
+ biometrics/fingerprint/aidl/Session.cpp | 11 ++++++-----
+ health/aidl/default/FastCharge.cpp      |  4 +++-
+ 2 files changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/biometrics/fingerprint/aidl/Session.cpp b/biometrics/fingerprint/aidl/Session.cpp
+index a2d20c5..fffabc2 100644
+--- a/biometrics/fingerprint/aidl/Session.cpp
++++ b/biometrics/fingerprint/aidl/Session.cpp
+@@ -4,6 +4,7 @@
+  * SPDX-License-Identifier: Apache-2.0
+  */
+ 
++#include <cinttypes>
+ #include <thread>
+ 
+ #include "Legacy2Aidl.h"
+@@ -32,14 +33,14 @@ Session::Session(fingerprint_device_t* device, int userId, std::shared_ptr<ISess
+ 
+ ndk::ScopedAStatus Session::generateChallenge() {
+     uint64_t challenge = mDevice->pre_enroll(mDevice);
+-    ALOGI("generateChallenge: %ld", challenge);
++    ALOGI("generateChallenge: %" PRIu64, challenge);
+     mCb->onChallengeGenerated(challenge);
+ 
+     return ndk::ScopedAStatus::ok();
+ }
+ 
+ ndk::ScopedAStatus Session::revokeChallenge(int64_t challenge) {
+-    ALOGI("revokeChallenge: %ld", challenge);
++    ALOGI("revokeChallenge: %" PRId64, challenge);
+     mDevice->post_enroll(mDevice);
+     mCb->onChallengeRevoked(challenge);
+ 
+@@ -104,14 +105,14 @@ ndk::ScopedAStatus Session::removeEnrollments(const std::vector<int32_t>& enroll
+ 
+ ndk::ScopedAStatus Session::getAuthenticatorId() {
+     uint64_t auth_id = mDevice->get_authenticator_id(mDevice);
+-    ALOGI("getAuthenticatorId: %ld", auth_id);
++    ALOGI("getAuthenticatorId: %" PRIu64, auth_id);
+     mCb->onAuthenticatorIdRetrieved(auth_id);
+     return ndk::ScopedAStatus::ok();
+ }
+ 
+ ndk::ScopedAStatus Session::invalidateAuthenticatorId() {
+     uint64_t auth_id = mDevice->get_authenticator_id(mDevice);
+-    ALOGI("invalidateAuthenticatorId: %ld", auth_id);
++    ALOGI("invalidateAuthenticatorId: %" PRIu64, auth_id);
+     mCb->onAuthenticatorIdInvalidated(auth_id);
+     return ndk::ScopedAStatus::ok();
+ }
+@@ -276,7 +277,7 @@ bool Session::checkSensorLockout() {
+     }
+     if (lockoutMode == LockoutTracker::LockoutMode::kTimed) {
+         int64_t timeLeft = mLockoutTracker.getLockoutTimeLeft();
+-        ALOGE("Fail: lockout timed: %ld", timeLeft);
++        ALOGE("Fail: lockout timed: %" PRId64, timeLeft);
+         mCb->onLockoutTimed(timeLeft);
+         if (!mIsLockoutTimerStarted) startLockoutTimer(timeLeft);
+         return true;
+diff --git a/health/aidl/default/FastCharge.cpp b/health/aidl/default/FastCharge.cpp
+index 7b97f7a..7915df0 100644
+--- a/health/aidl/default/FastCharge.cpp
++++ b/health/aidl/default/FastCharge.cpp
+@@ -6,6 +6,8 @@
+ 
+ #include "FastCharge.h"
+ 
++#include <cinttypes>
++
+ #include <android-base/file.h>
+ #include <android-base/logging.h>
+ #include <android-base/strings.h>
+@@ -71,7 +73,7 @@ binder_status_t FastCharge::dump(int fd, const char** args, uint32_t numArgs) {
+     FastChargeMode fastChargeMode;
+     getFastChargeMode(&fastChargeMode);
+ 
+-    dprintf(fd, "Fast charge supported modes: %ld\n", supportedFastChargeModes);
++    dprintf(fd, "Fast charge supported modes: %" PRId64 "\n", supportedFastChargeModes);
+     dprintf(fd, "Fast charge mode: %d\n", fastChargeMode);
+ 
+     return STATUS_OK;

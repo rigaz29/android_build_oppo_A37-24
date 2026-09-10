@@ -1,0 +1,66 @@
+From 00fd8b8137bce13612c5afe40e3c43d10cb8b977 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 14:43:25 +0000
+Subject: [PATCH 4/5] releasetools: non_ab_ota zip harus memakai -y, jangan
+ ikuti symlink
+
+Pengemasan OTA gagal dengan penyamaran yang menyesatkan:
+
+  zip I/O error: Bad address
+  zip error: Output file write failure (write error on zip file)
+  common.ExternalError: Failed to run command
+    '['zip', '.../tmpd8o2is5q.zip', '-r', '.', '-0']' (exit code 14)
+
+didahului ratusan baris seperti:
+
+  adding: RECOVERY/RAMDISK/d/kvm/pf_guest
+  zip warning: file size changed while zipping RECOVERY/RAMDISK/d/kvm/pf_guest
+
+Terbaca seperti disk penuh -- exit code 14, "write failure" -- padahal disk
+masih 20 GB lega. "Bad address" itu EFAULT, dan petunjuk sebenarnya ada di
+nama berkasnya.
+
+RECOVERY/RAMDISK/d adalah symlink absolut ke /sys/kernel/debug. Di perangkat
+itu benar; /d -> /sys/kernel/debug memang symlink standar Android. Tetapi saat
+host mengemas target_files, `zip -r .` MENGIKUTI symlink itu dan mengarsipkan
+debugfs milik HOST yang sedang hidup -- ribuan berkas semu tracepoint kvm yang
+ukurannya berubah sambil dibaca, sampai zip menyerah dengan EFAULT.
+
+Basis kode ini sudah tahu jawabannya, hanya tidak di sini:
+
+  sign_target_files_apks.py:1797  zip zfp -y -r . -x@...
+  sign_target_files_apks.py:1799  zip zfp -y -0 -r . -i@...
+  non_ab_ota.py:569               zip tmpfile -r . -0        <- tanpa -y
+
+-y (--symlinks) menyimpan symlink sebagai symlink alih-alih mengikutinya, dan
+itulah yang dipakai dua pemanggil lainnya.
+
+Yang membuat celah ini bertahan lama tanpa ketahuan: berkasnya bernama
+non_ab_ota.py, jadi hanya perangkat NON-A/B yang menyentuhnya, dan perangkat
+non-A/B justru yang makin langka di hulu. Ia juga hanya menggigit bila build
+dijalankan pada host yang punya debugfs ter-mount dan berhak membacanya --
+yakni saat berjalan sebagai root, seperti di lingkungan ini.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ tools/releasetools/non_ab_ota.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/tools/releasetools/non_ab_ota.py b/tools/releasetools/non_ab_ota.py
+index 667891c65e..bf7513a18b 100644
+--- a/tools/releasetools/non_ab_ota.py
++++ b/tools/releasetools/non_ab_ota.py
+@@ -565,8 +565,12 @@ def GenerateNonAbOtaPackage(target_file, output_file, source_file=None):
+       OPTIONS.input_tmp = target_file
+       tmpfile = common.MakeTempFile(suffix=".zip")
+       os.unlink(tmpfile)
++      # -y WAJIB: simpan symlink sebagai symlink, jangan diikuti. Tanpa itu
++      # zip mengikuti RECOVERY/RAMDISK/d -> /sys/kernel/debug dan mengarsipkan
++      # debugfs milik HOST yang sedang hidup. Bandingkan
++      # sign_target_files_apks.py:1797 dan 1799, keduanya sudah memakai -y.
+       common.RunAndCheckOutput(
+-          ["zip", tmpfile, "-r", ".", "-0"], cwd=target_file)
++          ["zip", tmpfile, "-y", "-r", ".", "-0"], cwd=target_file)
+       assert zipfile.is_zipfile(tmpfile)
+       target_file = tmpfile
+ 

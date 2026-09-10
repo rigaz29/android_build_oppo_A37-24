@@ -1,0 +1,90 @@
+From fb0af640d76340e8f234fa1d53f318143a3664f4 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 20:11:31 +0000
+Subject: [PATCH 2/8] LauncherProxyService: implementasikan onLongPressKeyEvent
+ dan onSleepEvent
+
+Konsekuensi langsung dari commit sebelumnya: menambahkan metode ke
+ISystemUiProxy.aidl mewajibkan implementasinya, dan tanpa itu SystemUI-core
+gagal:
+
+  LauncherProxyService.java:216: error: <anonymous LauncherProxyService$1> is
+  not abstract and does not override abstract method onSleepEvent(MotionEvent)
+
+onLongPressKeyEvent diimplementasikan sungguhan, bukan stub: ia mengirim
+ACTION_DOWN, lalu ACTION_DOWN kedua dengan repeat=1 dan FLAG_LONG_PRESS, lalu
+ACTION_UP -- urutan yang sama seperti tombol fisik ditahan.
+
+sendEvent lama tidak bisa dipakai karena mengunci repeat=0 dan daftar flag
+tetap. Ditambahkan varian dengan parameter repeat dan extraFlags; varian lama
+diteruskan ke varian baru dengan nilai 0, jadi perilaku pemanggil yang sudah
+ada TIDAK berubah.
+
+onSleepEvent hanya mencatat ke log: belum ada konsumen di sisi SystemUI, dan
+menebak-nebak perilakunya lebih berisiko daripada membiarkannya terlihat.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+Change-Id: I2c28a57d93508a057212b80250de9ac9ba8fd981
+---
+ .../systemui/LauncherProxyService.java        | 38 ++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 2 deletions(-)
+
+diff --git a/packages/SystemUI/src/com/android/systemui/LauncherProxyService.java b/packages/SystemUI/src/com/android/systemui/LauncherProxyService.java
+index e6ad618d5af0..1d1054bd0ee2 100644
+--- a/packages/SystemUI/src/com/android/systemui/LauncherProxyService.java
++++ b/packages/SystemUI/src/com/android/systemui/LauncherProxyService.java
+@@ -335,6 +335,33 @@ public class LauncherProxyService implements CallbackController<LauncherProxyLis
+                     });
+         }
+ 
++        // [A37] Dua metode di bawah dideklarasikan di ISystemUiProxy.aidl untuk
++        // Launcher3 lineage-24.0, yang memanggilnya tapi tidak menemukannya di
++        // hulu. Implementasinya menyusul di sini karena AIDL menuntutnya.
++        @Override
++        public void onLongPressKeyEvent(int keycode, int displayId) {
++            verifyCallerAndClearCallingIdentityPostMain(
++                    "onLongPressKeyEvent " + KeyEvent.keyCodeToString(keycode)
++                            + " displayId=" + displayId,
++                    () -> {
++                        // Tekan, ulangi sekali dengan FLAG_LONG_PRESS, lalu lepas --
++                        // urutan yang sama seperti tombol fisik ditahan.
++                        sendEvent(KeyEvent.ACTION_DOWN, keycode, displayId, 0, 0);
++                        sendEvent(KeyEvent.ACTION_DOWN, keycode, displayId, 1,
++                                KeyEvent.FLAG_LONG_PRESS);
++                        sendEvent(KeyEvent.ACTION_UP, keycode, displayId, 0, 0);
++                    });
++        }
++
++        @Override
++        public void onSleepEvent(MotionEvent event) {
++            verifyCallerAndClearCallingIdentityPostMain("onSleepEvent", () -> {
++                // Belum ada konsumen di sisi SystemUI; dicatat saja supaya
++                // perilakunya terlihat di log kalau nanti dipakai.
++                Log.d(TAG_OPS, "onSleepEvent: " + event);
++            });
++        }
++
+         @Override
+         public void onImeSwitcherPressed() {
+             // TODO(b/204901476) We're intentionally using the default display for now since
+@@ -388,10 +415,17 @@ public class LauncherProxyService implements CallbackController<LauncherProxyLis
+         }
+ 
+         private boolean sendEvent(int action, int code, int displayId) {
++            return sendEvent(action, code, displayId, 0 /* repeat */, 0 /* extraFlags */);
++        }
++
++        // [A37] Varian dengan repeat dan flag tambahan, untuk onLongPressKeyEvent.
++        // Varian lama di atas diteruskan ke sini supaya perilakunya tidak berubah.
++        private boolean sendEvent(int action, int code, int displayId, int repeat,
++                int extraFlags) {
+             long when = SystemClock.uptimeMillis();
+-            final KeyEvent ev = new KeyEvent(when, when, action, code, 0 /* repeat */,
++            final KeyEvent ev = new KeyEvent(when, when, action, code, repeat,
+                     0 /* metaState */, KeyCharacterMap.VIRTUAL_KEYBOARD, 0 /* scancode */,
+-                    KeyEvent.FLAG_FROM_SYSTEM | KeyEvent.FLAG_VIRTUAL_HARD_KEY,
++                    KeyEvent.FLAG_FROM_SYSTEM | KeyEvent.FLAG_VIRTUAL_HARD_KEY | extraFlags,
+                     InputDevice.SOURCE_KEYBOARD);
+             ev.setDisplayId(displayId);
+             return InputManagerGlobal.getInstance()

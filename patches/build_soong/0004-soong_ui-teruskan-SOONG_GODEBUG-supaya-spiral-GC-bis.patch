@@ -1,0 +1,55 @@
+From fe2337bf714217d87ec808ea37422ab7bf16f281 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Wed, 9 Sep 2026 03:11:39 +0000
+Subject: [PATCH 4/4] soong_ui: teruskan SOONG_GODEBUG supaya spiral GC bisa
+ dibedakan
+
+Spiral maut GOMEMLIMIT mahal didiagnosis karena analisis soong tidak mencetak
+apa pun dan tidak menulis apa pun sampai selesai. Dua heuristik yang saya coba
+untuk menangkapnya sama-sama membunuh build yang sehat:
+
+  major fault tinggi + nol tulisan -> mati 2 menit sesudah start; soong
+      sedang membaca masukan dengan page cache dingin, polanya identik
+  jalan >35 menit + nol tulisan 10 menit -> mati di menit ke-35; berkas
+      .ninja memang baru ditulis di akhir, jadi analisis penuh yang sehat
+      pun nol tulisan sepanjang jalan
+
+Keduanya proksi. Yang bukan proksi ada di runtime Go sendiri: gctrace
+mencetak satu baris per siklus GC, dan kolom persentasenya adalah fraksi CPU
+kumulatif di GC. Analisis sehat tinggal di satu digit; spiral memanjat ke
+puluhan persen dan tidak pernah turun, karena live heap di atas batas membuat
+GC tidak pernah bisa berhenti.
+
+Diteruskan lewat mekanisme yang sama dengan GOMEMLIMIT, karena env -i memutus
+seluruh lingkungan luar.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ ui/build/soong.go | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/ui/build/soong.go b/ui/build/soong.go
+index 23a494d8b..7aecd5220 100644
+--- a/ui/build/soong.go
++++ b/ui/build/soong.go
+@@ -252,6 +252,20 @@ func (pb PrimaryBuilderFactory) primaryBuilderInvocation(config Config) bootstra
+ 	if v := os.Getenv("SOONG_GOMEMLIMIT"); v != "" {
+ 		invocationEnv["GOMEMLIMIT"] = v
+ 	}
++	// Diteruskan dengan alasan yang sama seperti GOMEMLIMIT: env -i memutus
++	// semuanya. SOONG_GODEBUG=gctrace=1 membuat runtime Go mencetak satu baris
++	// per siklus GC ke stderr, dan kolom persentasenya adalah fraksi CPU
++	// kumulatif yang dihabiskan di GC.
++	//
++	// Itu satu-satunya pembeda spiral maut yang tidak ambigu. Analisis soong
++	// diam dan tidak menulis apa pun sampai selesai, jadi baik "lama" maupun
++	// "nol byte ditulis" sama-sama menggambarkan analisis sehat di mesin
++	// lambat -- dua heuristik itu sudah terbukti membunuh build yang sehat.
++	// Fraksi GC tidak: analisis sehat tinggal di satu digit, spiral memanjat
++	// ke puluhan persen dan tidak pernah turun.
++	if v := os.Getenv("SOONG_GODEBUG"); v != "" {
++		invocationEnv["GODEBUG"] = v
++	}
+ 	if pb.debugPort != "" {
+ 		//debug mode
+ 		commonArgs = append(commonArgs, "--delve_listen", pb.debugPort,

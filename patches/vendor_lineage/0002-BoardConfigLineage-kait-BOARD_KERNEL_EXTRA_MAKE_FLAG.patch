@@ -1,0 +1,64 @@
+From c9d8013439eaf56068470134f59df1470b73eada Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Tue, 8 Sep 2026 16:00:21 +0000
+Subject: [PATCH 2/3] BoardConfigLineage: kait BOARD_KERNEL_EXTRA_MAKE_FLAGS
+ sebelum ekspor ke soong
+
+Ada DUA pemanggil kernel, dan hanya satu membaca
+TARGET_KERNEL_ADDITIONAL_FLAGS:
+
+  1. build/tasks/kernel.mk        -> Image/boot.img. kernel.mk:276
+     menambahkan TARGET_KERNEL_ADDITIONAL_FLAGS, jadi flag device tree sampai.
+  2. build/soong/Android.bp       -> generated_kernel_includes, yang
+     menjalankan `make headers_install` untuk menyediakan header uapi bagi
+     modul cc_*. Aturan itu memakai $(KERNEL_MAKE_FLAGS) apa adanya.
+
+Nilai KERNEL_MAKE_FLAGS sudah dibekukan dan diekspor ke soong oleh
+BoardConfigSoong.mk, yang di-include (:13) jauh sebelum kernel.mk dibaca.
+Device tree juga tidak bisa menyetelnya sendiri karena BoardConfigKernel.mk:99
+melakukan `KERNEL_MAKE_FLAGS :=` untuk membuang pencemaran environment.
+
+Akibatnya untuk kernel pra-LLVM headers_install mati:
+
+  HOSTCC  scripts/basic/fixdep
+  /bin/sh: 1: gcc: not found
+
+Gejalanya menyesatkan: `m bootimage` berhasil karena target itu tidak
+membutuhkan header uapi kernel, jadi kegagalannya baru muncul di build ROM
+penuh setelah 10% kompilasi.
+
+Kait ini memberi device tree satu kesempatan terakhir menambah
+KERNEL_MAKE_FLAGS, tepat sebelum nilainya dibekukan. Nol dampak bagi device
+yang tidak menyetelnya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_014jmPZUGK9WfRiXSD8axwCp
+---
+ config/BoardConfigLineage.mk | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/config/BoardConfigLineage.mk b/config/BoardConfigLineage.mk
+index 172d2966..ccdf91cb 100644
+--- a/config/BoardConfigLineage.mk
++++ b/config/BoardConfigLineage.mk
+@@ -10,4 +10,20 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+     include hardware/qcom-caf/common/BoardConfigQcom.mk
+ endif
+ 
++# Kesempatan terakhir device tree menambah KERNEL_MAKE_FLAGS sebelum nilainya
++# DIBEKUKAN dan diekspor ke soong.
++#
++# BoardConfigKernel.mk:99 menyetel `KERNEL_MAKE_FLAGS :=` untuk membuang
++# pencemaran dari environment, sehingga apa pun yang disetel device tree di
++# BoardConfig.mk-nya sendiri ikut terhapus. Sementara itu
++# vendor/lineage/build/tasks/kernel.mk -- yang menambahkan
++# TARGET_KERNEL_ADDITIONAL_FLAGS -- baru dibaca JAUH SESUDAH ini.
++#
++# Akibatnya generated_kernel_includes di build/soong/Android.bp menerima
++# KERNEL_MAKE_FLAGS tanpa tambahan device tree, dan `make headers_install`
++# untuk kernel pra-LLVM mati dengan "gcc: not found". Gejalanya menyesatkan:
++# `m bootimage` berhasil karena target itu tidak butuh header uapi kernel.
++BOARD_KERNEL_EXTRA_MAKE_FLAGS ?=
++KERNEL_MAKE_FLAGS += $(BOARD_KERNEL_EXTRA_MAKE_FLAGS)
++
+ include vendor/lineage/config/BoardConfigSoong.mk

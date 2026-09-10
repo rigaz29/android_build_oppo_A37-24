@@ -97,200 +97,6 @@
                               gobtools.CustomEnc kini menuntut method Encode
   -->
 
-  <!-- ============================================================
-       Fork sendiri: LineageOS/AOSP 24.0 + cherry-pick commit ULH
-
-       Fork ULH lineage-23.2 TIDAK BISA dipakai di pohon 24.0. Bukan soal API,
-       melainkan STRUKTUR repo: LineageOS 24.0 memecah fs_mgr keluar dari
-       system/core menjadi project sendiri, sehingga 8 modul snapuserd plus
-       packagemanager_aidl_interface terdefinisi ganda dan analisis soong
-       berhenti. Karena analisis mencakup SELURUH pohon, satu bentrokan di mana
-       pun memblokir semuanya.
-
-       Fase 3 karena itu memindahkan seluruh muatan ULH ke branch lineage-24
-       sendiri, di atas hulu 24.0. 21 commit di 9 repo, semuanya terverifikasi
-       cocok antara lokal dan GitHub.
-
-       system/sepolicy sengaja TIDAK ikut: satu-satunya commit ULH di sana
-       (83b174ea, su domain di build user) tidak relevan untuk A37 yang
-       userdebug, dan plugin Go-nya mematahkan soong bootstrap di 24.0.
-       ============================================================ -->
-
-  <remove-project name="LineageOS/android_frameworks_native" />
-  <project name="rigaz29/android_frameworks_native" path="frameworks/native"
-           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
-
-  <remove-project name="LineageOS/android_system_core" />
-  <project name="rigaz29/android_system_core" path="system/core"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="LineageOS/android_bionic" />
-  <project name="rigaz29/android_bionic" path="bionic"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="LineageOS/android_frameworks_av" />
-  <project name="rigaz29/android_frameworks_av" path="frameworks/av"
-           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
-
-  <remove-project name="LineageOS/android_packages_modules_Connectivity" />
-  <project name="rigaz29/android_packages_modules_Connectivity"
-           path="packages/modules/Connectivity" remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs" />
-
-  <remove-project name="platform/system/libhidl" />
-  <project name="rigaz29/android_system_libhidl" path="system/libhidl"
-           remote="gh" revision="lineage-24" groups="pdk,sysui-studio" />
-
-  <remove-project name="platform/system/libhwbinder" />
-  <project name="rigaz29/android_system_libhwbinder" path="system/libhwbinder"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="platform/hardware/ril" />
-  <project name="rigaz29/android_hardware_ril" path="hardware/ril"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <!-- frameworks/base: dua deklarasi AIDL yang belum ada di hulu.
-
-       Launcher3 lineage-24.0 memanggil ISystemUiProxy.onLongPressKeyEvent dan
-       onSleepEvent, tapi keduanya tidak pernah dideklarasikan di
-       ISystemUiProxy.aidl. Keduanya di HEAD hulu masing-masing, jadi celah
-       hulu yang menghadang perangkat LineageOS 24.0 mana pun.
-
-       Ini ketidakkonsistenan hulu KEDUA yang ditemui; yang pertama
-       NetworkPolicyManager di ConnectivityService (lihat FASE-4.md).
-  -->
-  <remove-project name="LineageOS/android_frameworks_base" />
-  <project name="rigaz29/android_frameworks_base" path="frameworks/base"
-           remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs,sysui-studio" />
-
-  <!-- packages/modules/adb: jalur FunctionFS legacy (non-AIO).
-
-       Kernel 3.10 A37 menyediakan FunctionFS lewat gadget Android lama yang
-       nol dukungan AIO, sedangkan adbd 24.0 hanya punya jalur io_submit tanpa
-       syarat. Akibatnya gadget CONFIGURED tapi data tidak pernah mengalir dan
-       host melihat perangkat offline selamanya. device.mk:1913 sudah menyetel
-       ro.adb.nonblocking_ffs=false, properti yang tanpa tambalan ini tidak
-       dibaca kode mana pun. Berpasangan dengan WITH_ADB_INSECURE untuk
-       bring-up: tanpa keduanya, adb tidak berguna saat paling dibutuhkan.
-  -->
-  <remove-project name="LineageOS/android_packages_modules_adb" />
-  <project name="rigaz29/android_packages_modules_adb" path="packages/modules/adb"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <!-- hardware/lineage/interfaces: %ld salah untuk int64_t di userspace 32-bit.
-
-       FastCharge.cpp:74 dan lima situs di Session.cpp (fingerprint) memformat
-       int64_t/uint64_t dengan %ld. Benar di arm64, salah di arm 32-bit, dan
-       -Wformat diangkat ke -Werror. A37 memakai userspace 32-bit dengan HAL
-       64-bit, jadi perangkat seperti inilah yang membongkarnya. Diganti makro
-       PRId64/PRIu64 sesuai tanda tiap tipe.
-  -->
-  <remove-project name="LineageOS/android_hardware_lineage_interfaces" />
-  <project name="rigaz29/android_hardware_lineage_interfaces" path="hardware/lineage/interfaces"
-           remote="gh" revision="lineage-24" />
-
-  <!-- lineage-sdk: dua setelan AOSP yang pindah rumah di Android 17.
-
-       LineageDatabaseHelper merujuk Settings.Global.UIDS_ALLOWED_ON_RESTRICTED_NETWORKS
-       dan Settings.Secure.TETHERING_ALLOW_VPN_UPSTREAMS. Keduanya milik AOSP,
-       dan AOSP sendiri yang memindahkannya di 17: yang pertama ke
-       android.net.ConnectivitySettingsManager (SystemApi MODULE_LIBRARIES,
-       tak terjangkau aplikasi sistem biasa), yang kedua jadi konstanta privat
-       di Tethering.java. Diganti nama kuncinya langsung, mengikuti idiom yang
-       sudah dipakai berkas yang sama untuk sfps_require_screen_on_to_auth_enabled.
-  -->
-  <remove-project name="LineageOS/android_lineage-sdk" />
-  <project name="rigaz29/android_lineage-sdk" path="lineage-sdk"
-           remote="gh" revision="lineage-24" />
-
-  <!-- hardware/libhardware: menyediakan display_defs.h.
-
-       hwc_utils.h:29 di HAL display msm8916 meng-include
-       <hardware/display_defs.h>, dan berkas itu tidak ada di pohon 24.0.
-       Berisi composition type khas QCOM (HWC_BLIT) dan flag rotasi untuk HAL
-       display pre-UM. Diambil dari ULH legacy_support_patches; kegagalan yang
-       sama tercatat sebagai kegagalan build kedua saat porting 23.2.
-  -->
-  <remove-project name="LineageOS/android_hardware_libhardware" />
-  <project name="rigaz29/android_hardware_libhardware" path="hardware/libhardware"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <!-- Empat repo untuk rantai BPF-less (Fase 4).
-
-       Kernel A37 3.10.108 tidak punya eBPF sama sekali. Yang fatal bukan
-       kegagalan jalur BPF-nya, melainkan reaksinya: proses mati, init
-       menghidupkannya lagi, dan perangkat tidak pernah boot.
-
-       Connectivity dan frameworks/native sudah di-fork lebih dulu untuk
-       keperluan lain; muatan BPF-less menyusul di branch yang sama.
-  -->
-  <remove-project name="LineageOS/android_system_bpf" />
-  <project name="rigaz29/android_system_bpf" path="system/bpf"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="LineageOS/android_system_netd" />
-  <project name="rigaz29/android_system_netd" path="system/netd"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="LineageOS/android_system_vold" />
-  <project name="rigaz29/android_system_vold" path="system/vold"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
-  <remove-project name="platform/packages/modules/DnsResolver" />
-  <!-- groups hulu "pdk-cw-fs,pdk-fs", BUKAN "pdk" seperti tiga repo di atas. -->
-  <project name="rigaz29/android_packages_modules_DnsResolver" path="packages/modules/DnsResolver"
-           remote="gh" revision="lineage-24" groups="pdk-cw-fs,pdk-fs" />
-
-  <!-- build/make: fork sendiri agar boot.img bergantung pada dt.img.
-
-       vendor/lineage/build/tasks/dt_image.mk menyediakan aturan pembuat dt.img
-       dan MASIH ADA di 24.0, tapi tidak ada satu pun yang menyatakan boot.img
-       bergantung padanya. Urutannya jadi diserahkan kebetulan, dan mkbootimg
-       gagal:
-
-         mkbootimg: error: argument [dt]: can't open
-           out/target/product/A37/dt.img
-
-       Patch diwarisi dari kit 23.2 dan menerap bersih ke 24.0.
-
-       ENAM linkfile di bawah disalin PERSIS dari default.xml. remove-project +
-       tambah-ulang membuang seluruh linkfile milik entri resmi, dan build/make
-       adalah kasus terburuk kalau sampai keliru: build/core, build/envsetup.sh,
-       dan build/target semuanya symlink dari sini.
-  -->
-  <remove-project name="LineageOS/android_build" />
-  <project name="rigaz29/android_build" path="build/make"
-           remote="gh" revision="lineage-24" groups="pdk,sysui-studio">
-    <linkfile src="CleanSpec.mk" dest="build/CleanSpec.mk" />
-    <linkfile src="buildspec.mk.default" dest="build/buildspec.mk.default" />
-    <linkfile src="core" dest="build/core" />
-    <linkfile src="envsetup.sh" dest="build/envsetup.sh" />
-    <linkfile src="target" dest="build/target" />
-    <linkfile src="tools" dest="build/tools" />
-  </project>
-
-  <!-- system/tools/mkbootimg: fork sendiri untuk mengembalikan —dt.
-
-       A37 memakai tabel DT TERPISAH, bukan DTB yang ditempelkan ke kernel
-       (BoardConfig.mk: BOARD_KERNEL_SEPARATED_DT := true dan
-       BOARD_MKBOOTIMG_ARGS += —dt $(PRODUCT_OUT)/dt.img). Alasannya sudah
-       terdokumentasi di device tree: penempelan lewat
-       CONFIG_BUILD_ARM64_APPENDED_DTB_IMAGE sudah dicoba dan DITOLAK bootloader
-       perangkat ini, sementara partisi recovery TWRP yang jelas-jelas boot
-       memakai dt_size = 210944.
-
-       mkbootimg AOSP 17 sudah TIDAK punya —dt (nol kecocokan; yang ada hanya
-       —dtb), sehingga perakitan boot.img gagal dengan mencetak usage.
-
-       Basisnya AOSP android-17.0.0_r1 + satu commit ULH d96838c5
-       "mkbootimg: add support for —dt", menerap bersih.
-
-       CATATAN untuk PLAN-LOS24 bagian 6.3: repo ini sempat DITOLAK KELIRU di
-       Fase 0 sebagai "khas Exynos, harus disaring". A37 memakainya juga.
-  -->
-  <remove-project name="platform/system/tools/mkbootimg" />
-  <project name="rigaz29/android_system_tools_mkbootimg" path="system/tools/mkbootimg"
-           remote="gh" revision="lineage-24" groups="pdk" />
-
   <!-- vendor/lineage: fork sendiri untuk satu baris allowlist.
 
        com.android.ranging dan vendor_tracing_descriptors dirujuk base product
@@ -307,12 +113,6 @@
        seluruh pemeriksaan, padahal pemeriksaan tersebut sudah menangkap
        memtrack HIDL, libbt-vendor, dan lights HIDL yang hilang di Android 17.
   -->
-  <remove-project name="LineageOS/android_vendor_lineage" />
-  <!-- entri hulu snippets/lineage.xml:61 TIDAK punya atribut groups; disalin
-       persis, karena remove-project + tambah-ulang membuang seluruh atribut. -->
-  <project name="rigaz29/android_vendor_lineage" path="vendor/lineage"
-           remote="gh" revision="lineage-24" />
-
   <!-- build/soong: fork sendiri untuk satu perbaikan fsgen.
 
        Perangkat non-Treble tidak punya partisi vendor (TARGET_COPY_OUT_VENDOR
@@ -339,13 +139,6 @@
        filesystem_creator.go:228 dan :1497, jadi perangkat Treble tidak
        tersentuh.
   -->
-  <remove-project name="LineageOS/android_build_soong" />
-  <!-- groups disalin PERSIS dari default.xml 24.0; nol linkfile, karena commit
-       e792ac0a "Remove top-level bootstrap.bash & Android.bp links" membuang
-       keduanya di 24.0. -->
-  <project name="rigaz29/android_build_soong" path="build/soong"
-           remote="gh" revision="lineage-24" groups="pdk,tradefed,sysui-studio" />
-
   <!-- vendor/qcom/opensource/power DICABUT.
 
        A37 tidak memakainya: device.mk:911-918 eksplisit tetap memakai HIDL
@@ -366,54 +159,51 @@
        Diperiksa: nol pemakai lain qti_powerhal_headers maupun
        power-service-qti di seluruh device/, hardware/qcom-caf/, dan vendor/qcom/.
   -->
-  <remove-project name="LineageOS/android_vendor_qcom_opensource_power" />
-
-  <!-- ============================================================
-       Lapisan QCOM
-       WAJIB: msm8916 MASIH tidak dikenal di 24.0. Diperiksa pada
-       hardware/qcom-caf/common branch lineage-24.0 hulu:
-         grep -c msm8916 qcom_boards.mk qcom_defs.mk BoardConfigQcom.mk -> 0 0 0
-       qcom_boards.mk bahkan identik byte-per-byte dengan 23.2 (901 B);
-       platform tertua yang tersisa msm8937. Dua commit ULH (624fa247 dan
-       7b118701) sudah di-cherry-pick ke fork sendiri branch lineage-24, dan
-       hasilnya diverifikasi identik dengan ULH 23.2 di ketiga berkas
-       (qcom_boards.mk, qcom_defs.mk, BoardConfigQcom.mk).
-       ============================================================ -->
-
-  <remove-project name="LineageOS/android_hardware_qcom-caf_common" />
-  <project name="rigaz29/android_hardware_qcom-caf_common" path="hardware/qcom-caf/common"
-           remote="gh" revision="lineage-24" groups="qcom">
-    <linkfile src="os_pickup_aosp.mk" dest="hardware/qcom/Android.mk" />
-    <linkfile src="os_pickup_sepolicy_vndr.mk" dest="device/qcom/sepolicy_vndr/SEPolicy.mk" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/msm8953/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sdm660/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8150/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8250/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8350/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8450-6.6/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8550/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8650/Android.bp" />
-    <linkfile src="os_pickup_qssi.bp" dest="hardware/qcom-caf/sm8750/Android.bp" />
-  </project>
-
-  <!-- Manifest 24.0 hanya menyediakan device/qcom/sepolicy (qssi) dan
-       sepolicy-legacy-um (sdm660, revision lineage-24.0-legacy-um).
-       Varian pre-UM yang dipakai A37 tetap hanya ada di ULH.
-       Jaraknya besar (ahead 641 / behind 1672 terhadap legacy-um 23.2), jadi
-       jangan coba rebase ke 24.0-legacy-um; pakai apa adanya lebih dulu.
-       Lihat PLAN-LOS24.md bagian 6.2. -->
-  <!-- Fork sendiri dari ULH lineage-23.2-legacy, dengan satu tambahan:
-       deklarasi vendor_hal_soter. device/lineage/sepolicy/qcom/private
-       memakainya lewat hal_client_domain, tapi atributnya hanya dideklarasikan
-       di pohon generic dan legacy-um yang TIDAK dipakai perangkat pre-UM.
-       Tanpa ini checkpolicy gagal membangun system_ext_sepolicy.cil. -->
-  <project name="rigaz29/android_device_qcom_sepolicy" path="device/qcom/sepolicy-legacy"
-           remote="gh" revision="lineage-24" groups="qcom" />
-
   <!-- ============================================================
        HAL QCOM khusus msm8916, fork sendiri.
        ============================================================ -->
+
+  <!-- ============================================================
+       MODEL TAMBALAN: patch, bukan fork.
+       ============================================================
+
+       Sampai 10 September 2026 manifes ini mengganti 23 repo hulu dengan fork
+       rigaz29 yang sudah ditambal. Sejak itu polanya dibalik: repo tetap milik
+       hulu, dan seluruh perubahan hidup sebagai patch di patches/ repo kit ini.
+
+       Yang MASIH berupa repo di bawah hanya yang memang bukan tambalan atas
+       hulu 24.0: device tree, kernel dan vendor blob milik sendiri, tiga HAL
+       QCOM msm8916 yang diambil dari cabang LineageOS lain (lineage-22/23),
+       serta dua repo hulu yang cuma perlu dipindahkan revisinya.
+
+       KONSEKUENSI: sesudah `repo sync`, tambalan HARUS diterapkan ulang dengan
+
+         tools/apply-patches.sh <pohon>
+
+       dan `repo sync` dengan opsi force-sync membuangnya TANPA bertanya.
+  -->
+
+<!-- vendor/qcom/opensource/power DICABUT.
+
+       A37 tidak memakainya: device.mk:911-918 eksplisit tetap memakai HIDL
+       android.hardware.power@1.0-impl, bukan AIDL power-service-qti. Project
+       ini hanya ikut ter-sync karena grup "qcom", lalu tetap dianalisis soong
+       karena analisis mencakup seluruh pohon.
+
+       Dan analisisnya GAGAL, sebagai akibat langsung temuan Fase 1
+       (QCOM_HARDWARE_VARIANT kini terisi msm8916, di 23.2 kosong):
+
+         BoardConfigQcom.mk:438  soong_config_set qtidisplay,headers_namespace,
+                                 $(QCOM_SOONG_NAMESPACE)/display
+                                 -> hardware/qcom-caf/msm8916/display
+         power/Android.bp:60,78  //<headers_namespace>:display_intf_headers
+                                 //<headers_namespace>:vendor.qti.hardware.display.config-V12-ndk
+
+       Fork msm8916/display kita (lineage-22) tidak menyediakan keduanya.
+       Diperiksa: nol pemakai lain qti_powerhal_headers maupun
+       power-service-qti di seluruh device/, hardware/qcom-caf/, dan vendor/qcom/.
+  -->
+  <remove-project name="LineageOS/android_vendor_qcom_opensource_power" />
 
   <project name="rigaz29/android_hardware_qcom_audio" path="hardware/qcom-caf/msm8916/audio"
            remote="gh" revision="lineage-23" />
