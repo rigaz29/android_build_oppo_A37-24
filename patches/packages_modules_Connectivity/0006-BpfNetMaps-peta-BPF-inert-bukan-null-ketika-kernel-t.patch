@@ -1,0 +1,219 @@
+From 5cf9790221d7e834af2a097a8ec4b9d745337797 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 17:47:10 +0000
+Subject: [PATCH] BpfNetMaps: peta BPF inert, bukan null, ketika kernel tanpa
+ eBPF
+
+Tambalan sebelumnya membuat kesebelas getter mengembalikan null saat peta
+tidak dapat dibuka. Itu menghentikan lemparan di titik pembuatan, tetapi
+hanya memindahkan kegagalannya satu langkah: setiap pemakai lalu
+men-dereferensi null. Kali ini muncul di jalur yang tidak terbungkus
+try/catch dan tetap menjatuhkan system_server:
+
+  RuntimeException: Failed to create service ConnectivityServiceInitializer
+  Caused by: NullPointerException: Attempt to invoke interface method
+      ...IBpfMap.getValue(...)
+    at BpfNetMaps.setChunkPermListForUids(BpfNetMaps.java:1629)
+    at PermissionMonitor.<init>(PermissionMonitor.java:488)
+    at ConnectivityService.<init>(ConnectivityService.java:2640)
+
+Menambal tiap pemakaian berarti memburu sebelas peta di puluhan metode,
+dengan satu bootloop untuk tiap yang terlewat. Peta inert menyelesaikannya
+di satu tempat: seluruh pemanggil berjalan tanpa perubahan, tulis diabaikan,
+baca mengembalikan kosong, dan forEach/clear/isEmpty yang default di IBpfMap
+ikut benar dengan sendirinya karena getFirstKey mengembalikan null.
+
+Diperiksa sebelum ditulis: seluruh perbandingan `== null` atas peta-peta ini
+berada di dalam initBpfMaps dan murni inisialisasi malas, sedangkan yang
+`!= null` hanya di jalur dump. Tidak ada yang memakai null sebagai penanda
+"eBPF tidak tersedia", jadi mengganti null dengan stub tidak mengubah makna
+kode mana pun.
+
+Fitur yang bergantung pada eBPF -- statistik per-uid, firewall per-uid, data
+saver berbasis peta -- memang tidak berfungsi. Itu sudah pasti di kernel ini,
+dengan atau tanpa perubahan ini.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../src/com/android/server/BpfNetMaps.java    | 92 ++++++++++++++++---
+ 1 file changed, 81 insertions(+), 11 deletions(-)
+
+diff --git a/service/src/com/android/server/BpfNetMaps.java b/service/src/com/android/server/BpfNetMaps.java
+index a8dd305e7c..c21a6c8855 100644
+--- a/service/src/com/android/server/BpfNetMaps.java
++++ b/service/src/com/android/server/BpfNetMaps.java
+@@ -459,7 +459,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open netd configuration map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -472,7 +472,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open uid owner map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -485,7 +485,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open uid permission map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -498,7 +498,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open uid permission chunk map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -512,7 +512,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open cookie tag map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -525,7 +525,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open data saver enabled map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -538,7 +538,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open ingress discard map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -551,7 +551,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open local_net_blocked_uid map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -564,7 +564,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open local_net_uid_host_access map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -577,7 +577,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open local_net_cache_generation_id map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -651,7 +651,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open local_net_access map", e);
+-            return null;
++            return new NoOpBpfMap<>();
+         }
+     }
+ 
+@@ -2606,4 +2606,74 @@ public class BpfNetMaps {
+             pw.decreaseIndent();
+         }
+     }
++    /**
++     * [A37] Peta BPF inert untuk kernel tanpa eBPF.
++     *
++     * Sebelumnya getter di kelas ini mengembalikan null ketika peta tidak dapat
++     * dibuka. Itu memang menghentikan lemparan di titik pembuatan, tetapi hanya
++     * memindahkan kegagalannya: setiap pemakai lalu men-dereferensi null.
++     * Kegagalan berikutnya muncul di jalur yang tidak terbungkus try/catch dan
++     * tetap menjatuhkan system_server:
++     *
++     *   NullPointerException: Attempt to invoke interface method
++     *     ...IBpfMap.getValue(...)
++     *     at BpfNetMaps.setChunkPermListForUids(BpfNetMaps.java:1629)
++     *     at PermissionMonitor.<init>(PermissionMonitor.java:488)
++     *     at ConnectivityService.<init>(ConnectivityService.java:2640)
++     *
++     * Menambal tiap pemakaian berarti memburu sebelas peta di puluhan metode,
++     * satu bootloop untuk tiap yang terlewat. Peta inert menyelesaikannya di
++     * satu tempat: seluruh pemanggil berjalan tanpa perubahan, tulis diabaikan,
++     * baca mengembalikan kosong, dan forEach/clear/isEmpty yang default di
++     * IBpfMap ikut benar dengan sendirinya karena getFirstKey mengembalikan
++     * null.
++     *
++     * Fitur yang bergantung pada eBPF -- statistik per-uid, firewall per-uid,
++     * data saver berbasis peta -- memang tidak berfungsi. Itu sudah pasti di
++     * kernel ini, dengan atau tanpa kelas ini.
++     */
++    private static class NoOpBpfMap<K extends Struct, V extends Struct>
++            implements IBpfMap<K, V> {
++        @Override
++        public void updateEntry(K key, V value) { }
++
++        @Override
++        public void insertEntry(K key, V value) { }
++
++        @Override
++        public void replaceEntry(K key, V value) { }
++
++        @Override
++        public boolean insertOrReplaceEntry(K key, V value) {
++            return false;
++        }
++
++        @Override
++        public boolean deleteEntry(K key) {
++            return false;
++        }
++
++        @Override
++        public K getNextKey(@NonNull K key) {
++            return null;
++        }
++
++        @Override
++        public K getFirstKey() {
++            return null;
++        }
++
++        @Override
++        public boolean containsKey(@NonNull K key) {
++            return false;
++        }
++
++        @Override
++        public V getValue(@NonNull K key) {
++            return null;
++        }
++
++        @Override
++        public void close() { }
++    }
+ }

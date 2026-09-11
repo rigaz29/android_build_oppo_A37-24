@@ -1,0 +1,80 @@
+From 280a721455881c9590fde0c1f71a2f9ed034b35a Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 17:15:35 +0000
+Subject: [PATCH] NetworkStats: jangan tolak boot ketika peta BPF tidak dapat
+ dibuka
+
+Di kernel tanpa eBPF, nativeBpfFdGet gagal dengan ENOSYS. getIfaceStatsMap
+melempar, pengecualiannya menembus konstruktor NetworkStatsService, dan
+seluruh system_server mati:
+
+  IllegalStateException: Failed to open interface stats map
+    at NetworkStatsService$Dependencies.getIfaceStatsMap(:923)
+    at NetworkStatsService.<init>(:688)
+    at SystemServiceManager.startService(:244)
+  Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
+
+Tiga saudaranya di kelas yang sama -- getUidCounterSetMap, getCookieTagMap,
+getAppUidStatsMap -- serta getStatsMapA dan getStatsMapB sudah menempuh jalur
+lain untuk kegagalan yang sama persis: Log.wtf lalu kembalikan null. Kelimanya
+memang gagal di perangkat ini dan system_server tetap berjalan melewatinya,
+jadi jalur itu terbukti aman. getIfaceStatsMap kini mengikutinya.
+
+dumpIfaceStatsMapLocked mendapat penjaga null seperti dumpCookieTagMapLocked,
+karena BpfDump.dumpMap tidak memeriksa null dan akan NPE. Komentar "always not
+null" pada dumpMapStatus dicabut karena tidak lagi benar.
+
+Statistik per-antarmuka memang hilang tanpa eBPF. Itu satu fitur yang
+berkurang, bukan alasan menolak boot.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../server/net/NetworkStatsService.java       | 20 +++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/service-t/src/com/android/server/net/NetworkStatsService.java b/service-t/src/com/android/server/net/NetworkStatsService.java
+index ec7435b840..bc73d34ad1 100644
+--- a/service-t/src/com/android/server/net/NetworkStatsService.java
++++ b/service-t/src/com/android/server/net/NetworkStatsService.java
+@@ -920,7 +920,19 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
+             try {
+                 return new BpfMap<>(IFACE_STATS_MAP_PATH, S32.class, StatsMapValue.class);
+             } catch (ErrnoException e) {
+-                throw new IllegalStateException("Failed to open interface stats map", e);
++                // [A37] Mengikuti idiom tiga saudaranya di kelas ini
++                // (getUidCounterSetMap, getCookieTagMap, getAppUidStatsMap):
++                // catat lalu kembalikan null. Melempar di sini membunuh seluruh
++                // system_server di kernel tanpa eBPF, karena pengecualiannya
++                // menembus konstruktor NetworkStatsService:
++                //
++                //   IllegalStateException: Failed to open interface stats map
++                //     Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
++                //
++                // Statistik per-antarmuka memang hilang tanpa eBPF, tetapi itu
++                // satu fitur yang berkurang -- bukan alasan menolak boot.
++                Log.wtf(TAG, "Cannot open interface stats map: " + e);
++                return null;
+             }
+         }
+ 
+@@ -3264,7 +3276,6 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
+         BpfDump.dumpMapStatus(mAppUidStatsMap, pw, "mAppUidStatsMap", APP_UID_STATS_MAP_PATH);
+         BpfDump.dumpMapStatus(mStatsMapA, pw, "mStatsMapA", STATS_MAP_A_PATH);
+         BpfDump.dumpMapStatus(mStatsMapB, pw, "mStatsMapB", STATS_MAP_B_PATH);
+-        // mIfaceStatsMap is always not null but dump status to be consistent with other maps.
+         BpfDump.dumpMapStatus(mIfaceStatsMap, pw, "mIfaceStatsMap", IFACE_STATS_MAP_PATH);
+     }
+ 
+@@ -3327,6 +3338,11 @@ public class NetworkStatsService extends INetworkStatsService.Stub {
+ 
+     @GuardedBy("mStatsLock")
+     private void dumpIfaceStatsMapLocked(final IndentingPrintWriter pw) {
++        // [A37] mIfaceStatsMap kini dapat bernilai null, sama seperti map lain
++        // di kelas ini. BpfDump.dumpMap tidak memeriksa null dan akan NPE.
++        if (mIfaceStatsMap == null) {
++            return;
++        }
+         BpfDump.dumpMap(mIfaceStatsMap, pw, "mIfaceStatsMap",
+                 "ifaceIndex ifaceName rxBytes rxPackets txBytes txPackets",
+                 (key, value) -> {

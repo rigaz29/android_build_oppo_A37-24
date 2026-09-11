@@ -1,0 +1,90 @@
+From 3e435f4ff8404bfe22c899d21b30a0eb6a15ef63 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 18:13:36 +0000
+Subject: [PATCH] BpfNetMaps: tutup juga BpfBoolean, termasuk getL4sEnabledMap
+
+Peta inert sebelumnya hanya menutup sebelas getter IBpfMap. Lima medan
+BpfBoolean tetap null, dan initBpfMaps gugur di pemakaian pertama:
+
+  sUidMigrationEnabledBpfBoolean.set(...)      BpfNetMaps.java:795
+
+Karena itu eksekusi tidak pernah mencapai baris 830 yang menugaskan
+sUidPermissionChunkMap, sehingga peta itu tetap null dan NPE yang sama
+muncul lagi di setChunkPermListForUids -- gejalanya identik, padahal
+penyebabnya sudah bergeser.
+
+BpfBoolean tidak perlu kelas tiruan sendiri: ia punya konstruktor publik
+yang menerima IBpfMap, jadi cukup disuntik peta inert yang sama. get()
+mengembalikan false karena getValue() mengembalikan null, dan set()
+menjadi operasi kosong.
+
+getL4sEnabledMap sempat terlewat. Pola pencarian memakai get[A-Za-z]+ dan
+nama itu mengandung angka, sehingga tidak cocok -- dan pemeriksaan
+verifikasinya memakai pola yang sama, jadi ikut buta. Keduanya kini memakai
+get[A-Za-z0-9]+ dan seluruh getter terkonfirmasi tidak lagi mengembalikan
+null.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ service/src/com/android/server/BpfNetMaps.java | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/service/src/com/android/server/BpfNetMaps.java b/service/src/com/android/server/BpfNetMaps.java
+index c21a6c8855..5b645799de 100644
+--- a/service/src/com/android/server/BpfNetMaps.java
++++ b/service/src/com/android/server/BpfNetMaps.java
+@@ -589,7 +589,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open uid migration enabled map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
+@@ -601,7 +601,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open loopback access metrics enabled map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
+@@ -613,7 +613,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open loopback checks enabled map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
+@@ -626,7 +626,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open permission propagation enabled map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
+@@ -638,7 +638,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open LNP note op enabled map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
+@@ -662,7 +662,7 @@ public class BpfNetMaps {
+             // [A37] Tanpa eBPF map ini tidak pernah ada. Melempar di sini
+             // menjatuhkan system_server saat ConnectivityService init.
+             android.util.Log.w(TAG, "Cannot open l4s_accecn_ map", e);
+-            return null;
++            return new BpfBoolean(new NoOpBpfMap<S32, Bool>());
+         }
+     }
+ 
