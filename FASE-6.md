@@ -19,7 +19,7 @@ partisi.
 
 ---
 
-## 1. Empat titik henti, dan kenapa itu kemajuan
+## 1. Delapan titik henti, dan kenapa itu kemajuan
 
 Tiap perbaikan memindahkan kegagalan lebih dalam. Itu bukan basa-basi: ia
 membuktikan hipotesis sebelumnya benar, karena gejalanya tidak berulang.
@@ -30,6 +30,10 @@ membuktikan hipotesis sebelumnya benar, karena gejalanya tidak berulang.
 | 2 | block device `/system` tidak muncul, 20 detik `wait` | 24,48 |
 | 3 | vold jalan, berhenti sebelum zygote | 13,3 |
 | 4 | `post-fs` sampai `restorecon /cache`, zygote tak pernah mulai | 13,5 |
+| 5 | `netd1shot` gagal, `reboot_on_failure` me-reboot | 14,1 |
+| 6 | surfaceflinger SIGSEGV di libEGL, 18 kali | ~5 detik sekali |
+| 7 | surfaceflinger SIGABRT `gralloc-mapper is missing`, 17 kali | ~5 detik sekali |
+| 8 | zygote SIGABRT `createProcessGroup` saat fork system_server | 31 kali |
 
 ### Flash 1 — fstab tidak pernah sampai ke ramdisk
 
@@ -184,6 +188,142 @@ kodenya memang belum tersentuh, tidak ada yang dipaksa.
 | `system/memory/lmkd` | 2 | tekanan memori |
 | lainnya | 6 | apex `O_DIRECT`, sepolicy kernel lama, wifi, BT, NetworkStack, wlan |
 
-## 5. Belum terbukti
+## 5. Flash 5 sampai 8 — empat blocker berikutnya
 
-Boot penuh. Semua yang di atas memindahkan kegagalan, belum menghilangkannya.
+Pola yang sama berlanjut: tiap perbaikan memindahkan kegagalan lebih dalam,
+dan itulah buktinya hipotesis sebelumnya benar.
+
+### Flash 5 — `reboot_on_failure` mengubah kegagalan tertangani jadi bootloop
+
+    init: Service 'netd1shot' (pid 568) exited with status 255
+    init: Service netd1shot has 'reboot_on_failure' option and failed,
+          shutting down system.
+    init: Reboot start, reason: reboot,netd1shot-fail
+
+`netd1shot` memverifikasi netd dapat dijalankan sekali dengan benar.
+Andaian di baliknya: netd yang gagal menandakan kerusakan fatal. Di kernel
+tanpa eBPF andaian itu tidak berlaku -- netd memang sengaja berjalan tanpa
+BPF. Dua perbaikan: `NetdUpdatable` mengembalikan 0 alih-alih -1, dan
+`reboot_on_failure` dicabut dari `netd.rc`.
+
+Yang tidak terduga: shutdown yang dipicunya **tidak pernah tuntas**. dmesg
+berlanjut sampai detik 103 dengan zygote pada status `stopping`. Sebagian
+dari apa yang selama ini terlihat sebagai bootloop sebenarnya sistem yang
+tergantung di tengah shutdown.
+
+### Flash 6 — satu baris `LOCAL_MODULE_PATH` yang salah
+
+    ueventd: Added '/vendor/etc/ueventd.rc' to import list
+    ueventd: Unable to read config file '/vendor/etc/ueventd.rc':
+             open() failed: No such file or directory
+
+`rootdir/Android.mk` memasang `ueventd.rc` di `$(TARGET_OUT_VENDOR)` --
+layout pra-Oreo. init membacanya di `/vendor/etc/`. Akibatnya aturan
+`/dev/kgsl-3d0 0666 system system` tidak pernah dipakai, node GPU tetap
+`0600 root:root`, dan surfaceflinger (uid 1000) kena EACCES:
+
+    Adreno-GSL: open(/dev/kgsl-3d0) failed: errno 13. Permission denied
+    Adreno-EGL: <egliInitState:679>: gsl library open failure
+    libEGL: eglInitialize(0x1) failed (EGL_NOT_INITIALIZED)
+
+Ini murni izin DAC, **bukan SELinux**: seluruh denial pada boot itu bertanda
+`permissive=1` dan tidak ada satu pun untuk kgsl. Membedakan keduanya lebih
+awal menghemat banyak waktu.
+
+Kegagalan EGL itu lalu tersamar oleh bug AOSP asli. `DisplayImpl()` hanya
+menginisialisasi `dpy` dan `state`; empat pointer di `queryString` baru diisi
+setelah `eglInitialize()` berhasil. Pada cabang gagal isinya sampah, dan
+sampah bukan-NULL lolos penjagaan `if (exts)` di `findExtension()`:
+
+    signal 11 (SIGSEGV), fault addr 0x200
+      #00 strchr+4 / #01 strstr+10
+      #02 egl_display_t::initialize+962   libEGL.so
+
+Satu dari 18 crash berbunyi `no suitable EGLConfig found` alih-alih SIGSEGV
+-- pada run itu sampahnya kebetulan jinak sehingga `initialize()` terlewati
+dan kegagalan muncul satu langkah kemudian. Sumbernya sama.
+
+### Flash 7 — Android 17 menutup jalur gralloc lama
+
+    Abort message: 'gralloc-mapper is missing'
+      #03 libui.so (GraphicBufferMapper::GraphicBufferMapper()+152)
+
+`GraphicBufferMapper` mencoba Gralloc5 lalu Gralloc4, dan baru turun ke
+Gralloc3/Gralloc2 bila `requireMapper4()` salah:
+
+    return android_get_device_api_level() >= 36 && flags::require_gralloc4_or_newer();
+
+API level perangkat ini 37, jadi cabang Gralloc2 tertutup padahal A37 hanya
+punya blob gralloc1. `LEGACY_GRALLOC` adalah jalur hulu untuk perangkat
+seperti ini -- variabel soong config, dan **wajib bertipe bool**:
+tanpa `SOONG_CONFIG_TYPE_libui_legacy_gralloc := bool` soong menolak
+analisis karena cabang `true:` pada `select()` bertipe bool sedangkan
+variabelnya terdaftar string. Satu build hilang karena pelajaran itu.
+
+### Flash 8 — cgroup v2 tidak ada, dan zygote menganggapnya fatal
+
+    zygote: JNI FatalError: createProcessGroup(1000, 0) failed:
+            No such file or directory
+
+Rantainya panjang tapi lurus:
+
+    Failed to mount cgroup v2: No such device
+    Failed to create directory for /sys/fs/cgroup/apps: No such file or directory
+    init: Command 'SetupCgroups' failed: Failed to setup cgroups
+      -> /sys/fs/cgroup/system/ tidak pernah terbentuk
+      -> createProcessGroup gagal -> zygote mati sebelum system_server
+
+Diuji langsung di perangkat, bukan diduga:
+
+    grep cgroup2 /proc/filesystems              tidak ada
+    mkdir /sys/fs/cgroup/uji                    ENOENT
+    mount -t cgroup -o none,name=android ...    rc=0
+    mkdir -p /sys/fs/cgroup/system/uid_1000/pid_999   OK
+    echo $PID > .../cgroup.procs                OK, terbaca kembali
+
+`/sys/fs/cgroup` **ada** di kernel ini, tetapi hanya sebagai direktori
+kobject sysfs kosong -- `mkdir` di dalamnya memberi ENOENT, bukan EPERM.
+Itu menjelaskan errno yang semula membingungkan.
+
+Perbaikannya: saat `cgroup2` gagal dengan ENODEV, mount **hierarki v1
+bernama** (`none,name=android`) di jalur yang sama. Itu memberi direktori
+bersarang dan `cgroup.procs` sungguhan, jadi pelacakan dan pembunuhan
+process group tetap berfungsi -- bukan cgroup palsu. Dibatasi pada ENODEV
+supaya kegagalan mount cgroup2 karena sebab lain tidak tersamar.
+
+## 6. Dua celah kernel 3.10 lain yang ikut tertambal
+
+`tombstoned` tidak pernah bisa menulis tombstone: `O_TMPFILE` baru ada sejak
+kernel 3.11, jadi `openat()` gagal EOPNOTSUPP, `PLOG(FATAL)` membunuhnya, dan
+init menghidupkannya lagi -- tiap crash memicu putaran itu sekali lagi.
+Perangkat jadi tidak punya tombstone justru ketika paling dibutuhkan. Jalur
+mundurnya: berkas sementara bernama lewat `mkostemp()`, dipindahkan dengan
+`renameat()` alih-alih `linkat()`. Sesudah tambalan ini boot berikutnya
+menghasilkan **62 berkas tombstone**, dan 31 di antaranya menunjuk langsung
+ke penyebab flash 8.
+
+`/metadata` lenyap karena init melakukan `Switching root to '/system'` pada
+detik 2,91, sementara direktori itu hanya ada di ramdisk.
+`create_root_structure.mk` membuatnya hanya bila
+`BOARD_USES_METADATA_PARTITION` diset -- dan A37 memang tidak punya partisi
+metadata, jadi menyalakan flag itu akan menyatakan sesuatu yang tidak benar
+tentang perangkat kerasnya. `BOARD_ROOT_EXTRA_FOLDERS` menambah titik-kait
+tanpa klaim apa pun soal partisi, lalu ditimpa tmpfs di `early-init`.
+Sesudahnya ketiga layanan `aconfigd` keluar dengan status 0 (sebelumnya 5,
+6, dan 1) dan apexd tidak lagi gagal menulis konfigurasinya.
+
+## 7. Belum terbukti
+
+Boot penuh. Semua yang di atas memindahkan kegagalan, belum
+menghilangkannya. Yang sudah pasti: perangkat kini mencapai **boot
+animation**, surfaceflinger stabil, dan zygote hidup sampai titik fork
+system_server.
+
+## 8. Utang yang harus dibayar sebelum rilis
+
+Semuanya diagnostik, sengaja dipasang, dan harus dicabut:
+
+- `WITH_ADB_INSECURE` di `lineage_A37.mk` -- dikomentari, bukan `:= false`
+  (`ifdef` bernilai benar untuk nilai apa pun yang tidak kosong)
+- `bootwatchdog.sh`: `JEDA=1`, cuplikan tiap iterasi, aliran `/dev/kmsg`
+- `ro.adb.secure=0` dan `ro.debuggable=1`

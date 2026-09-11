@@ -1,0 +1,88 @@
+From 81bac0eae6f30202ab6aeefdf14ff304fe637481 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 16:48:26 +0000
+Subject: [PATCH] libprocessgroup: hierarki v1 bernama saat kernel tidak punya
+ cgroup2
+
+Kernel 3.10 tidak mengenal cgroup2 -- ia tidak ada di /proc/filesystems dan
+mount() gagal dengan ENODEV. Konsekuensinya berantai sampai boot gagal:
+
+  libprocessgroup: Failed to mount cgroup v2: No such device
+  libprocessgroup: Failed to create directory for /sys/fs/cgroup/apps:
+                   No such file or directory
+  init: Command 'SetupCgroups' failed: Failed to setup cgroups
+  ...
+  zygote: JNI FatalError: createProcessGroup(1000, 0) failed:
+          No such file or directory
+
+/sys/fs/cgroup memang ada di kernel ini, tetapi hanya sebagai direktori
+kobject sysfs kosong; mkdir di dalamnya memberi ENOENT, bukan EPERM. Jadi
+CreateV2SubHierarchy tidak pernah bisa membuat apps/ maupun system/, dan
+setiap createProcessGroup berikutnya gagal. Zygote memperlakukan kegagalan
+itu sebagai fatal, sehingga boot berhenti tepat sebelum system_server.
+
+Hierarki v1 BERNAMA -- tanpa controller, hanya none,name=android --
+menyediakan persis yang dibutuhkan jalur ini: direktori bersarang dan
+cgroup.procs yang sungguhan, sehingga pelacakan dan pembunuhan process group
+tetap berfungsi. Terverifikasi di perangkat:
+
+  mount -t cgroup -o none,name=android cgroup /sys/fs/cgroup   rc=0
+  mkdir -p /sys/fs/cgroup/system/uid_1000/pid_999              OK
+  cgroup.procs                                                 ada
+
+Yang hilang hanya cgroup.subtree_control dan cgroup.freeze. Keduanya sudah
+tertangani: freezer tidak meminta aktivasi, memory bertanda Optional
+sehingga kegagalannya hanya diperingatkan, dan kegagalan freeze memang sudah
+non-fatal.
+
+Jalur mundur dibatasi pada ENODEV supaya kegagalan mount cgroup2 karena
+sebab lain tetap terlaporkan apa adanya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ libprocessgroup/setup/cgroup_map_write.cpp | 31 ++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
+
+diff --git a/libprocessgroup/setup/cgroup_map_write.cpp b/libprocessgroup/setup/cgroup_map_write.cpp
+index 0e4547352..285dd1698 100644
+--- a/libprocessgroup/setup/cgroup_map_write.cpp
++++ b/libprocessgroup/setup/cgroup_map_write.cpp
+@@ -156,8 +156,35 @@ static bool MountV2CgroupController(const CgroupDescriptor& descriptor) {
+         LOG(INFO) << "Mounting memcg with memory_recursiveprot failed. Retrying without.";
+         if (mount("none", controller->path(), "cgroup2", MS_NODEV | MS_NOEXEC | MS_NOSUID,
+                   nullptr) < 0) {
+-            PLOG(ERROR) << "Failed to mount cgroup v2";
+-            return IsOptionalController(controller);
++            // [A37] Kernel 3.10 tidak mengenal cgroup2 sama sekali -- ia tidak ada di
++            // /proc/filesystems, dan mount() gagal dengan ENODEV. Tanpa hierarki di
++            // jalur ini seluruh isolasi system/app runtuh: CreateV2SubHierarchy tidak
++            // dapat membuat apps/ maupun system/ karena /sys/fs/cgroup hanyalah
++            // direktori kobject sysfs kosong (mkdir di dalamnya memberi ENOENT, bukan
++            // EPERM). CgroupSetup lalu mengembalikan false, dan akhirnya zygote mati
++            // saat mem-fork system_server:
++            //
++            //   JNI FatalError: createProcessGroup(1000, 0) failed: No such file or
++            //   directory   (com_android_internal_os_Zygote.cpp:1991)
++            //
++            // Hierarki v1 BERNAMA -- tanpa controller, hanya "none,name=..." --
++            // menyediakan persis yang dibutuhkan jalur ini: direktori bersarang dan
++            // cgroup.procs yang sungguhan, sehingga pelacakan serta pembunuhan process
++            // group tetap berfungsi. Yang hilang hanya cgroup.subtree_control dan
++            // cgroup.freeze, dan keduanya sudah ditangani: freezer tidak meminta
++            // aktivasi, memory bertanda Optional, dan kegagalan freeze hanya dicatat.
++            //
++            // Dibatasi pada ENODEV supaya kegagalan mount cgroup2 karena sebab lain
++            // tetap terlaporkan apa adanya, bukan tersamar oleh jalur mundur ini.
++            if (errno == ENODEV &&
++                mount("cgroup", controller->path(), "cgroup", MS_NODEV | MS_NOEXEC | MS_NOSUID,
++                      "none,name=android") == 0) {
++                LOG(WARNING) << "Kernel lacks cgroup2; mounted a named cgroup v1 hierarchy at "
++                             << controller->path() << " instead";
++            } else {
++                PLOG(ERROR) << "Failed to mount cgroup v2";
++                return IsOptionalController(controller);
++            }
+         }
+     }
+ 
