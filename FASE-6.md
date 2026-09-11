@@ -130,6 +130,45 @@ Karena itu `WITH_ADB_INSECURE` dan tambalan FunctionFS legacy bukan kemewahan:
 keduanya satu-satunya jalan mendapat logcat **hidup dan utuh** dari perangkat
 yang macet di logo. `adbd` jalan di `class core`, jauh sebelum zygote.
 
+## 3b. Kenapa diagnosisnya buta — ramoops salah ukur
+
+Ditemukan 11 September, sesudah berhari-hari menyimpulkan dari log rusak.
+
+`/proc/iomem` pada perangkat menunjukkan wilayah yang benar-benar dicadangkan
+hanya **1 MB**:
+
+```
+9ff00000-9ff3ffff : persistent_ram
+9ff40000-9ff7ffff : persistent_ram
+9ff80000-9ffbffff : persistent_ram
+9ffc0000-9fffffff : persistent_ram      <- berakhir di sini
+a0300000-ffffffff : System RAM          <- a0000000-a02fffff tidak terdaftar
+```
+
+Sementara cmdline menyetel `ramoops.mem_size=0x400000`, yaitu **4 MB**.
+Selisihnya menjulur ke `0xa0000000-0xa02fffff`, wilayah yang bukan System RAM
+maupun persistent_ram dan kemungkinan milik firmware modem. Pembagiannya sendiri
+juga sudah melebihi kapasitas sejak awal: console 1 MB + dmesg 2x256 KB +
+pmsg 256 KB = 1,75 MB untuk wilayah 1 MB.
+
+Akibatnya persis seperti yang teramati sepanjang bring-up:
+
+| | letak | akibat |
+|---|---|---|
+| `console` 1 MB | muat di 1 MB sah | selalu masih terbaca |
+| `dmesg` 2x256 KB | di luar wilayah sah | 1638 blok hancur, pola 0x55 |
+| `pmsg` 256 KB | di luar wilayah sah | tersisa 2-3 KB dari 256 KB |
+
+> Yang paling mahal bukan lognya rusak, melainkan rusaknya TIDAK KONSISTEN.
+> `pmsg` sempat melonjak dari 3 KB ke 57 KB lalu menyusut lagi, dan lonjakan itu
+> dibaca sebagai perubahan perilaku boot. Padahal itu variasi kerusakan memori,
+> bukan sinyal. Satu putaran diagnosis terbuang karenanya.
+
+Dikoreksi di `0c36f058` menjadi 1 MB total: console 256 KB, pmsg 256 KB,
+dmesg 4 x 128 KB. Angka 4 MB semula dipilih tanpa memeriksa berapa yang
+dicadangkan; pemeriksaan itu satu perintah dan seharusnya dilakukan sebelum
+menyandarkan berhari-hari diagnosis padanya.
+
 ## 4. Tambalan yang diterapkan
 
 27 tambalan dari kit 23.2, semuanya menempel mulus ke pohon 24.0 — artinya

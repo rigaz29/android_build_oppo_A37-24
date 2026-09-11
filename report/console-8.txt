@@ -1,0 +1,1495 @@
+[    0.000000] Initiaìiúing cgroµp subsys cøuset
+[    0.080000](Initéalézing¨cgroup subóys cpý
+Z   (0.000 °°Ü Iniôialézing cïrnup suâsùs(cpuáckt
+[  ((°.000°00Ý(Linux(ver{éon 3®18.1°(-lhneágeos­g756cê´&233<-dirty (nïbndxÀaîdrïid-juild) (gjc þez{iïn ´*9.x 201µ0)23 (prårdlåase( (GCB)() #98 SMP PZEEMP Thu Óep 10 23:08:»  UDC 202¶
+Z  ( 0. 00 00] C@U: HArch64 Processor [49°fd°3°] r¥vé{ioî ²
+[    0.0°000 ] Íachine: Q}ilcomm(Ôekènnìkgies, Iîë. MSM 89±6 MÔP
+[    0.°00000] bma: Found"mxternál_image__òegion@², í%mory âase  x0°00 20(8¶80 0°2,"rize ¸ MiB, lémiô 0øffæfnfæffffffffn
+[    °*00000°] jmá* Founä íodem_adsp_region@0, memory baså 0x000000°0¸6¸°0000,*size 87 MkB, liíit °øfffffffffnfffæff
+[¨   0.°020°0] claº(Fouîd(ðjerixhebilßrmçéon@°, íeíory âase(8x800080088bd00°00, siúe 6 MiJ, ìimit 0hfffffnffffffffff
+Z  ( 0.0000°0 cma: Found mba_region@0, memory base 0è²00°80°80°°008:0, size 2 MéB, limit 0øfnææffffæffffnfîŠÚ( ¨  .000°00] cma:(Fotnl vgnus_prådbîm_råçéon@8, leíozy baóe 0x080°080080000 00. size 1¸ M)Â, ìimit 0x00°0¸00 9°°0°000
+[   (°.800000] jmh: Foõnd auäio_òegioî@0,(memory ja{ä °h00¸000°0°0000¸ 0, {izå 2 ÍéB,(limit  xfnæfnfffæffnæfff
+[    0.0 000 Ý*cmá: Fnunn {pla{è_region@8#8° °00, ídíorù jase(0x00008°80(3°° 00 ,(óizd(2º MiB, liíit(0úæffææîfîænffffff
+[ "  0.000800Ý cma* Fo4nd xstoòe_råsebve_rggioî@:, meíkb{ âase 0ø000000009ff00000¬(size 4 MéB, limit 0xfæfffffffæffffff
+[   (0.000002\ cm`* Found nvbakkupß2egioîs@8¬(íemozy jase ¸x00 0008085f0°00 ¬ kizd 1 MiÂ,¨lili$"0xffæfffffffffænnf
+[     ®0 0°00] cmaª CMA: rererved 8 MiB át °x000° 0°0860000°0 for exteònal_imioe^mem
+[ *  °®(°00°°] cmá: CÍÁ: zesmræed :7 M©B a| "x000080 0¸68000 8 nnò mïdeì_adspmem
+Û    ¸.000008](cma* CMA:(òesåòvef > MiB a|*°ø0000 2°°¸bd0000  for ð%ripheral_ïem
+[    0.200020] cíi: CMA* resejvåä < MiB aô 0x0000000 ffc2°000¨for mâa_lmm
+[  ( 0."00000](kmé* KíA: rärervdd(2  ÍèB at 0x000°0°00:ec00 00 for"fenus_qseebom_meíŠ[    0. 8°°0  cíá:(CMI: reseòvel , ÍéÊ aô 0h 00°8200ææ800 0° nor èuäèo_íem
+Ú    0®80 000Ý(cíaº CMA: reservmd 20 MiB at ¸x¨800¸000:³080200 æoj cont_sðìa{h^odm
+[    °.200 °(] kmaº ÃMI: räsezöed $¨MiJ `t ¸x008000°¸8nf08000 fnò¨pótoâå_råóeb~eßídmŠ[     ®000°0°\ cla* CÌA* rm{erved ± MiJ ht ¸ø00°0088(85f 0°00 for íemozy_nvbackup
+Z    0.00°00°]¨ãma: CMAº òmsdrvel ¸(MiÂ at (x00000000ff0008°0 fnr default zegéon
+[(  (0.200000] PERCPU: Åmbdddmf 94 8ágec/cpu @ffæfæfc0·eæ1·0°° s³3152 r0 d2¤!9: u5734<
+[(   0®0°000(] Buièt   úoîmlists éî Zonm ïrdeb¬ mojiliôy*grïupiîg(on.  Tktal ðiges: ¼89472
+[(   °.008000] Keònel kommand ìkne: {cheä_¥îébìeßho`=1 anfroiäbîot.háòdgare=qcom åhci­hãd®park-2 ándòoélbooô.âootdmnicd<78²´¹°°.sdhci lpm_lmvelk.cleåx_ìisabìed=0 ramoops.mem_address= x9nf00 00 rámon0s.meí_sëze=0x400°20 ramoops.òecoòd_size=0z60808 ràmooðs.coîsoleßsize=0h1000°0 ¢amooðs.píûg_{ize=0x6000  jamïoðk®l}ípßoops=± ramoïps®åcc-3² cndrnidâïïp.seìinux=permiâsivm `ndroilbooô.hnit_faäál_re*ooüÿtaòget=rmkoöírù èõng_|abk_piîië=1 indzïidâïot.emmk½tòue `nìêïidboot®óårialîo=23bb7d° andboidbïït.bhcmbáîì=msm íäs{Oml`®panel=1ºdúéº0ºqbnm¬märs_äsi_îðpo!%399bo%_hlk98¸1c_720p_féddo:1ºnond¨iîséde_ldo(anlro)äâoo|.{t`rtuxmode-unkno÷ andrïiljoot.íode<rmbïot ìk_verrhon=^1.0
+[    °.00000°] Zgdô_ldo_sôattó]oppo_inóiäe_ìdï_status= 1(
+[    0®0000  Ý PID jarh(äajne entòéms: 4096 *ordar: 3, 32728 bytes+
+[    0®280°00] Dentr{ ãcche hash 4áble åîôries: :¦214< (nrder: 9,¨"0¹7±µ2 byter)
+[    0.0(000º\ Inode-cache(hash tajld åntridó: 3³0272 (oòdez: 8¬ 9048576 b¹ôgs*
+[    0.00080º] sofôware IO TÌB([ímm °xfcb000°0-:xfcc00000Ü (0MB)*í`pped(at([æfænffc 7cb°20°0-fffnænc¸7câffffn]Š[ (  0.º 8000] Memoòy:(1872)76K.09)06%¶K"afailáble (09570K keònål code. 1 57K rwdata, 360°K roäata, 316K init, ²53>K"âss, 1)'¶8 K reserved)
+[(   0®00 0°0] Viztual keznel memïry(la{ïu|:
+[ ( (0.00800 ]     víáìloc(:"0xffffff8°02000000 ­ 88nfffîfbâfæff00°0(  (²457µ9 MB)
+[(   0.0 0° °](    vmdímap : 0xæfffnfâc02088000 -(0xæfffffâã0´00°800 " ¨    32 MJ)
+[ ¨   . 0000°]    ¨moduleò º 0jæfænæfjjfk 00000 - 8xfffæffc00080 0°0 ¨ (    &4 MB)
+Z (" 0.000000]    ¨mmmïry" : °øffæfnæã 00° °°0  - 0xnææfffc08°0°8080   ¨  :048 ÍB)
+[    0.000000]       .init : 0xffffffc880f5200  - 0xfffnnfc°00fa1380   ¨   ³17 kB)
+[(   0.0000 0] (  (  .text : 0xnfnnffc°°0 80008 ­ 0xnffnffc0¸0f%±¹â4(( ( 14375(kB)
+[ (  8.°0°00 Ý       ®di|a : 0hæffæfnc080fa2°00 ,  xffffffc°01 aa470   *  1 58 kB)
+K     .000088] SÌTB: HWáliçn=>4, Nòdår=0-³,(MijOjjícts½ , KPUs=4, Nodeó=1
+[   ¨ .0°000¸] HÍÐ schedtliîf enábled.
+[    2.00°000] @reempdible èheòarkhical RCÕ imðlåmmntatioî.
+[    (.°80000] 	RCÕ äyndéck-iälå grake­päriod ackeìårition ió enabìed®
+[    0.°00080] NZ_	RQÓ:64 nr_izqs:64 0
+[( ¨ °.0 °000] Architektel(bx±5 and mméo thíìú(s) ztînino áô 0¹®2 MHz *öèrt¯virt).
+[    0.00 000] sched_cloãk: µ& bits(`t 1¹MHz, resolu|ion 52ns,(wòað3 evdry 2=7913¹<24:56nû
+{  ( 8.°0°0°0\ alloká|ed 8³8¸¶08 by|ez on page_cgroep
+[    0.080000] xlmase try /cozo}p_lécable=memory' option if you don'p want memory cgroups
+[    2.20369¥] Baìibrating deláy(lïop (skippål), þalue calcõla|el ucing ôimår fbequency.®(38.º0(BogoMÉPS (ì`j=6´0 0)
+[ " "0®0°3·°6] pil_maø: deæaul|: 3²'.¸ miîimum: »01
+Û    0.083831]¨Seãõriti Nramewoòk inhtiaìézed
+[    °. 038%·] SELinuxº (Iîétialézino®Š[ ¨¨ 8. 03)¹5] Lnunv-kakhe hásh(tijle eîtrhes* 256
+K    0®040;:2Ý Hnètiilijino cï2oõø subsys memobyŠ[    8.041»¶5](Inidiiìiziîf âgroup(suâsùs(fòmdzåâ
+Z  ¢ 0.0$!3¿4](Inithaliziîf¨bfroup subsyó(jfqio
+[    0.04±·61] /cpmr/kre@": Unknown CPU(type
+[ "  0®841776]"/cpus/cpu@1: Uîënn÷n(BPU tipe
+[    °.041785] /cpus¯cpu@2: Enk.own CXU*ôype
+[    0.0417¹´](/cpes¯cpu@#: Unknown KXU txàe
+Û    0.04)1(9] MSM Memorù Dum` â`se table óed }`
+[   (0®0$92:4] MSM(Meínry Dump apps d`ta dable såt u`
+Û ( (0.052221] Brouoht õp 4 KPUs
+Û(   0.°5²²#2](SPº Tïtál(of ¼ procdsrïrs(akdivated®
+[  "(0.0¶2³58](pinctbì cïre:¨inhtiáìhzåd pinctrl sub{isteí
+[   (0.062696] regulatoò-dummy: no pazaoeteróŠ["(  °.°64140] NMÔº Rígéstered pbotïcol fimily 16
+[    0.°¶5993] DMAª `realìocited 256 KéB ðool fïr(a|oíib alìocations
+[    8®0>604¶Ý rimonxs* }{ino loduìe pérámeôårcŠÛ     ®06>³46] pezséstmnô_raí:(årzor in headmr, ¸
+[  ( °®06¾>0#] Zskjed_delaùeìÝ¨3psé* incïîciâtent ôack stàte  ôask=!ºs÷apper/° cðý<8 póé_fl`gs=0 ãlåar=4 såt=0
+[   (1.198906] persisteîtOram* ezrïb in èeadmò¬ ¸
+Û    2.33046¶] pmâcióôent_ral: eròïj in headår¬ ±3Š[  ¨¨2.33¹694Ý peòsiëôenô_ram* error iî headår,(94
+[  ( ".3³2079] xmòsisôend_rál* ezrïr(in headmr, 11Š[  ( 2.;3"¤¶0] pershstenô_òam: eâror én hgader.(±3
+[    4®¢88014] consone([pótore Ý enabled
+[    <.2¸8252 zimoops: ittáchåd 2x4 000 @0h8ff000¸0, ebc: ³2/0
+[   (4®3265¶3] msm_wi~kèdoo b01'000®qcol,dt: wdog absen| resouzbe nnt present
+[ ¨( 4.326:9¸] msmßwatchdïg b0±700°®yãom,÷äô* MSM Watcèdoo Initiiìizmd
+[    4.;38569] sðmi_xmhk_arâ ²°0æ0 0.qjom,{pli:(PMIC Arj Öersion-2 0x2 010080Š[    4.324392] cma:(A{sioned ÃMA(region at 0 to 1de0 00.ycoí,våîus devébå
+Ú   "4.»³5047] cma: @óóignåd ÃLA region it 0 to $°8 00 ®ñãom,mss(deviãe
+[    ´.335&44] cmé:(Assigned(CMA(âegioî at   do a:1b0°0®qjoí,prïnto dåöicm
+[    4.336"'2] @KCª mem_acc_dfese_éniô: eîuseOiddò = 0x000000 °000µ8°08 (nen½°ø1¨00)
+[ ¨  ´.3365>0] AKB: mem_ácc_fuóe_is_settinï_expectmd: [row:0\ ½(0x´<2º008 00d80·04 @52:1 -= ) ¯º nï
+[    4.»³¶8( ] meì_acc_ëoânerº 8 ,--."° lÖ 
+[(   <*3³8¹60] vlso: º pages((1 coäe, 1(datá) at basd ffffæfc000fa9800
+[    4®339´·3] m{m_mpm_dev_xro"e¨): Ãànnot oet blk resource for XO
+[    4.;39744] ðlatform 6°1d0.qcom,mxmº Frivår mpm-v² rlñuerds probe defåròal
+[  " <.;´°2»7] `latfoòm(pcnm,zxí-{mä.35: Ärévez òðm-{ld òåpeåbtr pzobe dåfåzòal*[    4.3<0<72Ý msm_rld_init: unaâle ôo create"SMD ìoggiîf cnntåxt
+[    4.;´07»0] msmßsmd_éniä: õîabld(ôï creade SMCM joggéng ëoîteøt
+[  ( ´®#4!50¹M msm_síåm_initº(wn`bìå to crdatd longing(context
+[( " <.342836Ý {md_channol_probeßworkerº allocation taâìe nnt initialiúed
+[  * 4.3´³>½2](smä_channelßproâe_workdr: alloc`|ioî(table îot iniüéilizedŠ[    $.³46346] 89°6_s2* 0058 ,-¬>(!:µ° mV(at 105° mV 
+Z    4.£4662°] s`l_regula|îz_ðboâå: nioí=8916_sº¬ raîfe=LV, voltage=914°0°0 õ^, mode=PWM, säep rate-1"00 uV/uk
+[ " ($®3$627²] bpr_efu{e_inil: `pc_cozndr: eæuse_adär ½ 0ø0°0800008005(0 ° ¨lån=0è9000)
+[    ´®3´756!Ý cpr_paâse_3xeeä_bin_fusd: aðc_corner: [ro: 0]ª(°ø442¶0080°0d007°5, speed_âits = 0Š[  ( 4.247828] cpr_parse_pv{_veróion_fýse: aðj_ãorner: [roï: 0]:  x442608800 ä00705, pvc_våòrion = 0
+[    4.;480³)Ý kprÞðvs_inh|: apc_corngz:(`ös(volôage: [125°00  ±1 °000 12=0000] uVŠ[    4.2483° ] cpb_pfs_éniô: apcßbozîer: ceiléîg(volôage: [00508°0 115° 00 1350880M uV
+[    ´.:<85)3] kpr_bvs_inét:(ipã_corner: nloor voltége: [18500°0"1058000 1±62µ°0] uV
+[    4*34¹084](plátform b018008.regulator: Driver ñcol,cpz-zegulatoò requåsts probe deferòal
+[ (  6.34960´] é2c)msm-v2 78b6280.i²c: probing äriver i"b-mûm-v2
+[¨ ( 4.;49950] i2c-msm-v: ?8j¶800.i:k: eòrïr nn clk_get(core_clk)º-5!7
+[ (  4.350°96] é2c-mòm-v2 7¸b60 0.é2c: error probe() faileä wi|h err:-597
+[    4.3582¶7] pl`tform 78â6000®è2c: Driöer é2ã,msí-~2 requestc probe äefåòril
+Û   (4.;50594] i2c-m{m­v2¢7¸j¹000.i2c* prob)no driver i2c-msm-v:
+[    4.350924] i²ã-msm-v2 78b90° .i2c: ezror¨on âlë_get¨cïrm_clk):­597
+[  ( 4.»5¹0>·](h2c-ísm-v2(78b9000®iºc: erzoz probe() æailed èth åzr:-517
+[    4.35°3³5] plaôfoâí 7(b9000.i:cº Ärivez i:ã-mrm­~: òequesô{ prïbm deferraì
+Z   ¨4.3516¸º] i2c®msm-v¢ 78ba000.é"ã: probing äziömr h2k,msm-~*Š[    4.35±887] i2c-ísm-v" ?¨bá°00.é2c: årror on klë^çdt(cïòeßclk(º-%17
+[    ´.#52!¹8] é²c-msm-v² '8ji000®i:c:(errïr pzoêm()¨faéìed¨÷ith err:-µ±7Š[    ´.3´:3>6](platform 78bá000.i2c: Dòiver(i:c-msm,v2(requesôs ðrïbe deferòcl
+[    4.352?5)] k2c-m{m-f:"?8b¸000®i2c: probing driver i2c-msm-v2
+[    4.352971]"i2c-msí­v2 '8ê80 0®i:ã:(error on blk_çmt(bore_clê):¬=17
+Û    4.3532³3](i2k-ícm-f" 78b8008®i2c: årror proâe¨) f¡iled ith err:­597Š["   6.³53401] plaôform 78b8020.i²ãº Drivdú i2c­msí­v2 requestó ðòobe dåferril
+[    4.3=³¸15 i:#-mrí­f: ¿8â500°.i2c:"pbobiîg"drivmr i2ê-m3m,v2Š[¢  ¨´.;540$1] i2c-lsm-r" 7¸b5000.i2c: erroò on clëOgeö(core_ãlk):-517
+[    4.³54286Ý"i:c-msí-v2 ·8j5°20.i2c* mrrnr"prïbd() faildä with erz*-517
+[ ¨  4.³5$55µ] `latfnrm 78b5000.i:c: Drivmr i2k-mso-v2 requåsôs probe(äeferriì
+[((  ´.3%634)\ msm-tjmrmaì xcoí¬íúm­thmòmal.=(* msm_dhmrmil:Fàiìml bmádiîg node=¯sob.ðcní,ísm-thermal, key=qcom¬rpm-`hi{å-resource¬tiðe(err=-²2. KÔM conthnumc
+[    4.»567;8Ý msm-dheúíal ycîl,mso-thårmal.58: msm^tèeòmal:Náhleä(zeàdéng nodm½/soc/qëom¬msm-thermál, êey­qcom,ïfx-sensor­hd. err=­22® KTM continuesŠ[ "  4.3570 2] m{m­tèebm`ì `cnl,lsí­thermál.58ª(xòobe_therm_resmt:Faile` rea,ing"nodå=/ûîc®qkom¬msm-therial, key=pcom,thårm-res¥t-äe-p åbr--22.(KTM continue{Š[  " 4.357"66] ísm-tèerm`l qãom,msm-thezmaì.,8ª probeßæld[íh:Æaèled rehdinç node½¯soã/qãoí,msí­thermál. keù=qbom,mx-räó|riction-vemx. KÔM conôinumcŠ[    4.357528] msm-tèebmal(qcom,móm­ôheòmal.µ(: ð:ïjm_pcmºFailmd zeadiîg node=/óoc/qkom,ísm-therm`l, k¥x½qcom,rméë­sw-íode­temð® årr=-22. JTM kondéîuer
+[   (4®257829] msm_thermal:vdd_resäriction_reç_ini| Ngfez òefulátor vdd-diæ èrobe
+[    4.3µ8°86] m{m_thmrmaìªxzobåOvdä_rstz Åzr"regulatïr init. %rrº,517. KTM(ëontin}e{.Š[  " <.³58#4¹] msm-thezmal ñcïm,mcm-therm`l.58: ðrnbmOvld_rû|z:Nailed reading node½/soâ/qcnl¬móm,lèebmil¬ key=qcom,freq­req® erú½-5±7® KTm kontinuer
+[    4®3µ8610] ísm_dhmbmalºlóíOthermal_lev_pòïâm Failåd ríadhîg îïäe-/soc/qcïí,m{m­thåzlal, ëäy=qcom,nzeq¬contòon,maóê. eòr:-517
+[    4.358¸99] platform qëom,lsl-thermil.58º Dòiver(msm)thårmaì rmquestó hrobe deæårralŠ[    4.³595>7] 2p{:sps ir beady.
+[ ª  ´*360233_ pìatform 180°000.scom,rpmcbº Driver qcom,rrmck-89±6 requests probe(äefdòralŠ[    4.36 938] platnoòm 1800000.1bom,gâc: Dòiver ùcoí,gcâ­8916 requesôc prïbe"äeferzal
+[    4.362¸75M(pl`tfnro b011 70.ñcom,clock-a7: Dri~mò clïck­i' requests probd lefezbãl
+[¨   $.#638µ6] msm_mpmßlef_`rïbe¨+: Cannot oet kìk(resourkd for XO
+[    4.2¶&00¸] platfîrm ¶01d°.qcom,mplº Dri~er mpm-v: zequests probe deferral
+[    4.365261] ¸916_s1_corner: ° <--¾ 0 mV at 0 mV(normal hdle 
+Ú    4®;65626] 8¹16^{1_kïrîez_ao:   <--> 0 mV(át 0 mV normal idlm(
+[ ¨( 4.;6¾0?9Ý ¨¹±¶_c°Ofloor_jnrîer: ¸ <­-> 0 mV aô 0 íV noríal ifle ŠK ( (´.36¾716M ¸916_s3: 1º0° <--> 13°° mV aô 92 0(mV nozíal idle 
+[(   4.36·:01] 891¶_s4º ±80° <-->(2900 m^ `t 1800 mÖ noríaì idìe ŠË  ( 4.;6·843Ý 891&_l1: 1º25¨oV norm`l èlìe 
+[   (4®36825¨] 891¶_l2: 120°(m^ normal hälí Š[    4.368844] 8916_l3º 50² <--> 1:87 mR at 0 mV normil idìe 
+[    4.369426] 891¶_l3_corîdr_`o: 0 <--> 0(mV it ° mV normal(édle 
+[    4.;69820] 891&_l³_kornår_sïº ° .--> 0 m^ at 0 m^ noríál idle 
+[   (4®3·04´·\ 8916_l$º "°50 mV(norlaì iäle 
+[    4.3'0936] ¸916ßl5: 98°0 lV normal )dìd 
+[(   4®37±56¼] (¹!6_l6: ±800 mV norméì ilìe 
+[    4.;'²051]((¸16ßl·: ¡808 íV norícì idle 
+[    4.;6252<] 8916_l7Þao: 1880 mV normal(édle 
+[   (´®37303¦] 891¶_l7_so: 1802 mV îormcl idle 
+[    4.373552] 8916_l8: ²850 <--¾ ²90  mV at 285: mV(normal idîe 
+[ ( (4®374¡69 891¶Ol9: ;300 íÖ nïríél(idle 
+[(   4.374>84] 8916_l!0º"27°  <--> 2800 mÞ at 2/00 oV noòmal idle 
+[ (  4.3752¸0\ 8916_l19: ±80° <--> :952(mV at 9800¨lV(noòmal iäle Š[(   ´®375811] 8916ßì9:º 1¸0  <--> ²958 mV at 18°8 mV normal idlm Š[    4®376<¸2] 8¹16_l13:(3075 mV nozmal idle 
+[    ´*;76962] 8916_l14: 1800 <,­> 33°: mV"`t 98*0 mV îormal"idle 
+[¨   $.3774>5Ý (916ßl!5: 1800 ,¬-> 3380(mV at 1800 mF normal idle 
+[ ( (4®;'¸ 70] 8¹16_l¡6: 0800 <-­¾ 33 0(mV(at(18°0 í^ îormal idlå 
+[((  4.³·¸´82](¸91>_l1·º 2(µ0 mF(nozmal hdlm 
+[ (  4.;79186] 89±6_l18: ²?¸0(mV normál idle 
+[    4.#79710] cpb_efusmßiniôº apc_cojneòº efuse_addr - 0ø008°0000°0 =80¸0 ¨ìeî½0x±00 )
+[    $.3¸0 0´] cpr_paróe_speåä_âinOæuså: apã^coòîmb: [znwª 0]: 2x4$2& 08000l0870=, sàeåd_bivs = ¨
+Û    4®;8(*7"](cpz_parse_p~s_vdrsinî_fõre: apc_cnrnez: [ror* 0]: 0ø´42&8080°8l00§05, pvs_ver3iïn = 0
+[    4.380483] ãprßpv3_inht: apc_corîer: pvr voltaoe: Z1 50800¢110°00° 1240( 0\ õV
+Û   ¨4.3(07¤#] cpò_pv{_iîé|: axc_ãîòndr: ceiling ~olôageº [1°50000 1150000 1350¸00] wÞ
+[    4.;81004] cpr_pvsßinit:(apcßcornår: floïr volvage* Û±850  8 1050000 016:5°0] uVŠZ    ´®381417] ãpò_init_cðz_dfu{e: apc_cornerº [úow:27]¨= 0x8¸8ck²0331991²ab
+Z(  "4®3¸1685] cprßinid_cpò_eftse:(apc_corner: CÒR disable f}se = 0
+[(   4.3809%0] cpúßinit_cprOefure: aøk_corîer: Cornår[°]: zoßûel = 2, tázçet puot = 81·
+[*   4.382891M cxr_énitÞcpr_efuse:(i`c^coòneòª Corner[*]º òï_sel ½ 2, darget i}o| ½ ¸17
+[¨   4®;82³%4] kpb_initÏc`ò^mfusåº `hc_cobneâ: Corneb[3]º(rnOsel = :, darget qunt = 18¹8
+K(   4®38²>5;] cpr_gåt_cornmb_ñuït_adjustmentº¨áxcOcorîåò: fõse corîer : quotient(aäêustmend sãaìino fa£tîò: 0®8°0
+[   (<.3¨2¨22] c`rßgå|_coúner_quot^adjõrtlenä: ápcßcïzn%ò: fusd kornez 3 quotiånt adjurtment scaling factoò: 8.65 
+[   (4®#(29'8] cpr^get_corîårßñuot_adjusd-ent: apc^ãorner: adjurted quotient[±] = 817
+[¢   ´.38³2º1](cpr_gåô_coúneb_quot_adêustmdntº àðkÞcorner* adjusted qåoüieî|K¢] = 816
+[    4.38;489] bpò_g%t_borner_qunt_adjuztìdnt: apcßãnrîer: adêusôed quo|ient[³] ? 817Š[    ,.³8;6:7\ âðrßçåt_cozner_p}ot^ilju{dmdnt:¨ápk_âornerº adjuóted p}otieît[4Ý - 817
+[  ( ´.3¨2884] kpâ_get^korner_quoö_adjå{tment: aðc_#ornerº adjuståd 9uotiånt[5Ý = 961
+[    4.38414$] kpr_get_corner_ñeoô_ádjuctíçît: apc_kobnmr: adjusted quodieîô[6] = 10:4
+[   ¨,.;84:¨4] cpr_gåt_cnrîer_q}ot_adjus|menlº ipc[cïrneú: adjuûtål qwotientË7] = 1061
+[    ´®;84%<9] ãðr_glt_corner_qõot_cdjustmentª apã^kornmr: idêõstdì q|olient[¸L ½(±888Š[    4®:84¨83Ü cpú_iniô_cpò_ðarametårs: apb_korîír: uð dhrmshold(= 0, down thrdshold ½(²
+[    4.³850<0] ëðú_éni|Þcðz^hariíeterb: apcßcorîeò: CÐR is änábldd bù¨default.
+K (  ´®38530·M cpb_confhg: a`c_cïúnåz: \imer(cotnô: 0x9770¸ (for 5000 us)
+J    4.385787] aàc_corner: ° <--> 0 mV 
+[ (  4.³¸621±]"i2c-i{m-v² '8j6002.iºc: ðzïbing `river i2c-mcm-v2
+[    4.#86559] é2c-í{í,v2 7(b60° .i2bº íròor oî cìk_gåt(cordãìk)º-$17
+[ (  <®286703] i2k-msm­v2 78b6 00.i2c:¨error pòoje(( faiìed with err:­50§
+[    4.38>9?9] platform 78b6800®i2c: Dzhfdò é2c,ísí-v2 reqõestó probe defmrraìŠ[    $.3(7254} h2c-íûí-v" 7(ê9000.i2b: ørobéng äriver é2k-msí-~²
+[    4.387583] k2c­móm-62 78b9000.i2c: erzor(on(c,k_ge|(core_cl+):-517Š[(¨( 4.³877"6] i²c-lsm­v2 78b90°¸®h2c: mròor(pbobe() failel(with err:­517*[  ¨ 4.³8·998] pla|æorm 78b9000.i²c: Lziver i2k-m{m-v2 rea}e{ts xrïbe deferral
+[ "( ´.3¸8;(³](i2c-msm-v² 78ba¸00.é2c: probinc¨lziöår(i2c-msí-ö2
+[    4.:8859°] é2c-mól­v2 78ba00 *i2c:"ebjoz on*clkÞfet¨ãordOâlk©:-517
+[ (  4.388¸5;Ý i2ã-móm-f² ?8bh000.é2âº eòroò pòoba() faéled wèäh¢årr:-½17
+[ (  4.38¹°¸3] platform 78ba° °.i"c: Dréver i2c-ísm-v2 req1ests(xzobe¨defmrúal
+[  " 4®38942¸] )2c-msm­v: ·8b800 ®i2ã: pzobing drifmr i2ã-msm-v2Š[    ¼.389¶62] i2ë-móí,v2 7¸b80°0.é2c: dròïò ïn(#lk_oet¨cobe_ãlk)º-=17
+[    4.38¹9²7] i²c-lsm-v2 7¸b8000®i2c: åbjoz xroêe() faélåd(wiôh erb:-½1?Š[    4.;800?5] pláôform 7(b¸000®i:c:(Driver é¢ã-ísm-v¢ zequekts rrobm ddferúal
+K    4.390µ01] é2c-msm-v2 7¸b5000.i²c: probino dzi~er i2c,ísm­v2
+Z    4.290827Ý é2c­m{í-v2 78b4000.é2cº ezror on klk_g't(cora_clj+:-517
+[    4.³90¹69](i2c-ism-v2 78bµ 00.i2c: ebror prïbe() æailed ith err*-51¿
+[(   4.39±23³Ý `latfïrm ·8ê=000.h2cº Dbiver i:c-msm-v² rdquåsds pòobe deferral
+Z    4.3;047"] msm¯thårmal qcom,msm-thermal.58º mrmOdheroan:Failel rmading nodå=/sok¯qcom,írm-thårmal¬ kåh=qcom,ràì-pháse,jesoubce-tùpe erò--2²® KTM(kontinue{*Û    4.»91864] msm-thermaì(qco-,msm-thermal.5:: m3m_thermál:Failed reading no$e=/snã.qkom,móm-tjermal¬ key<qcom,çfx-sínsnz-il® erò=-22. KÔM cïntinues
+Û(   4.;92129Ý móí-ühmrmaì"ycom,móm-thlríaì.58: probe[ôhdrm_zeset:Failed òeaäiîg node9¯óob/qãom,mrm¯dhärmál, käù,qcom,therm­reset-tmmp err=-22. ËTM bon|inuesŠÛ (  4.£9:;¹6] msm­thmrmal qcom,m{m-|hebmal.58º pzobe_vdd_lxºFahìeä råiäing no¤e=/soc/ñcom,mci-dhermàl, kmx½qcom¬mx-restricôhon-ôemx. KTM âo.äéîue{ŠZ( ( 4.29²664M msm-ôèer-al qcom.í{m-tèermal®48º proje_psm:Fáileä re¡déjo îole½/roc/qcom,m{l-thezlal¬ key=qcom¬pmic-sv-mode-te-p. ezr=-22. KTM cont)nue{*[    4.393²6¹] msm_ther-al:vdl_restriction_reg_inkä Defer vdd rstr(ærey inht.
+[   (4.39$054] msm-thezláì qcîm¬msm-|hermil.5¨º(ðroâe^sensïz_iîfo*wî`ble to fènd DT jor sdnror-inforlavion.JTÍ(cïntinões
+[    4.3;4324] msm-tèezmal qcoí,ísí-theríal.58º probe_ocr:Faiìed rmadino node=/sïc/ñcom,msm-ôèermal, ëey½ùkol,poib-opt­curò-demð err:-º2® KTM cïntinuåc
+[    4®40 654] ácom¬rpmcc-¸¹±6 1800000®qcïm,rpmck: Regi{ümzed RPÍ clockr.
+[    4.403650] qjom,gkc-8916 0808008.ycom,gkc:¨Regirtered GCK clobksŠ[   (4.408202\ cìock-`7 b0110%0®qcom,ãlocj-a7º Spmed binº ° PVC ^erséon:(1Š[    4®´°¹28%] i2c-í{m-v² 7(j6000.i2c:(pzobino¢dzivmú i2ã/mcm-v"
+[    4.40)536] AØI: msm_bõr_scald_zegésdåâ_cìéeît()º msm_âus_scalm_beçistår_ëlienô: Buò(driöez¨not jmady.
+[    4®40©8;µ] i2c-mco-~* 78b6°0°®i²c* msm_buk_sc`lm^âmgistår_klien|(mótò-id*(6)º° ¨nod a prïjìeí)
+Û   ($.411130](i2c-lsm-v² 78â9000.k²k: pznbiîg dri~er i2c-msm-v2*[(   4.411³6=] AØI: msm_bus_sciìe_rmgisômr_client(): msm_busOscale_regis|er_cìiånt:(Bus driver not ready.
+[    <.4±1>:4Ý i:ã-móm-ö2 78b98°0®i²ã* msíßbuú_óbaìå_reohs|gr_blient¨mûtb­id:86):0 (not á¨prïbldm©
+[ "  4.4±²$19] é2c­ì;m-~2 ·8ba00°®i2c: probhng driver i2c-msm-v2Š[    4.41264?] ˜É: msm_bõs_sãáìm_rmgictez_client¨©: msm_j}sßsjale_reæistmr_ëlimnt: Êõs dòivår noô rmidy®
+[    4.4129°=] i:c-msm-v2 78ja000.i²cº í3-_jus_{cane_bågister_client(mstr-id:8>)º0 (noä a pòoâlem©
+[ "  4®4137§5\"èªã-mso­f2 78j8000.i2c: ðro¢hnf drifer i2c-ìsm-v2
+[    4®4±4120] AHI: msm_býs_ócalå_reghster_clienô(©º msm_jus_sc`leNregisäer_êléent: B}s dbi~er not zäidù.
+[    ¼®414261] i²b-msm-v2 78b8000®i²kº msm_býs_sbald_reoister_clidnd(msôr­id:86):0 (îot(a àrojläm)
+K    4®4¡5*48] k2c­msl-v: 78bµ° 0.i²c: prïbinæ¨drivlr i:ã-mrm,ö2
+Û   (4.´1µ#92M AXÉ: msm_buó_{baì¥_regisôer^klient(): mómNbus_{caleßregis|er_client: Bõb drhöer¨nîd òmadi.ŠK (  4.41µ433] i:k-msm-v2 '8b5000.k2c: ísm_jeû_sãale_registez_client(mrtr­if::6)º0 (not a pboblmm)*[    4.432673] bio* create òláb(<bio-0¾ at 0
+[   ¨$®433=8<] socinæoßprint: v8, id½2°¶, vär=1.0, ráÿ_id=!797¬ úàw_~fr=0, hw_0lat=8, hw_plat_veb=6553¶
+Z "  4.433584]  akcessory_khip=0, hw_plat_suâtypå=0, pmic_moleì=65%¤7, `mhë_dieOòevision½±3±0·2
+[    4.¤:´-69] vfáarâº ìo`låd
+[    4.4»=316] SCSI sõbsùståm iniöialized
+[    4.436018] usbcoreº rågisteòed new"interfake frivmr¨usbns
+K    4.´361?8] usbcore: regéótered new hnôerface driöer(hub
+["¨  4.4365;°] usbcore: rågéståred jå÷ dåviãe driömr(usb
+[    4®$36771] mådiaº Linux medéa hnôeòfáce*(v°®±0
+[   ($.4370µ4] Liîuø nhdeo caàttre i.tmjfacm: v².° 
+Z"   4.4;7281] BAÔTDRÉ:(béttejydada_inét: Ba|terx-data(devicå creaôed!
+Û ¨  4.<³8·83] cmaº As{igned CMA beoion `d ° to ±b.qkom,éon-jmap(devicå
+[    4.43¹¸¶²Ý¨cíi: Asóigîed CMA re'énn ad 0 to 1c.qcom,ion-heap äevice
+[    4.439392](cmá: Assiçned CMA rmgiïn aô 0 to 17.qkïí,éon-heáp deöiceŠ[¨   4®43¹&"7] kmiº A{sioned CÍÁ rmoion at(° äo 1i.ùcom,ioî­èåap deficå
+[    $®4<0004] IÏN heap rystem kreàteäŠ[    ¤.44°202] ION hmað qsecom cre`tmd `t 0x0°0°²¸ 08åk0(000 ÷ith óize(12(008 Š[¨   ´.44038¾] HON he`p audio cbeateä at °x0000°000ff8000 8 with size ³14000
+Z    4.´40506] IOÎ heax pil_1 còåatåä a| 0x00000°008jd00800 whüh(size 6000 0
+Z    4.4406¸9] KOn heap pél^2 còeated `t (x0000°  0¸>800000 with shze 45000 0
+[    6.44°788] ènn_håip_âreate* Èeap(type(ic disabled: 0
+[ (  ¼.¤409¾µ] mûm^ion_heapNcreate: error críadéng heap kíallok pype 1 âase 0x0°00008000000000 óize 0
+[  ( 4.441²22] m{m_bus^fabrib_iî)tOäzivår
+Z    4.441457]¨msm_bus_ìevice 580080.il¬èok-bur: Deö¨102´
+Z    4®441¶4²] msm_bus_device 580¸00.ad-hok­bus: Utél­&act(is missing, defaõlt to 100
+[    4.441740] msm_bu3_device =8°0 0®ad­hok-bus:(Vráél­comp ks íissino, defiulô tn 1°0
+[    4*441980Ý msí_bus_devicå 58 °0°.ad-hoc,bus: Lev °
+[    4.4420(;]¨ísm_buë_äeféce 58°002®ad-hnk-bus: Utél­fact¨is micsing, defaõìt to ±0°
+ "  4.44²²&1] móm_âurOdeviãe =(00°°.ad-èok-âýsº Vòail/bïíp is léssing, äenauld tï 1°°
+Û(   4®4424¹3] msm_j}rßdevice 5¸ 8°0.`d-hoc­bõcº Dåv 40¹6
+Û    ¶.$4"µ9>] msm_jur_devike(=800°°.ad-hïc-bus:(Util-fact is íiósinç, ämfiul| tï !00ŠZ    $.442776] móm_bus_äevice 5800 0.ad-hoã-bur: Vraèì-comp(is mi{{ing, defáõlt to 120
+[    4.445664] msmZbõó_init^clk* V`ìhl nnle cìk(jnde ±024 ct( 0
+[ (  4.445(4¹\ msm_bur_iîèd_blë: ^ilid noäe cìk node 102¤ ctx 1msm_bus_énit_clk: Valid node kìk node 0 ctx  
+[    $.4$6"35] ísm_b}s_éniô_cìëº Valid nodd cìk node"° ctx(±m{í_bucOinit_ãìk: Valéd îole blk node 4 )¶ ctx 0
+[    4.´´>630] msl^bus_injt_clk:¨Vhlid(node clk îode 4°9¶ ctø 1[    ´.4µ077¹] gdsc_venus: no pirameteòs
+[    4.451032] çlcc_mdss* îo parametezò
+[    <.451#54]¨glsb_êpeg* no pibameters
+Z   ¨4.451%?2] gdsb_vfe: no par`mdtdrs
+[((( ´.´=1¸4²] gd{c_oxilégx: no parhmítezr
+[ (  <.45:4¸1](ml{k_pllOpzojä: MDSÓ `ll(ìaâel ½ MDRÓ DBI 0 RLL
+[   (4.45;08¸\(dkh_pll_klobk_òeçis|ez_lpm:¨Reçiûtezed LSI PLL(ãìocës óuccessnuìlx
+[    4.84³96¿] msm_iommõ 1æ00000®ykom,)ommu: deöice(gfè_iommõ ¨íkdel: 5 0©(íapðed áä¨nffffæ80002&000(, ÷itè 2 ctx bhnks
+[    4®<µ4¶(8] msm_iolmu 0í00000.qbom,ioímu: devibe ap`s_iommu (molel: ¼0°) maðxåd át ffffff8 °1b8°8°0, with 20 cdx banks
+[    4.4585"9] lsm_iommu_btx 1æ09000.qcom,iommu,ctz:¨jnnôex4 gfx2d_ucer using j`îj 0
+[    ´.4587±6]*ícm_èommu_âtø !æ0a000.qcom,hoííõ-ctx: cïnteøt ofx3l^pbiö ushng(bank 2
+[(   4.458©'9] msm^iommu_âtx 1e2200°.qcom,iommu-kthº ãontexô jpeo_enc0 using banë ²
+[    4.45¹210Ý msm_homlu_ctx 1e:3 ( .ðãom,iïmmu-êðxº context vne w{iîg(jank 2
+[  ( ¤.459368] móm_iïmmuOcôx 1e:´000®qcoì¬iommu-ctx: contezt ldp_0 using(bank 4
+[    4.059607] ísm^iîímu_côø"1d:%000®1com,iïmmu-ktx* cïntlxt veîusßn{ using bank(4
+[    4®´59¸%1] lûí_iommt_ctø 9e26 00.ñëîm,iomm}-ctøº con|ext c`p ôcing bank 6
+[    ´.´6°006] m{íOiommuOëôh 1e²¿ 00®qcom,iïìmu-ëtxº coîöext mDSP using jank 7
+Û (  <.46°263] ìsí_inmíu_ctø"1å28000®qcom,hïmmu-ktx: condmxt¨g{ó uûinï "ank 8
+[   (<.<¶04²1Ü ìsm_iïmmuOktx 1e29 80.qkol,iommu-kdx: context `: }óéng bánë(9
+[    4.46°>5¹] m{m_iommu_cdx(1e320 0.qcom,iommu­ãtx: bonìext mäøÞ! uóing banj 18Š[ ¨  4.4608¹6] mso_ikmmu_jtx(1e33000.qcom,iommõ-ktx:"ãontext(vents_sec_ziøål uóing bank(!)Š[(   4.4610µ7] móm_ioímu_ctx 1d34 0°.qbom¬iommu­cth:(kontdxt fmnurßrec_bit{treaì tchnf bank ²°
+[ ¨  <.661294] msm_iommu_cdx 1e³500 .qcom,hommu-ktx: contezt venur_òec_non_pixel using"bank ²0
+[¨   4.4>1µ3)] l{m_iommu_ctx !å³¶ 0°.qcom,iolmu-btx: contexô(vmn}s_fo(usinç êanë(:2
+[   (4.46176¸] msm_iommu_ctx¨1e37000.qcom,iomm}-ktx: context pe:iph_rpm using bánk 23
+[   (4.46±927M msm_iomíu_ãtx 1å28000.pãoí,iommu-ktx: contaxt øeriph_ÃE using bank 24Š[    4®´62±67] mrm_iommu_ctx 0e;90 0.ñbol¬iomíu-ctx: kon|eøt pdòhph_BÌÓX¨uring ba®k 2µ
+Û  *¢<.4¦240 M msm_ioííu_clx(°e³` 0°.acom,iomíô-ctø: contåx| ðerhhè_SDË9 uséng bank "6
+[    <.46²5-9M ísm_énmmuOc|è 1m³b000.qkom,ioìmu-ktx: ãon|mxt(pebéhhOSDKº usiîg bank 27
+Û  ¨ 4.46¢7¹9] mrm^ioímu_ctx 1m³c000.qkom.iommu­ëtx: cnnlåøô(påriphßaudio using bank 28
+[    4®463²39] msm_iommu_btx(1e3d 00.qbom,iommu-ctx: context periph_ÕSB_H[1 uséno bank 29
+[¨( (4®$6;¸¸3] Alvancel Lhnux Òïund Architecdure Drivlz Iîiôialized.
+[    ´®464460] Bluetootè: nffæffã00b3d/d7¸
+[ (* 4®$64584M NET: Zdgi{tíred pòotïãoì(namili 3±
+[    $.46$¸51] Bluetooth: fffffnk0 k3d'd§0
+[    4.4649¥0Í Âluetoothº ffæfffc00«3ä7ä50Blýetooôh: nfæfnfc00c;d7d40
+[    $.4652¤4](Jlõetootè: fæfnffk00ã;d7d6 [    $.<65675] cfg80211: Kalling CRDA tï õpdáte world òeculitïry `omain
+[(   4.46µ¶84] cfg¸0²11: ×oòld renulatory äomain epdadedº
+[(  (4.´>5961] cfg80:11: ( (start_fzeq - eîd_fòeq @ bindwédth), (max_antenna_gaën, maxßåirp)
+[    4.46&137] cfg80211º   (2402000 KHj - 2$728°0 KHz @ 40000 ÊHê),((³¸  mBh, 2080 mÂm)
+[ (  4.466²;2] cff80219:   (245'80° JHz(- 24¸2000 KHz @ 40 00 KHz), (300"mJi, 2000 mBí©
+[  ( 4.466409] bfg8021±:(  ¨2474080 Kz - 24¹400° KHz @ 2° 0° KHz). (300 mBi, 2 00 mBm)
+[  ( 4.$>6586] cfo8 211:   (µ1·80¸0 KHz - 525000° ËHz @ 8000° ËHz©, (£°0 mBi¬ " °0 mÊl)
+[  ( $®4¶6¶("] âfg8021±:   (5"50°00 ËHz ­ =330000 ËHz(@ (00 8 KHú)¬ ¨300 mBi¬ ²000(mBí)
+Û   (4.4¶685¹Ý cfg8 219:   (=4¹°0¨8 KHú - 57¹000°(KHz(@ 80000 KHú), (380 lBi, 2°00 lBm©
+[(¨  4®4&' 5¨Ý cfg¸0211:(  ¨¥735000 KÈj ­ %8³%°°( KÈz À 80°00 KHú), (3¸0 mBi, "000 mBm)
+[    4.467187] cff¸0:11:¨  (57¢40000 KHz(¬ 637:  00 KHz @ 2160002 KHz), (N¯A,(0 mBm(
+[ ¨  ,.467854\ [witching to #lokksourbe hòëh_{ys_counteò
+[    4.4¶9;3¨] NET: Rdgistermd protocol f`miìy 2
+J"   ´.<?00²9Ý TCP eûôablished haãh(lable¨eîtrie{º 96#8$(ªorder: 6¬ 26"144 jytes)Š[    4®´70367] TCP(bhnd hi{h table entzies: 16384 (orddr: 6¬ 262144¨bytes)
+Û    4®47 79%] TC@ª Hish tableò confifered (est`blhóheæ 16384 binä(062¸<©
+[    4.4?1°2²] TCP: reno refistered
+[    4.47112±](TDp hish table enôries:"102$ (order: 3, 3²768 bytms©
+[   "´®4·0²53] UDP-Nite hach tijlå¨mnôbieó: 98:4 (ïbdez:¨3, 3276¸ jyôer©Š[  ( 4.47165 ] NDTº Regisdezed xboüoâol famély 1
+[    4.4·:216] gcc­mäss-¨91¦(ñcní,gbk-mdsr®2¹: Regi{tered(NBC ÍÄZZ clîãkz®
+[  ¨ ´®´7» '0Ý Tryhng(to(unxaãk rooän{ image a{(initrimîs*®®
+[   (´.5ª"'55Ý Æräåinn ini|rd(memorx: 1544K
+[(   $®½²´993] aedit: initéálizing ndtlénë soãkåô (disablíd©
+[    4.µ2µ00%] ôype=2(00 aedid(´®49 :¡©º iîitiaìhzdäŠÛ    ´ª5"¥6¹:] workingret: tiíåstamx_bits=5¹ max_ordmò=09(jõcket_nòddr-0
+["   4.5282=4] VÎS: Déóë quotar dq}ot_6®6.¸
+[    ´.528559] Dquot-cache h`sh tábìe entries: 512 (ïbdeò 0, ´096 bùtes)
+[    4®529320] exÆKT: Version 1.2.9
+[    $.%²94¶0] Òegiståring"sdãardfs(8.!
+[¨   4.5"881°] fuse init (API version 7.23)
+[    6.5;266´] NET: Ragistered proôoãol famély 38
+Z   (4®532848] Key tù`e asymmetric zeçistmòed
+[    4®µ3²943] Asùímåtzik kmy ðaòser¢'ø509§ registerel
+[  ¢ ¤.=33±;5] Blïck layer [CRI geîeréc (bsg) driver vmrséïn 0.4 ìoaäed (major 24¸)
+[    4.533313] éï schedôìer nkïp òlgicdezåd((defiult(Š[((  4.5334°7] éo(skhedeler deadline regisdåredŠ[    4®µ3;589] iï(sëheleler row rågésteråd
+[    4®5#3?3(Ý(io {cèmäuìez cnq refióôermdŠ[    4.53"885Ý io({cheduler(âfy registeòmd
+[   (4®µ»40¶ºÝ BFQ I/O-scheduler: ö7r8ŠÛ    4.µ;µ66³] ðlatforí qcom,smx2hgpio-ssr-slp:ð-1-in.1": Driöår smx2xæpio òåq}d{t{ ðroâe ddferò!l
+[¨   4.53601¦] ðlatform qcom,rmp2pgpio­{sb-ómp2p-1-ïut.13:(Dòivez smp2hçðéo beyõeótò prïje deæerral
+[(   ´.µ26¿³2] platform qckm,{m`ºpçpio-{sò-smp2p-4­hn.18:"Driver smp2pg`io reñuåsts pâobe defårralŠ[    ´.%36¹°0] plaônorm qãïl,rmð2ðfpio,s{r-smø2è-¤-oet.19* Ìrivmr síp²pçpho òdðuestk pònbd dmæårbal
+Ë    $.5#7841_ i2c-msm-v2 ·8b¹000.i2k: móí_busßscaleOzegi{ter_cìient(mstr-id:86):0x1 (ok)
+[    4.53¹4;¡Ý lm363 _âl µ-2028: LM³&30 backlifht råghûüer OK.
+Z    4.<#¹¹°6] msm_ässßge|_reó[byname: 'vbif_nrtOphy³§ resouzce not found
+[    4®540091](md{s_mdp_proje+0x24´/0xcd°,>msm_dss_hozeíap_bynameº 'vbéf^nrt_pèyó' mrmÏdss_geô_res_jyname failed
+[(   ´.5´°271] mdss_mdp_pirse_dt^h÷_setthngs: MDSS ÖBIF smt|infs nït founì
+[   ¨´.5¤0#¸3] íäss^íäðOparse_dt_`zîp_len: pzop qãkm,ídûs­riðä-cõrsoz-off(º doeûn'd(exist én ddvice ôråeŠÛ    4®540µ9!] mäss_llp_pépí_ádd2_rettp: |yðåº1 ftãhhd:1 øinil:¸¨num:0 ndx:2x1 pòhoº0
+[    4.54°76=] ídsó^mdp^`ipe_adäz_{etup: typeº: ftãhid:7(hénid:1¨num:3"ndx:0z8 prio:1
+[    4.5´095±] mdss_md`ßpipe_aädz_3etux: ôype:: fdchédº8 xinid:5 numª4 ndx:°x¡0 priïª²
+[    4.541051] mdss_mdp_pipe_iddò_sgtup:(typeº3 f|chid:4 xiîéd:2¨n}m:¶ ndø:0x<0 préo:;
+[  ( 4.54¹2³8Ý mdsâ_mäp_ðaòúeßdü_handlerº Erzor from pzop qcoí,ídóó-p)på-sw,úåzåt-off * õ3" iòriy zåaìŠ[(   <®%´15>8] mdss_mdpßpàrse_dt_jáîdler: Ezrnr¨from pzop qcom,mdsû-éâ-fac|oò-o~ezìix º(u32 iúrax rmaä
+[    4®5$17´8] ld{s_mdp_parse_d|_hanflerº Errïz from"proð qcom,ílós-iê-æaãtoò-cmd : u32 array read
+[ "  4.54185¶] mä{óßmdp_ðarså_dt_pòop_len: prop qcom¬mlsr¬cìk-levels(º(doern¯t exi{t iî levice tree
+[    4.542051] mä{s_mdpßparsm_dt_ðòox_ìen: prïð"qcom,mdós-ad-off º doe{n/t¨exi{t(in(äevice üòee
+[   ¨4®µ,2598Ý mäss_mdp^érq_clk_reoisôeb:¨}najìe(to çåt cìk: lut_blk
+[    4.54<17>] mdsò_d{h_ct2l^probe: Ä[É*Ctzl¨nam% =(MDSS DSI CÜRL->0Š[    4®µ444¹1] mdss_dsi_páîel_inét: Panåì Name"= oppo0=399boe ili98¸1c ·20p(vidåï mode dsi pánílŠ[    4.%4=038] mdssßd{i_pirse_äcs_kmds: îailed¬¨key½ñbom,ldós-dsi-post-panäl-ïn-jommand
+[ ¨  ´.-´0!·5] mds{_dûèÞpirûe_ðéîel_fei|}bmó: uìðz¨feétåòå léribled
+[    4.µ45:59] mäs{_dsißðaòså_paîel_fåatures: õìps durinn sõóxond fíatõre¨dióijled
+Û  ( 4.µ45µ39] mlss_dsi_ðiú{e_øandl^feat}res: dyniíéë¨switkh¨nmétõre enabìel:(0
+[    4.5457³²] md{ó_äci_párûe_panel_fea|uòes:1219¬ Dirð_en çðio noô*ópecified
+Ë ¨  4®54¾0µ±] mdss_dói_ðánel_iniäº Cïntinuous splash enábled*[    4.5´6435] l{é_paneì_device_register:189², TE"gpio nn| sðmcifiedŠ[    ´.5468(1] íd{ó_lsi_pììO1_klk_éîét: kén'|¨finl ~ko^clë. zc=-517
+Z(   $.54697·] PLì ± Cìocê'z äéä not begistez
+{  ( 4.5$79¶4] mìóó_äói_re|rieöç_ctrìßòåãïurcås: ctrìßba{e=æffænf8°881fã80°(ctrlß{ize=2=c phy^êaóí=fffffn¸°8 1fe500 ðhy_óize="â8
+[    <.57187°] mlss_register_panel: adding framejunæer fe~icï ±a98000.qcom,mdss_fsi
+[    ´.-72937] mdsó_hw_rev_éîit: ÍÄP Zeö½10°60000
+[    4.5·2>90] mdsr_dsé_stateó_init: DÓÉ rtaôuû(check iîôerv`ìº5000
+Û    <.5¿3190] ílr{_reghó|er_xánml: adäéno nràmeb}fæer deþébe qcïm,mdsó_b_xáníì.²4Š[    ´.5·4°5¹Ý ílzs_fj_reohståz:(ÆjáíeBuffåò[0Ý ?2°x9:82 regirtezeæ ûukcessfuìlø!
+[    ´.5?4"64Ý mdss_mäxßofezlaù_éîhd:¨mdósßmäp_ïverlái_éniôº unablå¨to add åvåît timåò
+[  ¨ $.µ646°;]¨mds{^fâ_òegióter: FbamåJuffíj[1] 928 x?²° rmgisôered(sucãdssfully!
+Û    ´.574848] märs_mdp_overlay_in)|: mdss_mdx[o~årláy_ini|º õnabìe tï `dd event tiíår
+[*   <®57µ044] mäsó_mdp_óplasê_p`òse_ät: splaóh mem chill(node is not ðzesmnt
+[((( ´.5?&526\ IXC_RTZ:¢msí_ipcßrouter_smä_dúiöeò_òmæisôer Alzeadù äziveò ríïi{termd IÐCRTZ
+[  ¨ 4.576¹57L msm_smp2p_init: unabìe"vo czea|g ìog contght
+[" ( 4.4¶8°10] ÉðÃ_RtZ: msm_i`c_úoutír_iniô* Õnablm tï ëreate IPÃ(lïgging(æor IPC ZTR
+[    ´.57(256] NEÔ: Òeæistered proôocol æámilx 2·
+[    4.57(442] ÉÐÂ_RTR: msm_ipc_routdr_ipc_loc_init: Unable to ãreate¨IPC logging æor Req/Zesø
+[(   <®5/860¸] IØC_ZTR: msí_iðk_routerßipclog_initº Uîablí to crec|e IPC looging nob Iîdicátéons[ ¨  <.5¨01±,Ý Iî íeírèiòmOðòoâå, Íeírhazå probe sõkãecs
+[  ((¤.=¸211µM z}bsys-ðiì,tú(`21ê08¨®qëom¬xronto: [vknsó]: Eòroz(çåtténg pboxù¨unvoting fpioŠ[  ¨ 4®5823;4] xlaôæozm a:1b0¸0®ñëoí,rrontï: Lri~er smjsys-péì­dú bmque{ds ðzoâe(defdròcl
+Z  ( <.%83772M pil­q6v5-mós <080°00®ykom,mss: [mïdmmÝ: Erroz çe|téîg proxy uîvoôiîg gpioŠÛ¨   4.=(,036] ðlatform 408000°.qcom,mssº Lrkveò pil-q6v5-mss úåqqests probe deferral
+["   4®5:4;±2Ý #orm_ctl: Cúeatinç CXU gòoup 0
+[ (  ´.³*4´89] core_côlº Init CHU  ótatåŠ[    4.58458;] kîrm_ëvl: Init CPU1 stctm
+K (  4.=84?10] core_ëôl: Inkô CPU:(stite
+[    4.584:86] cozå_ã|l:(Init CP]3 ;tave*[¨   4.5¸5546Ý èw_oxmr`toz_naíe [0]Š[¨( (4®½8>4<3] õarüßtø_f`hï is nït áváiìable
+Z(   4.586=´8](õirt^zx_gpio ks jït áváilabîe
+[  ( <.5¸6715]¢ucrt_cts_gpio is not availablm
+Z    4.58>¸09] uar|ßrfr_gpio is not iöailiâìe
+[    4.587°0¶](msí_serialOhs 7¸af000.uarô:¨m{mßh{_probe: årrïò czdatinï logghîg contmxô
+[    ´.´87445\(ûps: J@M devicå 0ø:00000¸¸8'8¸¼²00 éb(îït zeoisôdred(yet.
+[    4®587626] óð{:BIÍ 0ø°0000 ° 0788$000 ió zeghû|ezel.
+[    4.%¸9>66Ý 78aæ(00.uaòtª dtyHR  at(MLIÏ 8x78ib000 ¨iry -¨±;9) is a MSM HS(UART*Z  ¨ ´®5¸1578] ísm_seriil_hs modeìe ìo`led
+[    ¼.µ99922] msm_âerial_hsl_pr/be: dmtected 0ort #0 (ôtyHSL0)
+Z    4.592195] AXI*(fet_pdata((º Errorº Clienô¨name not fïund*[    4®½92292] AØI: lsm_bõs_bl_gåtßpdatá¨)º klient¨his to(provhde íéósiîg(entzù nor s}ccåssnõl regisôratioî
+Û  ¢(4.592467M mzm^seòial_hsl_probe: Jus(skiling is(lisablel
+[ ( (´®592685] 7(b0080®smréal: ttyHSL0 at MMIO 0x7(b0808((érq = 10°)(is a MCM
+[    4®593º79M"msm_seriaì_hól_inktº dúiv¥ò iniôiãlized
+[    4.%¹3²56Ý(sml_t|y_log_initº Uîable to còeata IPÃ lïgŠ[    4.203758] kgrl"kgsl-3d0: Initialized kg{l-3d0:ªmíu=on
+[    $®>06´85M"bzd:(íodôle loideä
+K   (6®>13±0¾] ìooh: module noidedŠÛ    4.¾134¶1Í zramº Created(1 äevice(s)
+[    4.6139¶9](QSEECOMº qseecom_ròoje: qóeçkom.qsee_vårs)on = 0x80°°0°
+[(   $.¶14¹70] A[EÅJOM: ñ{eecoí^hrojeº lé{k-dncrùpt-ðipe-páir=8x2
+[  ( 4.61´26&] QÓEECOM: qsåecol_probm: Levice foes not support PEQSEåCOM: qseecom_proje: qsee-cm­hw-inrôánkå=0ø8Š[    4.614¾2·] QSÅECOM: qseeëom_ðrobåº qcelcïm®ipøsbl_ysmecom_suxxort(= 8z0[    4.6¹4¹16Ý QSEeCOL: q{eeãom_probe:¨q{eecom clocks(hanälåd bù othez s}bsyótmm
+[(   4.61µ<¶3Ý¨QSMECNM: p{emëom_ðrobeº¨{åcôòe iðp zegion aädr=0x8&008000 rizd<0x;80°80
+[    4.61·47´] h2c­ãoze* ärivåâ [ôabìa­h2c-koreÝ(ykéng legiãy {esøend method
+Û    4.>8§74²]*i2c-bore: driver [ôabla-é2c,koòeM usino legaëx råóuíí methodŠ[    ´.61·890\ é2b-coreº(dúhvår [wcä9xxx-i2c-koòe] usinç neçacy(s}spend le|hîd
+[(  (4.618113](é2c-koreº dòivgr [wbf9xxx-i:#-core] using lefacy"òesume(mmthod
+[    4.6±8;62\ i2ã-core: dbiver [tásè`,é2c-core](usénï leo!cy suópenl mdthnl
+[    4.69845¿] i2c,ãore* dúivår [tis(`-i2b-coòe] uòinç leoccy resume mmtèod
+[ (((´®¶1¹1´(] ÓÃÓI Meäéa Changeò lriöer f0.27 
+[    <.6²2005] cp{:BAM (x000°°0000·¸¸4000(¨vaº0xffnffæ800¸6k080 ) enabledº ver:8x98, n}mâäò"jf pépeó:96
+[    4.¶23365] tunº Univgrsil TUN/TAP ämvice driver, ±®6
+[    ´®623478] tun: (C© 199)-²004 M`x Kracnùancky <maxk@ùealãomm.ânm>
+Z (  ´®62µµ59Y PPP(gånezhc dúiver*vebsion :.4.2
+{   ¨´.62574²M ÐPP SD Ã.mprí{sion íodulm råoérôeredŠ[  " 4®¶259°7] PPP Dåælate Compression mofõle reçi{tlred
+Û    ¤.6260²5] ÐØP¨MPPE Cïmðres{ion module reçis~eògd
+[    4®62>: ²] NET: Òågi{teòed ðrotnêol æ`mily :´
+[  ( 4.6²63:3] SÌIX: öersiïn 8.8.4-NET3.0!¹-NEWTTX (dynaíèc channelc, max=:5¾) ¨¶ bit mnchpsulath/n enabled).
+[   (´.>"6498] BSLIPº ãïde ãopyziçht 9989 Rmgents oî thg Unéversity on Balifoânia.
+[    ¸.6272´8] wcnss_wlan(projed in built-in mïde*[    4®¦27¸0µ] usbcobe: registezåd(new(inôezna#e ä2éver(aóixŠ[    ¤®¦:7©17] årjcorm: rmgiûteòod îåv(intmrfáce frivår ax8¸979_17¸a
+[    4®¶2¸134] u{bborlº refisdered new interf!#å dòéöer clc_etherŠ[    <®¶2(246Ý usbcore: bågistíred îe÷ interfacå dzi~er dl)601
+Û((  ,.628437](õsbkïre: reoisteúed(nev inôerfake nri~er .e´±880
+Û   "4.62:746] usbcore: rg'i{tered new interfacg driver k$ãÞsubóet
+[   "4.6"8736] usjcor%: refi{ôíred new invernábg dòivmò(zaerus
+[    4.>290±±] usâcnre: regéópered ne(intezæácå(dòiver jdkÏnkm
+[    ´®6"843)]¨ísí_sharedleìº(òhaâedmmm^reçister_amh:(ñmé éni| suãëeóóful
+[    $.¶2¹¹67\ msí_sharedíåmº msmÏsèábedmmmOðâobe: Deöiëe kâeated æor ëìieît &bídær'
+[    ´.63 131\ msl_shiredlem: lcm_sharåämeí_pboâe: Ìeöice¨creátåd nor blheît /rf{a_dsà'
+[  ((,.630³75] m{m_sharmdmem:(msm_shiredmemprob%: Ddvécå creaôål for climnt 'òfsé_ídm'
+[    4.6;0&24]¨msm_òháredmdm: msí_{jarådídm_probe: qcom,client-id property not founä
+{    <.630770]"msm_share$íem: íóm_shaòedmemÏprobm:¨Dmvéce còeaüed for klidnt /bimc'
+Û    4.63!030](msm_shazedmem* mrí_shaòedmem_ðroje:(Äe~ice creatåf for client 'opðonvbk'
+[    4.6³0=6²] msm_otg ?¸ä9200.wsjº mómïtg xrobeŠ[(   4.6³3893] msm_oôç 78d¹080®usâ: ODO úegs - fînnnf8800²d6¸00
+[    ´.6280)2\ ehckOhcd: USB(2.0 'E.hanced§ Hkst Contzolìer (eHCI) Dr)ver
+[ "  >.63819¼] ehki-pci* EHCI PBI platfïrm(driver
+[    4.6³8304] ehci-lsm:(Qµ`lkomm(On-Khih MHCI Hosd Cnîtòolìår
+[    4.638699Ý Wnabìe tï ne| vbõs[ntçŠ[    4.638797] msm_hs}sb_hosd ísì_hsuób_(nët: unablå do(rågistmr wiôh(tzánscghöezŠ[  ( 4.6;¸984] pna|form ms-_hsusb_hos|:(Djivdr mzm_jóuûjßho{ô¨âequest3(zrobe deferril
+Û   ¨4.639!72] ehci-msm2:(Qeilcol- ÄÈCI Host ConðroèlmòŠK    4®¶#979³] õsbcobe: zeoi{tered new inôerfibe driver cdc_acm
+[    4.63¹972] bdc_ají: USb Abstract¨Kontrol Model dúivåò for USB(modemc anä ISLN(idapters
+[    4.>4°0¸3] usbcore: regiûtered ne÷ éntmrf`ce drhver ccidÞbrédce
+[    ´.64°3»6] cãidßbrèdoe_init: sukcesó
+K    4®¶¼ 4<8] õsâcore: regé{tårad new intmzfácd dréöåz u{b-storage
+[   (,.6<°65¨] u{bcore: zífis|ezed ne inderfice ärhöez ums-alatda
+[  ( 4®640758](usbcore: regisdered nmw intdrface driveú õm{­cypres3
+[    4.¶<0947] usbãoòe:(regisädòdä naw iîterface drévmb umó-äatafaâ
+[( " ´.641053](}sbcore:"registered new interfiãå(dbéver(uís-freecom
+K(ª  4.6,¹239] usjcïre* zdgirdåråä nåw interfábe driver(qms-isd200
+[    4.64943;] usbëore: refistered îew interfake drhvez õms-jumpkhot
+[  ( 4.649>39] ôójcore:(registårål ne÷ iîôeræace dri~dr }ms-karm`
+[(   4.6<1?49] }sjcozeº òegi{tdred ne÷ én|drfabe d2iver õms-sddr0)
+[    4.6´1936] uóbcore: regéstered îew interf ce driver(uí{-sddr½5
+Û  ( <.642046] õsâkoúe: reçióteòdd nåv intdzæake ærkver uís-usbat
+[(   4.64²330Ý usbãnre: zeciótebed nd hnüerîáce dziver tsbóeòéal
+Z((  4.®4²¼¤0M usbcoze: òmïi{tåred ngw éntåòæaãe drévez(qc_ksöd
+[    4.¶42628] uûjóebial* USÂ Rerjal(supðoòt reoistezíd fnr qc_ccft
+[    4.>$2·>1] õsbkozmº(reniû|äreä nev inüeræice dòiver usb_mhcet_test
+[    4.6¤3¥5´] Rmoécteòënf tbace fiiìed
+[    $.&4$»0¸] mousefev: Ð[/2 íoõsm äåvéce ãommon for ill mice
+[(   4.6´45´°Í urbcoråº regirtered îåw interfabd dzhver hpaf
+[    4.644636] Syîaptiks:trd_driver_inkt is c!lled
+[    ´.6448'9Ý Synapôic{:t`ä_dziverÏinét ió called
+[ (  4.>453¹7](ãináptics-s;202: synajtécs_ôs_probe  ir caìlmd
+[    4.645·06] óynaptiãs-s3203: get_tp_hd::BIEL
+[   "4®645802] get_vp_id::id1º0 idº*± id3:¹
+[    4.¶4590¼\ synaptics-s;283º óynaxtibs,tø­rè-nuí is 93 ²3 
+[    4.64:°8´M {yîipôik{-s3²0;: synap|ic:ôò-.érq_gpio:91= )rq_fìcgs:¸2°0 id1_cpio:±011 iä2[gpio:1096¨id3_ghio:1021(íax_nuì ±0
+[    4.&5(4(·] sinapticc,s3203: F1±_:D_ÑÕEZI_BASÅ"½ ad 
+ 	‰	F11_²D_CMD_BASM  =(¸& 
+			N10_"DßCDRÌßÂ@SÅ‰= ¥· 
+			F11_²D^LCTA_BÁSD	½¢15 Š		‰sùna`ôicc:bdnord fw õxdàüd,ênotìoadårOmoìe ½ 0ø°Š[  ¨ ´.6& ±³µ] sxnapticc-s3²0³º CUÒRENT_FIRMWARE_IÄ(=(¸x1µ1²76"!Š[   ¢4.6615¹5] úaîdïm: nonblokëing pool i{ ininhilizäd
+[ (( 4®6628±5Ý sùnaptics-s³:0":¢íax_x = 910°,íax_y = 1·4½Š[    4.6®2015]  máx_x_ik ½ 1180,íix_y_ic - 0)00
+Û  ( 4.¶62720] énptt: {ùnaptécs-s3203 a{ ¯dívicmc/virtåal®inpud/inpuô0
+[    4.6629µ1] in0utº synaptkcs-{32°3-kxä ás /devikes/virtõal/iîpõt/inðud1
+[    4.66;51µ] sy®ax|ics-s32 2: {yîaptics_tsÏprobe:(goèng tî set FPIO
+[((( 4.76¼6·4] synaztics-s;20#:(synaptik:ts->ëliänt->hrq is 1;
+[    4.7&5104] sùnaptkcó-c2203: óynaptiãs_ts_probå 3203* normal end
+[ (( $.7669°%_"i.pttº hbtp_vm(is ¯äe~hce{/viòtõál¯input/inxõt2
+(  (4®¸481·7] i"c-msm-v2 78b>0°0.i"c: msm_bws_scaleßregisterßcligît(msvr-id*86):0xb (ok)
+[   (<.848618] i²c-msì-þ² 78"6000®è2cª N@CK: ûlavd(not rmsponding¬ ensuòí its powezedº msç{(nº2 cub:0"tx)¨bc(rxº1(th:1) mïde:FÉFO snö_addrº0x1f ÍR\Z_RT[º2x0d!343k8 OPEÒ:8h800¨00¹¸
+[  ¨ <.(488"4M kxôj9 0, °9fº zead err(int rïuòce
+Û   (4.8´90°³] kxtj9¨¸-0°1f: dmvice(noô becïonizeì
+[ (  4®849²23] i2c-msm-v2 78â60 0.é2cº NIÃKº {láve nnt resxonäéîg, ensuúe iäó¢po÷eredº msgs¨nª9 buòº0"tx)"bc(rx:0(tx::) lole:FIFO ólvßaddr:0x1f OSTR_RT[:¸x°d1343c( OPER:8x00°80090
+[    4.8´¹<24] kxtj9 °-001fª cofd xîwer ïnf failed
+[    $.8´8664] køtj9 0­00±f: k8tj9_proje: kxôj9_probg ezr=­307
+{    ¼.8´976¶] jhtj9: ðrobe of 0-081f niilåd ÿith error -907
+[ (¨ 4.8'0¸1¬] inpõtº ãomxiss as(¯ldöicms/soc®2¯7¸b600°®é2c/i2c-0¯°­00;0.hnpu|/inpuv3
+[    ´.871153] míã3416x 0-08³°: mmb3´16ø(óucãe{sfulli pzïbmä
+[    <.¸·940&] AKM kompccs äzivírº iîitialiêå®K    ´.)56820](i2ã-msm-v2 78b¶0°0.i2k: NACJ: slive not re{ponding,(enóure its(poered: msgs(îº1 cur:0 tx) bc(òxº° tx:2) mode:FÉFO(slv_iddrº0xk M[TZß[TS:0x0d±343ã8 ÏPER:0x0000 090
+
+[*   <.¹5=085] ikm896#(°-008b: akm_i2j_|xd`ta: ôran{fer faiîåd®
+[  ( 4.8µ527µ] ikm896£ 0-000c: ÈJÅCS_ÓetßXïwerÄïwn:(Can not smt |o `overdowî molm®
+[    4.¹55µ77]¨i²c-msm­v2 78j600(.i²c: NACK: slavi not rerpondinï, en{uze itó pogeòel: msgs(n:2(curº0 tx) bb(rx:" dø:1( moäå:FIFO sìv_iäärº0xc ÍSTR_[TS* x0$1;$³c¸ OPER:0ø00°08010
+[ (  <.95µ77)] akí8963 0­200c:¨akm_i2c_rxhata: traîsnmr failed.
+[  ( 4.¹56013] akm¸963: probe of  ­000k faildd wkth error ­107Š[    <®98*86¸] inpõt:(lis3dh-akcel ió ¯dåvèces/sok®0.78â6020.i2k/i²k-8/°-00±8/inpõt¯inpul¤
+[    4.9836$1] i2c-core: lrévår [léc3dh_aãjM usiîg(ìegacy suópend måthodŠ[    4.98389·] i2c-core: dziver [lis:dh_acë] õ{ino legakù(res}le meôhîl
+[    4.9¸´828]"apdr¹921_pzoje sôarô.
+[    4.98<±32M ards_parse_dt, iòq = 1015Š[    4.9¸4309](axd{99:1_seîsor_regulator_confifure, oî = 1
+[    4.984´95] apds9¹21_sensor_reçulátor_poweò^on, ïn , 1ŠÛ    5.087998Ý apds9921_init_ëlimîô.
+Z  ( 5.0°8¸4"] chip APDS-9921.
+[    %.01171!] apds9923ßp2obe intezòupt is hooked
+    5.011¹:7] iîput:(ligjt as /de~ices¯sob®0/·(b6008.i²k/k2c-0/0-00µ2/iîpet¯iîputµ
+[    5.012±96] inàu|: ðrohéíity(as /ddvicdc¯óoc.0/78b6000.i:c/i2c-0/2-0853/input/inðut6
+[ *  5.012549] ap`s9¹²1_sensor_regulator_pogmr_oî, oî = 0
+[    5.0126´7] ipds¸921_xrïbm suppnrô v%r.(1.0.0 eîéâled
+Û(   5.013´4³] qckm,qpnp-ò|c qpnp-rtk-4: bôc cobe: rågistereä qxnp_ztc az rdk°
+[    5®013·08](i²k ¯dev endries äriöer
+[ ( (5®01582µÞ platæorí 1d000° ®qãom,vidc* Dré~er m{l_vidcOn<l2 requmòts p:obe lefmrbanŠ[    5.0"01¶7] LED tziçfår fléshìioht­|biggeò(æaéled to(regé{tdr (-°¦)
+Z(   ­.02039&] ísm_län^torcèOcrmate_cl`ssdev:·6 Invalid(fktrl->toòch_trigger[0]
+Z   ¨5.02 2?'] m{m_flash_initOmoäõle:1026 Eî$er
+Û    5.0:±436\ msm_fla3h_li36$º_in)t entbyª[    5.02186;] msm_flash_lm3642_platformßprobe entzy
+[    5.0²2840] msmßflarh^lm36¼2_pla|fïrm_probe ïæßmaôbh_äåvibe subkes{Š[    -.0:º8´2] lí3&42_hd_íidch:num_nreçº1 
+[ "  5.028339]  msm_cki_init: †ailed én getting TOP gdscr råguìitïò èandlm
+[(   5.828¶·?]¨msm_cciÞinktª872: èw_versinn = 0z00008 08
+Ú    5.0¥5°17Ü lm3¶4"_idßmatch: read(hd:(0h0 gxpected id 0x0:
+[¢  "5.0µ=317] l-3642_id_íatch: pbobe rõãceró
+[  ""5.05=341] flasè^`ge 0ª[( ¨ 5.855541] m{m_flish_lí36<2ßinit af|er entry
+[    5.055726] ícm_fnásh^lm36¼3ßinit(en|ry
+K  ( 5. =60¶6] lslOnlash_lm3643_ini| af|eò eîôry
+[    5.0µ¶3<2](lrm_fìishOlp#330Ïhnit íntry
+[ ( "5.05¾72,] msm_fla{hßmp23#!_énit afteò enôrù
+Z   (5.0573´>] qcnm¬slave-addr ½ 0x:°Š[  ( 5.0¹°845]( lsm_cci_init: Failed én(gätténo TOP odscr regula|ïr handlm
+Û    5.11035:] msí_cãi_iîit:(7:º hv^vebsioî = (x00000008
+[   ¨5®262082] qcom¬{laöå-addò , 0ø5@
+Z    5.31$891]  m{m_cci_iîit:(Îailed in ge4tiîg ÔÏÐ(gdsâr regýlator(èajdlm
+K  ( 5.3152·7] mãm_cciknht:872:¨h_vers)on = 0x¹000²008
+Z    4.³1458·] m{mObcé_iòq:1085(MAÓTLRß0 erroò 0x8°(0°0¸Š[" ( 5.3157¸3] ísm_ãciOconfig:retry½²
+Û    5®314916] ísm_cci_irq:10¸4 MASDMRß0 ezrïr 0x8000000
+[    5.3±6031] móm_ccé_ëoîfég:reôrù=±
+[ (  %.316;²5]¨ísl_cãi_irp*18¸5 mAKTERß8 eêbor(0x8°8¸(80
+[  " µ.»164³)] í{m_cchÿkonæig:rdtòù= 
+K    5.3165:4Ý móm_camera_ccii2c[write* line(128ªrc = -º:
+[   *5®368003] read^eeprïm_memory: pagå(wréte nailel
+[    5.3¦¨09¹]"msm^åmprïmOpl`tæorm_prob% rå`d_deðzom_íemozy fiiìedŠ[    5.$1¸?9;](ùbom,eepromº pjobe of 24.qcol,eeprïm nailål i|h årror -::
+[   (5.42°05 ] qcom,{ìafe-addò =(0x6C
+[    5.46144¹] "msí_cci_initº Fáhled iî çetting TÎP oärkr regdlátor handlm
+[    5®´6±74³] lûl_cãiOiîét*872: hgßöez{ion ½(0h10 02°08
+[   (5.µ¦843²] stmvl6080_init:1835 xlitfoòm devicå regisôer fahled, ôzy to¢reïisdeú as I2Ã dåvice
+[    µ.%69560] é2c-jïre: driver [vl6188] using legccy(su{peîd methoæ
+[   (5.569735] i2ã-corå: dréver [vl&980] using lmgaãy jesume medhodŠ[    5.µ70654] g_cctrl[0] nffæffc0/b±de 00
+[    5®5·1052Ý¨ç_ûcdrìÚ1] ffffnfc 7b1dæ°00[    5.571¶5£] MSM-PP cxp_probe:#037 Bus master 0
+Û    5.586514] MSM-KPP cpp_init_hard÷!re:95« CPP HW(Vmrsiïî: 0x´0000080
+[    5.586614] MSM-CPR khp_init_hardwaze*974 streáo_ãît:0*[  ( 5.%898¸:] __msm_jpeg_init:1522] Jpeg Device éd 0
+[    5®590601] tóbboreº registered(new inteòface drivår uvkvideo
+Z    4®590¸7±] URB Vidåo Kla{s dúi~er (1®1.!)
+[    5®µ9096µ] g{xca_main: ~2.94®0(rmgisôebedŠ[    5.5995<¶] JMSº bms_get^adcº ~alã not founä , dånmr ørobí rc-­5!7
+[    5®=8172-] JMÒº qpnp_vì_bm{_pòobe:(Failed tï(gdt(adã rë=-%17
+[    5®%9±839M jðmi qpnp,vl-bms-9º Lòiöer qcom,ñðnp-vm­jms(reqeeóts xrobe¨dengrral
+[  (¨5®592¸65]¨CÈGº qpnp_ìbcÞmainÞpònâe: battlzy r}pøìy not found deæerzing prnbe
+K( ( 5.7922´8] spmi qpnp-linåar­ch`rgez­8: Driver qcom,ypnp-lineir-cèarger òeyuestr"probe deferzal
+[    5ª59»294] npcharger start½½==½=½-=?===========-==========½½
+Ë    5.1);4¸8Ü oðãhárgeò-kháògez 4- 86b: opchárgdr_é2c_éd=#
+[  ( 5.58²578] oðch`rger-char'ez ¤-006b: npcharçeú_i¢c_id=3.boot_mode =8
+[ *  µ.5938;1](i"c 4-00¾b: Drivår opchazgeò/chargeb r%queótû"proje deferral
+[(   =.µ94°54] i:k­coòe: dré~er [bq27541-b#ttery] õsing legácy susðmnd method
+Z    5.5)4947] i:k-core: äòiver([bq2754±-bkttezy] e3éng ìegacy rmsume íd|hol
+[    µ.61133µÝ äåvékd-mapper:(udfent: verrion !.0.3
+[    5.699542] deöice-mapper: ioãth* ´.24.2-i/ctl (:81³-0±-15) initiáìióed: lm­develHredha|.c/m
+K    5.21±855](leviâå-maxper: req­ãrxðt* dm-req-còyp| suãcdcsfõlly énëtalized®
+[    5.6±185=Ý 
+[    5.612>;8] cpuidlm: using governor(ladder
+    5.612736] cptidle: sing gï~eznoz íenu
+[    =.612¸47] {dhci: Ûmc}re Digital Hïct Contzoller Interface dziver
+[  ( 5.6138:2] rlhci: Ãopyréght(k) Pheòzå Ocsman
+[ ( (µ.¶±»1±¶] sdhci­ðìdnm:"[DÈÃI(platnïrm and ÏF dâèöer(helperŠÛ    5.61>3;9] {dhci_msm 78:49 °.ûdhci: hosä_å{e_defauìô_qok = 1
+["   5.¶16<´¢] ód(ci_mûm 78²´900®sdhcé* Foò ñns_policy(ämæa}lt ños) < 0, tbl^sz = 3¬ aos type < *Š[    ¥®>¡66¢±] rdhci_mcm ·¸24900.sdhci: 	lma_látenëy =¨2
+[¨   5®>1¶716] sähâi_msm 78*<900.sdhci: 	dma_latency = 401
+Z   (5.61>894] sdhci_msm 7824+80.sähci: 	dma_laôency = 701
+[ "  5.>86990] sdhci_m3í 78²49 0.3dèch: For qos_polécy(modiæéed dùnàmiâ qor)¨- °, tbì_rz¢= 1, qos ty`å - :
+[  ( =.>171¶¸\ sdhci_msm 7¸24900.ûlhci: 	dm!_latmncy ½(2¸0
+[ "¨ 5.617347] sdhci_msm 7824©00.{dhcé:¨Nor yos_pîlhcy(ooäifiåä¨dynamik qo{) = 2.*tbl_sz ½ 1¬ qos type = 2ŠÛ    5®6±?526]¨sdhck_msm 7:2490°.sdhci: 	dma_latency = 2°0
+    5.¶17621] sdhcé_msm 78"49 2.sdhci: Host using defatlt pm_qos
+[    5.608-58] mmc0: îo vymmc beguìatïò noundŠ[  ( 5.>±86¶3] mmã0: nï(vmlc zåïulator founä
+[(   5.6501¹9]"ímc0: SDHCÉ cïntroìler nn(·82´90 .sdhci [¿82<900.sdhci] usino +:-biô ÁDMA
+Û(   ½.¦5¸(94](sdècé_móm ·8¶4¹°°®cdhci* No öreg¨dita fïõnd for"vdd
+[ (  5.66"705](sdèãé_m{í 78&´¹°8.{dhciº host_use_d%fault_aos =(1
+[  ¨ 5.6628¸¸Ü sähciOlsm 7864)00.sdhci: Ænb(yos_polici(leæ`%lt yoó) ½ 0,(tbl_sz =(1, qos üiðe - º
+[    5.6630¶4] sdècißmsí ·8&4¹00.sdhci* 	dla_l`tencù = 701
+Z    5.66#163] sdhkißmsm 78&4)00.sdèchº For qos_policy(modéfied dynami# qos( = 0¬ tbl^sz = 1, qos tyze(= 2
+[    5.66³341Ý sdèch_m{m 786´¹°0.sähci:¨	dmc_ìatency ¼ ¢0¸
+[    5.6¶3$39\ sdhãi_msí(7ª&4900®sdhci: For qos_policy(mïdhfimd dyn`lhc ñob) = 2, tblßóz ½ 1, yoó tùpe =(²
+Z    5.663616Í sdhci_ísm ?860800®sdhci:(	dma^latlnky ½ :00
+[   (5®&6379²] sdhãi_msl(?864¹00.ëdhãi: Hos|(ushnç lefaõlt pm_qos
+[    5.>¶4810] mmc1: no vqomc regulator foujd
+[    5.664997_ iic±* nï vmmc reçulator fïund
+Û    µ.70"32¶] mmc1: [DHI(controller on '864¹08.sdèch [78649°0.{dhké] usinï ³:-bht(ADMA
+Ë    =®78202/Ý qke 7²000°®qcddeö: Quanëomm Còypôo µ.3.! device found @ x720000
+Û    5.7°21;0Ý qbd ?2° 00®ðcedev: ÃE dåöijm =(0h8
+[ (  5®?0:0;°](¬ IO basm, ÂE =¨0xff.fff¸°0 f4 00°
+[    5.»02¡»0] , Bonrumer (IN) PIPE¨:,    Prolucår (OUT) PIPE ;Š[    ½.¿0²!³0](IO bise B@L = 0x          ¨nulì)Š[  ( 5.7°º130] JAM IRÐ º³8
+{"   %.78"13 ] Engénes @öéiìib)lidy - 0ø²010¸53
+[ ¨  5.702<89] sxs*BAM 0x0000 0020°7°4 00 is regiótered.
+[    5.7°²831Ý"sps:BIM 2x°° 0¸00020784000(¨va:0xbffnff800!3k00 0) eîabled* ver:0ø²5, îeíber(of pipes:(
+Z    5.703413] QËE40º qcå_sps_hîitº  Qu`ìbolm MSÍ CÍ-BAM at 0x"0000000°0·840°0(iúq*239
+[    5.703891] qãedåv: FIPS942-2 Kîown Answez \ests"º Skippld
+Z    5.7 µ00²] qcòyptï 72°080.qczy`toº Qualcomm Briptn 5®3®1 devikå found @0è¿200°0
+[  ( 5.705187] qcrypto 720000®qcryrto: ÃE deþicg = 0x 
+[    5.705987] , IO ba{e, CE = 0øfffnnf8001640000ŠK   (5.705!87] , Ëonrumez (IN) XIPM 4,"   Pzoduceò (OUÔ) PIPE ?
+[  ( 5.704187] IO baòd BAM = 0z  ( "     (îull)
+[    =.?8518'Ý BAM 	RQ ";9
+K(¨( ¥.70-1¸7] Engines Avahlabiliìy = 0h201¸8=#
+[   (=.·0-9±:Ý PKÄ%0: qje_3pâ_hnét:  Qõal#omm MSM(CE-BIM al¨0ø00000°0°0 ·840 ° iòq 239
+Û    4.6065?8Ý qcrypôo '2 0 0®q#ryøtï: qcryðto­eëb-iås
+Û    5®§06¸02M ñcrypto 62°0°°®qcrùpto* qcry`to-ãbc-aes
+[   (5.70·0°²] qcrùpto 720000.qcrùpto: ycryptî-jtr-aes
+[    %.707²80] qcrypôï 7²0000®qcrypto: ùcrypôo-ecb-de{
+[  ¨ 5.·07467] ñãrùðto §2¸000®qbryptï: ñãòyp|ï-cbc-ld{
+Z    5.7°7727](qcòyxto ¿:0000.qãzypto:(qcryðto-äcj-+des
+[( ( 5®78'¹11Ý ñkzypôo 72 00¸.qërypäï:(qbrypto­cbc-3dec
+[    5.608239\ abrypôo 7²0°00.qkzyðto: qârypto-x|r/iecŠK    5.70¸´23](qbrypto 7²0800.qcòypôo: qbrypto­3há1
+[    4®70¸609\ qcrxpto 720°°°.ñcrypto: qbrøpto-{ha256
+[    5®?88876] qcò9ptï 720000.qãryptoº qczypto-aeád-hmac-shá!/cbc/aes
+[  "(5.·29056Ý qcryp|o 7²0°80.qcºipto: qcryðto­ieád-hméb-sèi¹-cbc-lesŠ[    5.7 8;±7] qczypto ·20000®qkzy`toº qcrypto-aead-hmac-sha1-bbã-3des
+[    5.709582] qcrùptn 72°000®qcrypto* qkrxpto-aead-hmak­sha²5¾-cbk-áes
+[    5.§0)?&3É qcrùptn '"00(0.qcòyxdo: acrypto-aead-hmac-óha25¶-cbâ-des
+[    5.71002¸] qc2ypôo ?2000°.qcrypt/* ñbrypôo-`ead-hmac-sha256­#bc-;dås
+Z  ( µ.710209] qcrypto 720°00.q+zy`toª ñcryð|o-hmac­sha±
+[    5.·90474](qbrypto 7²8000.qcrx`to: qãbyptn-èmac-sha256
+[    µ.?18¶&0] qcryptï 720080.qcrùpôo:(qëby`to-cer,ccí
+K    %®7±0923M qkryptn ·:¸000.acòypôïº(qcrypto-rfb´»09-aer­ckmŠ[  ( µ®718018] qcrypto* FIPS14 -2 Ënovn An{wez Tmstr: Ókipxel
+[   (5.'11527] hédrao* r!w HID eväîts driöez (Ã© Jirh Kosinh
+[   ¨5®/±2622] tzbcoreª registereä n%w intebfáce dòiver urbhid
+[(   5.712758Ý us¢hid: ]SB HID core dzivaò
+[    5.79331´]"aóhmem:"initiálized
+[ (  %.713984] {ps:BAM 0x2°000000078ã4000 is re'hstmrmd®
+[  ( 5.7;4461] qkïm,qpnp-pïwer-oî ùpîp-power-on-1* PMIC@ÓIL0 Poez-nn rmasîn: Triogmred froí(Èaòä Reseô"ind 'wazm' booô
+[    5.714&80] qjom,qpnp-ðower-on qxnx-powår/on-1: PMIC@SID0: Powez-off reason: Tòigçezed from JXDPWR_N (Loîo Poeú(Keé hold)
+[    5.71500¶] in0õt: ypîà_xnn i{ /device{/virtual/in`ut/input7Š[    5®716024] qpnð_cblðwr_irq(uóbin-vinkd triggeòed: 1
+[    5®>±612!Ý oðãhg_usbènßöalid_irq_haîdlmò(opchg^chhp is(NULL,reluòn
+[( ( 5.7161µ4] PMICHSIL0: PM8916 v2.0.1 ïptionsº 0, 2¬ 0,¨0*[    5.'¡§323Ý pfô [pf|_lsm_init]* ðnt ic îot ôhå kho{en lsm.
+[(   =.717498](pf| [ðflßinht]º Drkvò inidiáliúed successæuìly Sep 1° :0²¶ 23:08º±".î
+[    5.7¹8´>9] devfreq(qcní,cpubþ.;0: Ãïuìdî/t uðdétm fòmyuency traîsètion(énformadiïn.
+K    5®7º8´3;] u{jcoêd: rmoèâtåzed new inderfácå drifeb snä-usb-áuäéoŠ[    4®7:10$3] zp Mnter ts462±_éîit
+[ "  5.·:91¸ ] zðpø Gntdr ts4621_pzobe[    %.·215´7]")2c-msm-v2 78ba00 .é:c:"msm_bes_scaìe_registez_client(íktr-il*8>):0x1! (ok)
+[    5.7:2020Ý Old öiluå =(°x0000°00! reg nï. ½ 0x01ŠZ ¨  5®7²2448] after writå¨öalõe = 0x0 000801 (rdç no. = 0h01
+[    5.>2267²]"Old válue = 0x800000B2 zmg no. = 0x82
+[(   5.72"999] after 7rite viluå =  è° 0000C   zmç nï. ½ 0x02
+[ (  5.7:;310] Nld válum = 0x¸0°0000° zeg no. = ¸x03
+[  ( 5.?²36³6] after wòite value = 0x00000000  reg îo."= 0x0;
+[    5®723805] [ts46"±Ý tó´&²1_init_reg Success 
+[¨   5®?23)26] exid ts46²1_pzobe erò ¼ 0
+[ ¨  >.·243¹µ] ëpmi móm8x16_wcd_coäec­12* Driödr(wcd-rpmé­kïòe requests xúobd dmferraì
+[    µ.¿2¤>)8] spmi msí(x1&_cd_cïäeã-13:(Drévmr wcd,ópmi-ãorå òmquests probm ddferzal
+[   (5.732·7¸] mrm¬pcm-lpá(qkom¬m{m-ðcm-lða.£9: íso^pcm_prnbå: dmv(naíe qcïí,mrl-pcm-ìxa.3¹Š[ (  5.7#2µ!3Ý pìa|fïr- ycom,mûí-voép-lóx®41º Driver msl-voip-dsp råq}ests probå deferbal
+[    5.7³"883] plátæorí qcom¬mrm­xcm-vîice.$º:(Driver mrm-xcm-þoice òeqõmsts ðrobe deferrél
+[    5.737µ74] msí8x16-asoc-wcd {ound.¶4: defaulô codmc configõòeä
+[    5®·37911] móí¸è±6ßasoc_máchinå_xroje:(14037 h÷ öåbóiîî aftmr EVT"¬ hs use(åøôernal micbias
+[    5.7#8066] íóí8x16^äv_parrå_capénfo: 15009 hw version áfter EVT2, set MIKBIIS_EXT_BYÐ_CÁP mïde
+[    5.73¹¹±4] ðda|a->spkOpa_en < 0022Š[    =®74001;] pdáta->yda145_bîos|_en ="1 ²0
+[    5*740299] m3m8x1¶-asoc-ÿcd sound.64: ASoC: platform (n}lì) not begistered
+[    5.742417] móm8x16-asoc-vcä sound.64: snl_soc_rígi{ter_caòì fiiled (-51·©
+[   ¨5*·´06³5] platfïrm¨soenf®¶4: Äziver móm¸x96-asoc-wcd räqeesôs pòobd(deæårralŠ[    5.741371] u³² clajsiféer
+[ (  =.641<68\     Acthons cïnfigure`
+Z   ¨5®74±%6&M Netféltez(messages vha NEVLÉNK(f°.30.
+K¨   5.·4±802] nfßkonnôrack version 0.5.  ¨1>38´ btjketó, 65=³6(mix)
+[    5®7<²:0º] künå|ìink¨v8®©3: regic4erinf with nfnetlink.
+[    5.·42449] NF_TPROXY: Transðarent(ðrozy suxport initiaìized, våòsion 4.1®0
+[ ¨( 5®?´²-45] NF_TPZOXY: Coxyright (c© ²886-:0 7 BaìaBil IT Ltd.ª[    5.7,2915] xt_timm: kernål timezone is -800°
+Û    5®7´2113] wireguablº WireGuabä(1® ." 220627 ìoáìed. [ee ÷ww®wireçuarl.boí noz(infoòmation®
+[¨   5.643289] wérågeard* Cïpyrégèt (C) 2°0%-2019 Jason A. Donenfeld(<Êason@zx2c´®ckm>. Ill Riçèts Òeserved.Š[    µ.743645] iø_table{: (C) 2002-28°6 Neôfilver Core(Tíal
+[    5.74388%] arp_tajìes: (C)"2:0² David S. Miller
+Û "( 5®744295] TCÐº cubic registeêåd
+[(   %.744!8¹] Hnitiáìizéng ØÎRL nmtlénk socked
+[    5.744528Ý NET: Regi{tåred xrotocoì faoil9 10Š[    5.74554;] mip6: Lobile IPv¶
+[   (µ.·4566³] ið¶_t!blås: ¨C) 200°,20°¶ Netîihter Boòe Team
+[  ¨ %./$%88>] rit* HXv6 over IPv´(tqnnåling driv%òŠ[    5.746390] JET: Registered pòotoãol faíily 17
+[¨   5.746503M NET: Reghstezed pzntocol æámély ±5
+Û  ( %.7<.66±Ý Bridgä féòewalling reoisôdrlä
+[  ( 5.·4"¸43] Ebôabìeó v2®0 òeçhrtåòed
+[    5.74707 ] Bìueünotjº fnnnnfk80c#d·ì30
+[    5.7471¸2] Jluetooth: nnffffc 0c3d7d30Blueäoothº fnfæffã00j3d7ä60
+Û¨   µ.·4·µ43Í Bl}etîodh: ffffffk00c³d/d4°Blumdïïdh* ffæfffc0 c£d?d40
+Z    ¥®74?)07] Blueôooth: fnfffæb00c3d7d"8Âludtooth: æfææffc  c3d·ä90ŠÚ"   5.·482»8] Bluetooth:(nfffnæc(0c3d7d70["   5.74843¹] l2tp_boòe: L2TP korm driver, V".0
+[ (  5®·48621] l2vp_pðp: PPXoL:TP kernel*djèöer, V:.0
+[  ( 5®75231¶] cma: Acsigned CMA region at 0 ôo qcom,mâá-meí*951 device
+Z    µ.753263Ý Uîajlå |o get(~b}s_otg
+[    5.'µ33®¸] msm_èsõsâ_hosd ísm_èsusb_hostº unaâle to register with tòcîskeivåò
+[( " 5.753557] `latfïâm msm_èsuóbOhoót: Lriveú mól_hru{b_host(òmù}estb `zobd denerral
+Û  ¨ 5.758668] BMS: {et_batômrxßdátáº¨set_battdrù_dath get by"02" manu(iä faél
+[    µ.758(¶0] spmi ñpnx-vm-bls-9:(Fziöerªqcom¬qpnð-vm-bls rmqudsvs púobe äeægrral
+[    5.7´¹08;] KHGº qpnp_ljc^main_proje:(âattdrx suppìy not found deferring prïjm
+[    5.7=8±(¶] {píi qðnp-ìineaz­bhazçdr-8º"Dòévmz qcom¬qpnp­léîeaò-kjirger rmpuå{ts púoje låferr`l
+[  ¨ 5.?59´05] opcèérger stirt--==-=-=<==,==½=-===½-½==-=½==½-½=
+Z    5.'595(7\ o`cházger­bharger 4-0¸¶j: npcèargerOiºc_id=³
+[ (  =.·59¾8$] opãèargez-charger 4­006b: oðbhazçerÞi2c_iä=3,boït_mode =0
+[ ¨  µ.660±6²](i2c-móm-v2 ?¸â¸00°.i2cº mrm_bus_{kale_2eçistår_client¨mstr-id:(6):0x15¨(ok)Š[ ¢  5®7¶0¨5²] opcharger-chaòger 4,006b: Invalid(cèo-v`lid-gpio
+[    5.761041] opchg_parse_dt usbhn_svi|bh^gð)o:-2
+[    4.7611;(] opcharoer-ëhirger 4¯  6bº Invalid eóbin­switch-gxéo
+[    5.?613·(](opch`rger-ch`rger 4-006b: Iîvalid bitô-id-gpio
+[    5.76153±] chið/>chargiîg_disáb¬ed= 8,chip->irp_'pin= 964,chip->nast_cèargmNprnêeãt= 0,		chip,¾itmzm_ma<¨±3°,ãjip->rechargm_mv=(208,bhip-.lémit_cujrenôßmaø_mi- ±500,cèip-¾~flïat_m~= 4370,cjix->fastchg_curzent_maøOma½ 1500,*[    5.7607¹&] chéð->hït_baô_dmkidígc= =30,chép->tempßèot_vnìoa|_mö= 4190,ché`­>ôemp_hot_féstchg_buúrån|_ma= 52°¬‰‰khip->wazí_jat^äeãiäegc< $50,chix-¾demp^waòm_vflïat[mv=(4270,cèé`­¾tåí`_wármßfabtkèg_ëuròent_oa= 150°,‰	chip->ðre_noòmal_jit_deãidåfc½ 220¬chip->tempßpre_nobm`l_vfloat_mö=(4+70¬ché`-®teíð^pzmOnnrmal_ni{ôchç_jõòben|ßm`= 9010,	cèip-¾pre_coïl_baä_decidegc= °:0,cèip-¾teíh_zråßâïnl_vfìoé4_í~= 43·0,chhp->temp_pre_co/l_faótãhg_btrrånt_ma½ 5#5¬‰	chið­>ãool_ba|ßdekédegc= 0,cjip)¾teíp_coolOvflïat_mv= 4000,chip/>temp_coon^fastchg_cõzrent_ma= 256,
+K    µ.762219] chip->kïld_bat_debidegc= ,3 ,cèix->bid_precenô_decileçj= -208,chip¬>non_standarä_vflïaô_-v= 0000,bhip->non_sdandaòd_f`stchg_b}rrent_mc= 512
+[    5.762,(2] opcèarfer-charger 4­006b: bq2´19¾_smt^nloat_voltage öalue½216
+[   (=.764793] npcházgeò-khabger 4­0°6bº jq:4±96^set_tdmrcèg_current value=0
+[    5.7¶'619] jq26196_otg^vreg: nï p)ra-etersŠÛ    5.767778] ïpchibger-cháòger 4-006b:(oppo_debug(ÏTG ret vbts 
+[(  (5.771´§4](opcharger­charçeê 4-006b: êùº419¶_cet_floit_volt`oe valõe=216Š[(  ¨%.?737µ)]"o`ãè`zgdr-char'ez ¤-°0&j:(bq2´1¹6Oset_temòëhg_kuròeîd vàlue=0
+[(   5.7·615/] ïpkhaògdj­khaòoeò"´-0 ¾b: âa²4186_chg_uv bhib¯er(ir in }pìatino urb_`sy pråsent<1
+[ ( (5.'¿64'¹] orcharger­chargez 4,°06j: oppï_charodrÞin_inht
+[  ( =.776632M*opkh`rïer end=<½=½<=============¹==-== suãcess,chargår_pòesenv:1
+[(   5.77>858] spmi msm8x16_wcd_codmc-92: Driver ÷jd­sxmi-cïrm reqeest{ proje defårral
+[    5.76&979] spmi msm8x16_wcd_ãodec­13: Lriver wkl-spmi-ãore requestz ðzobå defeòraì
+[   (5.?7759;] ï`pï_debuç min_ènxutßcurrent:±00°,mah_in`uð_kurren|:°¥0 ,set_current_rd`son(=4
+[    ¥.777772] oppo_dåbõf(min_inðut_kubrentº0¬láx_inxõt_kõrrdntº3500(set_currend_reasnn =1
+[ *  5.778¶90] bq24196_set_knputßkhg_c5rrent no aicl 500m`,iusbin_mAº1°0"set input cõrzent is end Š[    µ.77:'¹0](oxkhhúgår-charçår 4-°06b: opchg_extern`l_po÷er^changed set chazgez inpmt c}rrent½0,onlind = 8,¢ãurzdnd_lim)t =  
+[    5®7800²9] msé¸ø16-asoc-÷cd {ound®64: default codec coîfiouråd
+[   ¨5.780»8¸\ msm8x°6ßasïkÞíachinm_prïbe: )5¸#7 èw nersinn after¨DVT2, hs tse(eøôernal mhcbi`ó
+[    5.'80569] msm8x16_dt_0arse_capÿénæk:(15009 hw vårsion after EVT2, {et iÃBIAS_EXT_BYX_CAP íoäeŠ[   *5.782$2¨] pdata->spkßpa^mn < 9 22
+[    µ.7827µ1] ðdá|a­>yla145_boost_en = 1020
+[ (  %.·832±´] móm¸x!6-isoâ¬gkd sound.6¤º ASoC: CODEC ¨îuìl)(nïô òmghstdred
+[ "  5.?83$1¶] msm¸x96­asoc-wkä ûotnd.6´: snd_soãOòegióter_cibd fiilel (-µ1¿)
+[ ¨  5®78³552] platform sounä.>´: Driver msí¸x!®­isoc-bd òmqueräó probå dmfebràì
+[    %.7¸5»3:] móíÏïtç(7¨d9000.å{bº pèy_úeset: succesc
+[  ( µ.7¸8969] MPP$"báttery id öoìatge és V_battezy_éd=27±9,V_battezy=0
+[  ( 5.?89²08] nf_jatterùdat`rmad_data: oppo^4<00_255°m`h_ATN loaded
+[( ( 5®79617¾] ïppo_chargiîg_stituó	bitd_temp=3¸1¬âatd_~ïì=49(5¬bátt_soc½40,chg_bubrent=-45°,kèç_vol=<082, é{_fcãtoryíïde,1,nástch`rger_sifî½ 0,		bèi`->batterynoôify=°x0,chix->batt_pre_full=0,chip->âadt_full=°,chg^tyðe=0¬urb_online= 1,chg_time^otd=0,cho_ôntalßtéíå=0,		jad_ümlp_ótadus­>¬chargénï_statuó= 2,chcbger_sdátus=1,bèip->ió_khazging½1,soc_caì=0,ocv=0,auth=1
+Z    5.·98011] jq²4996_så|_énruô_chg_current nï aicl ½8 ìa,hõsjin_mA:±(0 {mô input curreît ic end(
+[    %®79(930] ozãharger-charçer ´-80>j: oppî set ãharoåò_tiíeout vál = ²
+Û   (5.79984´] opcharger-chargår"4-00¦â: bq:$196_úåt_flnatNvïldaoe"~alte½216
+[ (( 5.8 10(9] JMS:(bms_lïad_h_lefaults: BMÚßEN<1 Sample^Iîterval,S0­[180]S2=[§°]( Sámple_Koõît-Ó1=[25>][2=[1²(Ý(Niæo_Ìength-S¡­[µ]S"=Û¥] FSM_rdaôå=2
+[   (5.(08´ ¶Ý (seô KÈG_EN@ÂÌE_BIÔ disáâìe = °
+[    -.80¹991] "ñ²41)&_set^inpõt_kho^curòmnt no aibl µ° íi,iõsbéê_mA:900 {et input ãurrent is end 
+Û  ¨ 5.81 176] opcharger-charger 4-006â: opchg_exteònal_power_changed set chirgår ènð}ô currånt=2,oîlènm(=(°, c}rrent_limiô = 0
+[    5®¸13027] BMS: calculaüe_initi`lsoã: warm_zdset=¡ mst_ocf=0( shutdown_s/c_invalid=0 shutdown_ocv=<³02000 shõtdownOsok=900 last_óoc½1°0 calcuìited_soc=¹6 la{ô_ocv_õö¼4³02000*[(   5.¸181<9] ímc0: JKOP[_EN bit = 0
+[    5.º272=1Ý mmc0: new HS200 MMB babì at address 0001
+[    µ.827774Ý(míc"lk0: mmc :(0°1 Q2J9¶R 14.6 ÇéJ 
+[    µ.8²88¸0] lmcblk0rpmb* míc0º0°81(Q2J¹6Z parühôioî(3 4®00 MiÂ
+K  " %®830?%´Ý (íocblk0ª p1 x2 p3(x4 p5 `6 p7 p8 ð9 ð¡8 p¡! ú!² p1³ `14 `95 ø1> x1? ð18 p8© p20 `2! x2¢ p2# x*4 p2µ ð26 x"7 x:8 p:) p30 p³9 p3²¨r3³ p#, p³= p3¶ p37(p38
+[ (  %.83413²] ba²´±)¶_re|ßinð}t_chn_current(no aikl 5¨0ma,husjhîOmA:1°0 set iîput cýròånt éú end(
+[    5®¸34055Ý opcèábgeb-charæer ¤-006b:(o`po(set chargmz_diìeout val = 2Š[(  (5.83%88¸Í oøcharoår­cè¡rfår 4,006b: jq241¹6_såt_îìoat_voltage valte=2!6
+Û    5.837571]  óet CHG_ENABLEßBIT discbìe = 0
+[    5.846267] BMS: qpîð_vl_bìó_probå: probm¨sukcåsó* óob=9 0 vêalt-41&4999 ïëv=43020°0 wàrl_re{ät=±
+K    µ.84>¸1·M CHÇ: qpnp_lbc_main_proje: qpîp_lbc_main_probe seãcess
+[ "  5.8470´5] spmi lrm8x16Owkd_codgc-12: Dziver wãä-{pmi­ãore òeqqe{|s prnâe deferr`lŠK   (5®84716¶] spíi m;m¸x±6_wcd_cïdeã-13: Dòivez vcd-spmi-kore"reqµests probe deferral
+[    5.¸47972] msí8x16-`soc-ãd souîd.¶$: default codek bonfigurdä
+[ ( ª5.848256 mrm8x!&_asoc_machine_rroâe:  50;7(èw öeróion afteò EVT2, hs use(äxternal micâias
+[ (  5®8<8<41] msí8x16_düßx`rse_cað_infoº ±500¹ hw version iföer EVT2, set ÍIKBIAS_ÍZT_BYP_CÁP¨íode
+[    ½®(%8509](päaôa-¾spkOpa_eî = 18:²
+Û(   µ®8µ0688] pdáti->yd!145_jïos|_åî¨- !°20
+Z    5.(=9±·>] msm¨x±>/ásoc­wcä soõnd®64: ÉSoB: kODEK (ntll) not zeois|ezed
+[  ( 5.¸51º95] m{l8x1¶-asoc-vcd souîd.64: snd_soc_zegisôer_cazd nailed ¨-µ1?)
+K  ( 5.851?«7] plétæorm(souîd.&4:¨Dòiveò móí8x16­ásoc-wcd(requmsts proje(äeæerral
+[    7.852350] Òegi{tering S_P¯SWPJ emuìatiïn hándler
+[("( 5®¸52629] registårmä(tásëztáôû¨vezsion ±
+[((  5.¸53288] Key tùpå¨encrùpteä¨regictered
+Û    µ.8=49±´Ý bam_dmýhßinit : uncble ôo creatm IPB Logçing Bonteøt[    %.¸6(672]¨bñ²4196_såt_inpõt_cèo_cujzínt no iécl 5 0ma,iõsbiî_oA:100 seô hnput c}rrent ió"enä(
+[    5®8¶0860] ïpãharoeò-ãèaòger 4-006b: oxchç_eøterncl_xowerßcèánoed set cèaògår hnpõô b}rrent=0,online = 0¬ c}úzent_liíit = °Š[  ( 5®:?·783]¨snc i{ 100 af|ez pon
+[   ¨5.8·'º97] op`o_ãharoéng_staôõs	batt_tåmp=;82,baôt_vol=41½6,bit|_soc=100,chç_c}rråîô=­4-0,ãhç_fïl==08°,(és^factïry_íïde=±,fazôchargåò_sion= °,		bhkp­>b`tteryno|éfy=0x0,chip-."att_pre_îõlì?0,chip->batt_full=0,chï_|ype½4,usb_ïîlinm= 1,chg_time_ïuô=0,cèg_|otaìßtime=0¬		bav_|emp_{tadus=6,ch`rging_stalõs= 1¬chargåòßs|aduó=3,chir­>i{_charging=1,{ocßc`l½108,okf-0,i}lh=±
+Z    5®8?97;8] êq²419¶_sít_hnpud_khg_ãõròmnt nï aicl 58°m`¬iusâinßíA:100 {m| iîp}ô ãuzreît ió åîd 
+Z    5®880&58] o`cèargez-kèargår 4-08>b* ï`ðo såt ãhargår_timåoõô ~al =¨2ŠK    5®881$94Ý oxchaògeò-kèázger $- 0¶j:(bqª<186_set^flnat_vnl|ágí(~alõm-29.Š[    5.88³1»9] "set ÃHGßENAÂÌE_ÊI\ dicéblå ½ 0Š[   (´.89·² 4]"bñ241)6ûet_énðutßcjg_ãurrent noªaicl µ00ma¬iusbinOmAº1°0 set inpel cõrrent is end 
+[    5.897389] opchargeò­kharçer ´-006b: opchg_external_pïweb_khangeä set charïeò(iîput cubzånô=0¬onlinm ¼( , kõzúåît_léíit(½ 0ŠŠZ ¨ ¨µ.899128] Uîable to finä(ìog_büf byªjallzyms!
+[    5.8¸9951]"oxcjargåz­ch`roeò 4­0 6b: bq²61¹6_get_ïtg_òeçulatoúßir_enaêle*zdad(OTG(eîible jit =27
+Û   (<®90007#](íeíßicc_coònmò: désabliîo
+[    ½®9802µ±] begulátor-dummy: disabling
+[    5.90²417_ s`mk ísm8x1¶_wcl_codec-12º Driveò cd-spmi-ãore rgquesôs probå ämfeòral
+[   ¨5®¹00761Ý ûpmi msm8x16_wcdÞcodec-±3: Dòévìr ÷ãd-spmi-cozí repuåsts xrobe(ämfírriì
+[ ( (=.9013?7](móm8x16-aóïã-~kd rotnd®&4ª dåfbõlt ãodeã ãonfiguråì
+Û    5.9¸1¸´9Ý mrm8ø ¶_asob_màchine^pzïêmº ¹50³? èw¨vår{hon `fter E^T², hc uså extärnal íicjihr
+[    ½.9°2°;»] msí8ø1¾_dt_xáróåßkáp_infï: ±5°2) èw vmrriïn afteb EÞ\2¬ set MIBBIÁS_ÅX\_BYpßCAP(moäeŠ[ (  5®903¨'(Ý(pdat`­>sðk_pa_eî = 90*2
+[   (µ.9¸4057] päatá->xda145_boost_en = 10²0
+[   ¨5.98<53>] ísm8x1&-aóoc-wcl({ïuîd.¶$: ASoB: KODEC *nuìì©(noô òmçisôered
+[    5.98´78=]¨msl¸x16-asïc-cä {ounf.6<: sîäsoc_regisômr_kard naiìed (-µ17)
+[(¢ (5.9°4922] pìàt&ozm sïund®6´º Dòiver írí8x96-asoc/wcd reùue{ts xr/bå dejezúal
+Z (  ½.9062$·] file system regicvered
+[ (  5.906;73_(mbim_init:¢iîiôiaìéze 1"iîstancesŠÛ    5.906µ92Ý(mbim_iîiü: Iniôiaìizåd(1(poòt{
+[    =.¹066¨6Ü¢mbil_baí_setuð: îo_ðortó:1ŠÛ    5®¹06873]¢mâhm_bam_setup: Iîétialized 1 ðort{
+[    5®907>38] rndis_óc_init: iîitéaliúe(rndis ÑC iî{|aîceŠ[ ( (5.¹8?945] anäroid_usb oadçe|º Miss Stïrage(Function¬ vmòsion: 2809¯09®11
+{(   5.9°8141]¨aîdzoiäßusj gadgeìº Nõmâeò(în LUNó=²
+[   (4.90¸"$0]  luî8: LUNº bemïviâld file* ¨no mmäiuí©
+[   (½.¹ 84»<ý (lýn1:"LUNº(rdmï~ajlå fiìe* (no íídium)
+[    5.¹08?¸9] android_}sb fadget: aîìzoéì^u{b(òeaäx
+[  ( $®9889;5](íóí_èsu{j í{íßhs}cb:([ci13xzh_start] hw_eð_max = 16
+[  ¨ =.908203Ý({pmi msm8x1¾_wcd_codec-1²:(Dòéveò wëd-cømi­cïre reqõe{ôs ðrobe¨ddfårzal
+[ (  5.909491] srmi m{ì8x16_÷ãl_codec-1»: Äòivår cl-spmi-core"òequests"ðrobm deferril
+[    ½.¹180·3](msí8x1¶-asoc-÷ãä so}nl®>´* defa}lô codeã configured
+[    =.9±0497Ý(îsm8x1¶_asoc_lakhine_probe: 1503? h vmrsion aæver(E^Ô2¬ hû(u{e external micbha{
+Û((  µ.90°&4·] énxut: gxio-kezó ás¨/devécås/sob.0/gpioOkeys.6µ¯input¯énpu|(
+[   ¨5.9±0'7³] msl¸x1®_ät_p`rse^kap_infoº 15°0¹¨èv ~ersion after EÖT2, sev MICBIAS_EXT_BYPßCCx mode
+[    5.910962] qkom,ypnp-rtc qpîp-rtc-4: óetting sùstem(clokk(to ±¹'0-¸2-2: 9²º0¶º=0 ]TC *4%3&410+Š[    5.91²7´9] í{m_thermalºinôerrupt_moäe_init¨Inôeròupô mode inèt
+Û    ½®912¸08](pdatá->srë_ða_åî - ±0²2
+[  ( µ.9;2813Ý päa|i-¾yda°4µ_bïost_en = ±82 
+[    5.913±90] mkm¸x16¬`{oc,wkd(sound.¶´: ACoC: KÏDEC ¨nell) îoô regisderel
+Z ( (5®913;95]¨msm8x9¶-`sïc-wcl ûounä.¶4:(rnd_{oêßzägicter_cirl fáileä ¨,=1§©
+[   (5.913698]¨ðli|fobm sound®64: Drivår msm8x16-asoc­7cd requeóts probe äåferral
+[    5.913952M spmi lsm¸x16_wcd_codeë-12: Drhver wcd-ópíi-coze zequerts probe defm2rálŠÚ    µ.¹14079\ spmi lûm8ø16^wcdßcodåã-13: Lbéveb wcd-spmi-core rmñuests probg deferr`lŠ[ (  µ.)14(8=](/snc/ñjol,lxm-le~els/qkom,`m-clustmr@°ª Nn CP\ xhandle¬ asruming sing,e clõster
+[    5.99$¹8(] msh8x96­asnc-wcd sound.24º default codec cïnfi'wredŠK    µ.9152µ;M msí8x1¶_asoc_íaãhine_`roja: 15037(èw öebsion(aæ|er AVT2, hó use åxternal licbias
+[    5.;95438] msm8x9²_dt_pcrse_ãáð_info: 15 09 h÷ vebsion aftdr EVÔ:, sed MICBIAS_EX\_BXP_CAP(moddŠ[¨ ( 5.¹°742)] xdaüa-¾s`j_pá_en"= 10:2
+[    5.91?528Ü pdata-¾yda145_boo{ô_en = 10:0
+[    µ.;(812¸] msí¸x16-asoã,wcd óoõnd.6$: @SoC: CODEC ¨null© nït rmoisdmríd
+Û((  5.9¹82%4] írm¸x16-asok,wcd souîd.&4: ónd_soã_reçicôer_carl fiéled (-51?)
+[    5.998´81] plctform óound.6$: Driver mso8ø16-asnc­wjd rdyuåsts p2/je dåferrál
+Û    5®9186µ¼] spmi msl8ø¹¶_ÿëdOcodec-1:: Dri~gr wcd-spmé-bnrd zequests probd deferbil
+[    5®)9886´] s`mi mûm8z!6ßwc$ßcodec­13: Dréömb wkd-spmi-ão²d úe1uests probd ddfårral
+Û    ¥.99¹42$] qcom,cc-ddbdo-8906 ±8'4000.qkom,cc-ddâõg: Registårdd(Dmjug Lth sukce{cæuìly
+[(   µ.)9©532\ msíªx±&-isok-wãd óound.64º ìlæauìt(jodmb bonfiguredŠÛ    5.¹19686Ù msí8z1:_isocOmachéne_ðznbe: ±5037 èw väz{hnî aftdr EÖ\2¬(hó(õse åxternil"micâias
+[    5.¹19&;2] msm8x16_lô_`azse_ca2_info: 14009 h÷ version anôeò EVT2, se| MICBIA[_EXT_BYP_CAP moleŠ["   5.92±51?Ý øda|a->spk_pa_en = 1022
+[    µ®9"9>"0] pdath,>id!145_bïnst_en = ¹0:0
+[    %®921¨%0] ãlock_latå_iîid: Removing enabler held for handåd-off(cìocks
+[(   =.9"2943Ý m{í8x±¶-asoã­wcä {ouîd.6¤:(ASoB: BODEB (ntll) not råoic|ezedŠ[    5®922263M írm8x06-azoc-wkd¨round.6<: sîä_soc_regiótmrßcárd faéhed (-517)
+[    5.922490]"platform(sound®64: Äziöer msm8x16)aóïk-wcd råquests proâe deîårril
+[    5.92"7<(] spmi msm8h!6_gcl_codec,1:: Dzivåò wbd-spmi-corå rmxuesüã probe feferzal
+[ ( (4®¹22872] chmi m3m8x±6_wcd_âodeã­±3* Lriöíâ ÷cd­ópíè-b/ze reqteótr prïâå deferbal
+[    5®)22µ© Ý móm8h16-ióïc­wcd so}nd®64: dmfault coäec konnéçeòmä
+[    5.9²384´] msí¸x06_asncOmacèéîeOproâe: ±50»6¨h vårséon aftez¨ÅVL2, h{ uså¨møterî¡l íibbias
+[    5.9¢2946] lóm8x)>_ät_par{e_báp_info: 85²°¹ (v version af|ez(EVT², seô¨LIBBHAS_EX\_BYP_BAÐ(mïdeŠ[    5.¹2´8²9] ALRA(deöicd lirt:
+[  " 5®924¹:>]   No"ëoundkaräs êotnd.
+[*   5.925"31] Wazning: unibl% tn ïpgn `n iniôial ãonsïle.
+[    5®)254&7M Freeiîg }nused ëeznel meíorù: ³1¶K
+Û    %®9267<5Ý pdiôa-¾spk_ð`_en = 1°22*[(   5.¹:6¸=2M pdita->yla1´µ_boort_dn = 1828
+[    5.92·#26] ís-8ø16­ésïâ­wcd {ounf.&4º ISoC: ËODEC (îõlh) nnt bågictåred
+[    5®927µ2¹] msm8x16,a{nc¬÷kl sound.64: {îd_soc_råoi{ter_ë`rd n`ilel (-597)
+[ (  5.)2·683] pláôform"sound.64: Dzéver m{m8x16-asoã-wcd zeqwests"pzoje defeòral
+Û  " 5.)28077](BMS: /pchgÞbacë}p_ocv_socª opãhg_jácëuð_oãf_so« ió bakj soâ½100(ìart_ocv_uþ½030²  0
+[    5.¹"8290\ init: iné| first òtagä {tazôåä!
+[    5.¸º8´4·L init: Uniâlm to(npmî /ìij/modõìäs¬ skipxèîg lodulå nncféng.
+[ (  5.¹291°­]¨init: [li"fsdaj] Ôóing(Androiä DT $éòeãtorù /pboc/dåvhcd-dbde/æirmire/andzïhd/
+[   (5.¹#010º] bñ2´1©6^{etOinpõtßkhg_cuòrent(.o aicl 5 0ma,é}{jin_lAº100 {eô hnput(current(is end 
+[    1.93113°](opchaòçmr-ãharger 4-006bº ïðpo(3et charïeb_timeout fál"= 2
+[    5.;32"0©] opcharger/chargeò 4,006b:(âq24196_ûet_flîat_vol|agg vãlõe=216
+K    ¥.933¹¸³]  såt ËHOOENAJLL_BIT¢dicaâle = 2Š[  ( 5.¹;'914] iîëô: Nailed to(zäad ~bmmt`"partit©/ns.
+[(   5®950816] ini|: DSU(îot"detectel, proëemding wit( noríal bootŠ[    5.9µ1349] jnit: ÁVJ is*îït änhblmd¬ ókhp våziti setup nïz ¯/sùstem/
+Û ¨  &®(93<$6Ý(bq²$1¸6_{et_input^bhg_current no aikl(588ma,iusbiê_íA:1 0(set input"curreît ir eîd 
+[    6.0136;5] opcharoer-khargíz 4-006b:(npkhç_åxtebîal_pïer_changmd set cè`roer"inxut current=8,ïnline =  , curzent_limit =  
+[    6.°14090] ísi^èóuóâ lsm_hsesb: KI13XXX_CONDZOLLER^RMSEÔ_MVENT bdkeifåd
+K(   6.01<275Ý lsmßhsesb¢ící_hó}sb: CI9ºXZX_CONDROLLEÒ_CONNECT_EVENÜ recdiöeä
+[    >.°#;¶:%] bq²499>_{åtßinput_khg_êurúend no aicl %00mc,iusbin_mA:±0° smt input cqrren| ic eîd 
+[    ¶. ³46 6] oðchirgeb-chárger <­ 06j: oppo set charger[timeout val = "
+[  ( 6.035542] opchizgdr-charger(4-(26âº bq24196Oset_float_vol|aod v`lue-216Š[   (6.0;7166]  {åt BHG_ENABLE_BID äi{`jld = 0
+[    ¶*10285<] initº Ûlijfs_mgr] såp%òbìîck s_lax_mnt_cïund*65535,/ädv/blnkk¯platfïrm/soc®0+78*49 0.slèké¯by,náme/sùstmm
+[    6®1(¦:80\(ÅXT¤-ns¨(mmcblj0ð24): lountel fhlesy{teí whôèout journ`l. Ïpt{: jarzier?1
+[    6.!06&37M inid:([ìibfr_mfò] __mouît({ource=/dev¯block¯xlatf¯rl/soã®0/7(2´900®{dhãi.by-nàme/syst-m,ôazget½/sùs2em,ôype=mxô4)=2: Sukkess
+[    6®10732²Í init: Switkhing òoot(do '/ãy{tdí/
+[(¨  6.)¹2471](hniþ: Ckip`ed {åôôinç¨INIT_IVÂ_VDÒSION (jo| in recovery mode)
+[ (  6.²59125] hnit: [libfst`ê](Tsing Andzoiä DT dhrectory /ðzoc/devé#e-tråe/firmw`re/andrïid.
+[    6®2¾4=14] iîit: Skipðéno mouît on systeí_mxt, {ystçm ir(nod dynámik.
+[    6®2648¡2] initº Skipping moent of product, system is not äynamib.
+Z    6.2>502 ] init: Opåning SELiîwx policy
+[    ¶.2(³536] hnit* Loadino SEÌinux(`olhkyŠ[    ¶.61´3°2] SELiî}x:  Permisshon túan{é|iïn in(cì`ss fiìesirôem noü defhndd in poliãy®
+Z¢ ( 6®494511] SÅLénux:  Pmrmis{iïn(svápon(én class îhìm not äefhndd in poliãy®
+[  ¨¨6.4)¼617] SELinex:  Pdòlhòzinî svàpon én(clasr liò nod låfinåd èî poliky.
+[    ..$1$844] SÅLiîex:  Xåjíiósion(rwáòon iî clas{ lnkOfile nod(ämfindd in policù.
+[    6.4149´9] SELinux:( Permicsion swapon én cl¡c{ chr_æile not definåd in poliãh.
+[    6.415259] SELinuø:  Pårmission swa`on in class blk_fiìg not defèned in(ðolici.
+[    &.405º3;\ CELinux:¨ Perlióâion ówapoî in cìass {nck_file îot neæineä in pnlicy.
+[    6.<1533<] [ELinuøº  Permér{ion swapon in blars fifo_æile not defined¢in rolicy.Š[    6®4955:2](SELhntø:  @eòmission recv_í{g hî cìirs kocket¨not denineä iî xolicy®
+[    &®41µ688] [ELinux:  Permi{shïn cånd_msg )n jl!ss(sïcket no| defined in poliãy.
+[ ¢ (&.415802] CELiîex:( Permèsóion z¥cæ_msg iî class tcr_sïcket îot defiîed(in poìiãy.
+[   (6.41=988] SELin}x:((Permis{ion sendOmóo in ãlasó tcpOsobket not lefinmä¢in polécy.
+K ¨  6®496957] SÅLiîõx*¨(Permhsûiïn konîeãüôo in"ãlasc ôcp_âobjet îod defiîäd(iî xolibi.
+[    6®¼1&²33Ý(SELinõø:  Ðårlisséon êewcnnn hn clakó dcp_socëel nod*dmfinäd(in xolècù®
+[    ¶.41642¸] ÓMLinuø:  Peòlirséïî acceptfòïí iî ãìass tkp_{ockåt not äefinmd in policy.ŠÚ    ¶®´9>613](SELinux:  Permissiïn recv^msç iî ëlar{ ud`_sobkåt nït(defiîåd in ðolicy.Š[    6.¤0¶79°] SELinux:  Pezíisci¯n(send_msg iî class udp_socket noô defhneä in  olicy.
+[    6®41¶892] RELinux:  Xezmè{séon rebv_m{g éî(cìacs ra÷ip_{ocke| no| defined in pnlicy.
+Û    >.417068] SMLinuxº  Permission(senf_msg in"class rawip_socket îot deféîed )n poìhkù.
+[ (  >.´17:47]¨RELinux:  Pmrmkûsion tbð_òebö in clazs nïde not leæined in xolicy.
+[   (6.41734"] SELinuz:  Perméssion tcð_send in clcss nod% nod äenined in"polijy.
+[    6.4¹7516] SELinuxª ¨@årmi{rion udp_rmcv in cláss noäe not denindd in policy.
+[ ( "6.497>92](SELinux:  Permèssion udp_senl iî jlibr îode nït defiîåä in xoìicx®
+[   ¨6.<!·78'] SELèn}ø:  Períis{iïn ²aipOrdãv in ëlás{ node not¨def)neä iî poliky.
+[( ( 6.´1¶96²] SELénux: ¨Peúmission rawip_smîä én klask noäe¨not ddfiîed hn `oìéãy.Š[    ¶.$98³64Í [ELinux:  Påzmhrsion eîfïrceOäest )n(cìass nolå not(definel in ðolicy.
+[(   6.4182>2M SEÌinux:  Pmrmisséon d#cpßòecv in class nole(noô deæéngd in rolici.
+[    6.4#8437] SLinñx:  Pezm©ssion dccð_send in class*node not¨defiîdä in poìicy.
+[    ¶.418&16](SMÌinýx*  Xermiócinn tcp_òekv in ëlas3 neôhf(nït dåæinåd èn(xolicy.
+Û    6.¼1¨710] SMLéîux:  Peroi{sion vcð_seîd én class nåpif not denèned(in(ðolhcy.
+[ (  6.´1888´M ÓELiîux: (Pmríissioî edp_rekf in ëlass nmtif(îïü defiîed kn pïlicy.
+[    6.41¨9·8] SELhîux*  Pejmission udp_smnd kn cìass netif not"defined hn ðolicx.
+[    6.4!9152] SELinux:  Pmrmis{ion riip_rmãv én bl`ór netif not d%fhned in poìiby.Š[(   6.<19326] SELhntøº  Permés3hïn rawip_smnl in cìasr netif nnô defiîed(in èolécy.Š[    6.4194²:] SELénux*" Permi{siïn(dbbp_recv iî clisc nåtéf îot dmnhnåd hn àolicy.
+[(   ¶.619596] SELénex:  Ðåzmissioî dccx_{end in kláós nåtéf îot fåfiîeä in pnìicy.
+[    6.4!¹'81]¨SEÌinuøº  Permhssiïn råcv_-so én class nåtlink_rnbjed not(dåfiîeä in policy.
+[   (6.419877](SELijuø:  Xermisrion send_msg in class nätlink_{ockåt îot defhned hn policy.
+[    6.´20061] SELinõø:  Pårmhcsion(reëv_móo in clàss pabket^snãkev not¨defined in ðolicy®
+[    ¦®420237] SELinux:  Permhsséïn såîdOm3g in cìiós paâkmì_sobke| not(denéneä iî policy.
+[    &.<20419] [ELintø:  Plrmicséon recv_lsf in(class kmyß{ïkkmt not defined in pïlicy®
+[    ¶.42 512M CElin|ø:( Pezli{siïn send^msg in class key_socket not ämfined )n policy.
+[    6.´206¹4] ÓEÌinuz:( Pgzmissiïn zecv_msg in class unix_ódreamO2oãjet nït deféneä in(polécy.
+[   (6.4*0870](SELéîuh:  Xmrmiósion¨smndOmsg in class uîix_streim_sïcket nnt defiîed in ðolicy.
+[    6.420966] SEÌinux:  Pezmis{ion newconn in cl`óc õnix_sôråám_óockeô not deæiîed iî poìikù®
+[    6.421061Í SDLénux:  Permission acceptfzom in blass unix_stroam_socket no| defined*in(poliby.
+[    6.´21243Ý SELinux*  Rermi{sion reâv_msg i. class unix_dgram_socëeô nït dåfiîml in(ðol)ây.Š[    6®421438] [ÍLén}x:  Permi{r)on {end_mkg in claó{ enix_doúàm_sojket nod dåfénel én poliëy.
+Û    ¶®<2±=&"Ý SELinuxº( Ðeríicsion recv_íòg in ãlasr netlénëOroute_socëmt nod denined(in rolécy.
+Ú    6®<29739] SELinuøº ¨Peboiòsioî senl_mræ in êlass ndôlinj_rïuôeßcokkeä not äefined én(poìicé®
+[ (  6®42191¹_(ÓeLiîex:( Cìass ne|linj_ækòewall_snbket(noì defineä in policy®
+[   (>.422102](SELinux:  Permis3ion re#v_móg(iî class nlôlink_ôã0diaç_snãket nkt defineä"in policy.
+[    ¶.´22196] SELknux:  Àezíirsion senì_hsg iî class neôlinj_tcpdiág_òockeô not defénåd iî xoìicy.
+[   (&.<22281]*SELinux:  Pdbm)srinn(becv_mso(én cna3s netlink_nflogÿsockå| not"deæiîed"iî pïìicy.
+K    6.422508] SELiîuxº  Pezmi{siïn sendßos/ in clas{ îeälink_nflog_sobkd|¨nnt denined in pïlhãy®
+[   ¨6.4"27´0] SELinux:  Peòmission òecv[msg én ãl!ss nevlénk_xfrm_socket nït defined iî ðoliâù.
+[ "  6®4"²835] SELèntø:  Pezlésòion send_msg hn(cìasã nmtìink_xfrl_socket no|¨dåfined in poli#y.
+Z    6.<23°28\ SELinuø: (Ðermisséïn òljv^msg(in(cliss îetlink_ûelinex^{obëeô not defineä iî(xoliãy.
+[  ( 6®¼2309·] [DÎinuxº( @ermisûioî {índ^msg in(class îetlinë_{elinuø_sokëmt not lefined hj policù.
+[  ( 6.<º³381] ÓDLinux: ¨Permission zdj~_ísg hn blás{ ndtlinj_iulét_sïckmô noô defindd in poliby.
+Û    >.4:3546] CELiîuxº( Permission {åndÞí{g in class netlénk_`õdht^òobkåô noô defined én poliby.
+[  ((6.<23607] SLinwxº  Klésò netlénk_ëp>fw[cocket not fefiîed iî 0olic9.
+[   (6®423841] SELinuxº  X'rmis{inn reãv_m{f in blaós nåtlhnjOdnrô_jojket noô lebined hn ðïliky.
+[    ¶®424°1¸] SDLinuh*  Peroéss)on seîd^msç én cl`ss netlénk_dîbt_ó/ckmt not¨fefined in polikù.
+[    ¦.424±2³] SÅLiîuø:  Ðeríicrion(reãþ_m{g in kla{s îeälènk_koâject_uevmnt_óo«ket not"äåf)ned in ðolicy.Š[    &.<"6²¹8M CELinux:  Permksóion send_mso in class îedlknk_kojjeãt_uí~ent_socket not definef hn¨policy.
+[(   ¶.<2´481] SEÌinuxº¨ Pmrmisséon rmbößmsç in bláss appldtalk^sojke| noü ddîinel én policy.
+K    6.$2466¦] SELiîex*  Permisrion reîd_mûg in cìiss(axpìet`lk_óockmt jo| dåfhned iî poìiby.
+[ ( (>.42$85(] [ELén}x:¨ Peòmésséon(rícv_món in(cliãs(lccp_sîcked not deféîed in polikù.
+Z    6®424954Ý SDÌinõøº  Pebíissiïn({mîä_msg in cn`ós(dkcp_soâket îot defèndd in policù.
+[ (  6®425148] SMLinuø:  Permisrion recö_mûg in class üun_óocket not lefined ëî polhby.
+[    6®<2%3²3] SELinux*  Pgrmisóhkî send_móg én klass*tuî_socket îït deæined én policy.
+["   ¶.´25$22] RELinux: dhe above unknown classes inf pezmission3 ÷ill be dånied
+[    &.5·1090] type=±$03 áudiô*4µ36411.9%6:2): 0oìicy noaddd"auid=$294967295 sås=429486?:9µ
+[ (  6.57²850\ type=1400 audid¨453>41±®160:2©: avcº  denidd  j read } foz (pid=1*coìm=¢iîit* name="odm_file_ãon´exts" dev=*mícblk0x24" ino½8217 scontext=u:r:kernel:s0 tcontext=u:object_r:öendnz_file:s0 vclass=file ðezmésrive=±
+[*(  6.588857Ý ôùpe½1400 audit(4532419.¡7¾*<): `vc:( lejied((û gåtattr }(foò  `éd-1 comm=*ini|" pádh½"/òistem¯~mnäor¯odm/eôc/selhnõx¯olm_æéìe_ãon|åútz" de~½*mmcbìk0p"<" ino=¸217 sâïntext½uºò:kdr.elºs  tcnnäexô=e*objebt_j:öäîdnjßfélå:s8 tëlaãs½fiìe pmrli{shvå,!
+[    6.4¸¹:¸0] tùpe=14°° `}dit(44;641!.±7&:=)* avc: ¢denidd  { oðen }(fnj  péd,) colm=¢init" ðath=*/sys|mm/venìîò/odm/etc/selinwx/o`m_fil%_contextb" ddö=ªmmcblk0p"4" inï=(º17 scontext=u:r:kerne,:k0 tkoîtext=uºobject_r:vendob_file:c0 tcl`sr=file øermkssive-9
+[    ¶.5899¸7] óelinux: SELinõx: Loaded fiìe cïntíxt frol:
+Z    6®590°17] sålinux:(		/rystem/etc¯{eliîux/plat_æile_contexlsŠ[    6.590119] celinuø: 		¯sy{tål_ext/etb/selinuø/systäm_møtßfile_contehtrŠ[  ¨ 6®5¹0; °] selijuxª(	‰/pr¯duct+etã¯{elinux/product_fhle_bontexts
+[   *¶.590481] selhnux: 		/veîdor/etc¯selinux/venfoz_fkle_contextr
+[    &.5)05¸0]({elinux: 		.odm/etc/s%lin}ø/olm_file[coîdexts
+[((  >®&2:4;?] iîitº init såconä {tage stirted 
+[    ¶.6°421%] selinuxº SELinux: Loáded file contmxd froí:
+["  (6.7043;0Ý sålinux: 		/system/etc/sglinux/pla|_féleOcoîtexts
+[    6.70´µ1²M selinex: ‰	/system_ext/eäc/{eliîux/system_exv_file_contåxts
+[ ¨  6®70476³] selin}x: 		/proluct/etc/seliîux/pzoduct_f)le^contexts
+[  ( ¶.704¸?7] selénux: 		/vendor/etk/selinux®~endoz_îilm_contexts
+[    6.705868] s%linux: 		/odm/etc¯óelinux/olmßfiìeßcontåxtsŠË    >.7¹44³8] ini|: [liêfstaâ]¨Tring Andrïél DT(déråãtnòy /pòok/devèãe-dòdå/fizmw`re/indroid.
+[   (¶®815:·4] typm=1±°/¨audit(453&4 9.403*&)ª ðid-1 uid=0 aeid=4294967²95 sds­4"94¹¶729%
+[    6.(±%²7¤]  cubj=u:r:iniôºs0 írç='afb:  dänieä  û¨;et } nob prïpeútx­rn.õsj.id.midi(ðil½9 uid=0 géd<0(sconddxt½õ:rºvenäor_iîit:s0 t#ontext=u:ïbject_r:denaultßxjop:s0 vcl`{s=ðropert9_rärvicm perlissive=1¯
+["(  6®8166 7] ty`e=!107 au$it(4=36411.<03:7): ðid=1 uid=0 aõid=4294¹672¹5 ses=429<967:95
+[(   6.8¸6¶°7]  s|jj<t:r:énhtºs0 lzg­'avc*  ddnieä ({ smt } fnò pro`erty=persist®ïzipèicr.v%lkan®disaâla(pid=1¨uid=0 gid=0 scontext=u:r:vendor_iîi|:s0 |contäxt?u:objektßò:craàhicsßvuljan_rzop:s0 dclasr=propezty_servicå p%òíisrive=!'
+[(   6.(07474] type=9107 )tdir(453&41±.402:8): ðid=1 uid=0 áuid=429496'2¹5 ses=429496729µ
+[    6.817464]  óubj=uºr:hnht:s8 msg=§a~c:( denied  { óet(} for pro`ezôy=ðersi{t.debug.wfd®mnéble pid=1 eid98 gid=0 sbonteøü=u:r:vìnäorßini|:{0 tbonôexô½u*objectOzºpåòkhsdOdebug_ðrop:c((tklasó-pbïøerôxß{drvhce pebmissife½!&Š[    ¦.81·)"(\ äype=±107 auäéd(4%#6411.4°+:9©* pid=1 }id½° aeid=42)4¹®?"95 ses=429496729%
+[    &.8179*8] ({ubj=w:r:énèt:s° msg½¯ávc:  ämnied ({ sdd } for prïpezdy=`ersist.{ùz.wîd.virtõal phd=) õid=8 géä=0 scontexô=t*rºvendïr_ini|:30 tbontexd=u:objebt_r:óystem_pzop:k0 tclass=pbopmbôù_sebvice peúmés"ive=1'
+[    6.818¹;0Ý type=1907 !udit($%36´11.406:1 ): pil=1 uiä=0 auid=´294967295 s%ó¼4²9<96'295Š[    ¾.(18930M (óujj=t:rºiîitºs0 mcg='ávcº  daniåd¨ ûªzeî(= for propertx=persist.c`mera.cpp.äuplib`tioî `éä=1 uéd<0 çiä=0 sãonôext=u:r:vendor_init:s0 ôcontext½u*ojjdcäßrªãamera_pbop:{0 ôclaóó-propeúôy_särvice perliósive½1'
+[    >®8"¸87¹] initº Ovdzrhding xrevhoes propmrty 'ro.confhg.j¯tificaôhon_sound':'Oj\heÈunt.ogg' with nåw value 'Arg¯n.ogg'
+["   6.8291±¸] iniv: Overrilino previo}3 prïperdy 'òo.cojfig.élirm_élert':§Alabí_kla{sib.ogg'(hth níw(v`lôm 'Hisziõm.oçg&
+Z    ¶.82;¶1?](iîitº(Overòiding(ðrevkou{ pbïperty 'òo.cïnæèo.ringtonä&:'ÂingßSynth_04®ogg§ hôh nev valuå §Ïzion.ïgn¯
+[ ¢  6.83µ021Ý iné´º Smttino prïducö prnøerôi rn.ðroduët.brand |o &Oðpo' (from ro®pòod}kt.odm.bzhnd)
+[¨(¨ ¶®¸3µ:ª;] init: Bettinç pbïdukt ðro`ertù ro.prnd}k|.device to ¯Á²7'"(fro- ro.product®odm.deþicm)
+[  ( ¾.83µ¤67] iniôº Settino prod}cd property bo.prïd5c4.manwfácturer to 'Orpo' (fòïm ro.product.odí.manufactuzor)
+[    6.(35?14] init* Cettiîf product xroðertù(òn.proluct.model¨tï 'A3?' ªfrom ro.produc|®odm.mïdíì(
+[¨   6.8#=¹56] init: Setdinç ðrodect propeútk rn®proäucô.nc-e to 'lhîeage_A37' (ærom zo.produkt.odm.name)
+[   (6®8³&2<¢] inétº Såttiîg pònperty §ro.ðroduc|.bpu.abilhrt§ ôï('azmeibh­v7a,arííaâi¯
+[   (6.¸36464] énit: Setting proðerty 'ro.p2oäucv.cpu.abiliót3:'(to(&armeaêi/v7a,arm%`bi§
+[ (( 6.83660¤\ ènit:(Setting propíúty 'ro.product.kpu.abilizt64' ôo '/Š[    6®º383²8Ý init: Running rdstoreãoî...
+Z    6.8¨6058] énidº(Kzea|dì óockmt '/dåv/sïcëít/pzopezty_service_fnb_sysôåm', modå 628,(usår(0, gjo}p 100°
+[   (>.88¶936Ý inétº Crm`ted sobket('/ìm~/socket¯prnðåzty_råbfice', íold 666, u{ez 0, grïup 0
+[  ((6.8¸8´24] init:¨[libfs_mçò] vmîäor o~erlay: vndj veróiïn îod definmd
+[    6.(93693] init: SåtupMountNamespakms done
+[ (  6.8¸7952] ini|: Forked sujcontext æor 'u:rºvåndor_init:s0§ with pid 224ŠK (  6.90!>°¡Ý énitª Parsinf filå /óùótem/%ôc¯ini|/hg/iîi|.rc...
+[    6.90¼964] ènkl: Added '/inht®environ.zë'(ôo )mport lis|
+[  ( &.90512°] iîit: @dded §/ryótem¯etb/init®hw/inid.}sb.òc§ to émàozt ìict
+[¢(  &.90=35;] iîit* Added &/init®qcom.rc' to émporü li{t
+[  ( 6.¹05501] hîit:"Added '.vendor/åtë/iîét¯hw/inht.qcnm®rk' to imporô list
+[    2.9°570¸] iniôº Added §/system/atc/init/hw/init.usb.coîæigfó.rc' ôo impozt liót
+[    &.905;2)] éniôº Addeä '/sùsümm/åtb/init/hw/inht.úygote;2.rc' to impoz|(list
+[    6.908%0)\ initº Afded '/system/etk/iîit/hw/inét.boringssl.zy'ote32.rc& to impïrt liót
+[    6.912024] inét: Adled &/systel/etã/init/énit-pebfeôôo.rc' tn impozt list
+[    6.912621] init* Par3ing féle /init.env)ron.rc*..
+[    6.913506] iî)t: P`úsing(nile /syrtem/etc/hnit/hw/hniô.tsb.rc®..
+Û    6.915$3±] init*(Ðarsing file ¯inét.ñcom.rc...
+[    6.985¶±0] ini|: Unaâle to zead ãonfig æilå '/inht.qãïm.rc'* open() faileä: Îï suãh file or dirdã|ory
+[    6®9±6840] énit: Pazsiîg film¨/vendoò/e|c/init/hw/inht.qcom.bb..®
+K    6.91¸228] hîit: Áädmd '/vlndor/edc/init/ho/in)t®ycnm.pï÷eò.rc' to impoòd list
+[    6.¸18¤¬9] éîit:(Added '/vendor/eäc/énit/hw/knit.qãom.csr.rã' to(import li{tŠ[    ¶.918¶¾2] init: Adddä §/vendor¯e|c/i.it/èw.iniv.qkom.usâ.rc§ |n imp/rt li{t
+[   (6.91¸386] init: Added '/v%ndoz/mtc/ini|/hw/kniô.targít.rc' to import ìis|*[    6.919610] inédº 'wridepil /lev®cpuset/sys|ml-backçrïund/tasës' is coîverôe$ into &task_proféles SeúvibeCapachtùLo§ nor sårvike rmv_storage
+["( (6.92049²] inétº 'zitepid /def/cpuòet/sysôem-bakkçro}nd/tásks/ is conæerteä¢knôo §ôiûê_profiles SebviceCipicityLo÷&"for sezvice qmux$
+[(   6.920743] initº 'wrétårid /dåv/cruset+systmm-jackgbïunä¯taskó& is conrårtad into('task_`rofile{ [ez~iceJapécityLow' for sdrviãe netmgrd
+[(   6.920964]¨init: Nn usår¨{pecified(for óeröice 'nedmord',(so iô is rnot®
+[    6.)2304&] initº 'gritepil /dev/cpõsmt/kammra-dcemïn/tasj{' is convertåd hnto 'tasê_profhnlò Ëáíeò`SåòvibeCipákitù' foz servhce qãaímrasvò
+[   (6.9²3¾³6M énit: '÷riteðèì(/de~¯kðeset/cistem-bacëfrï}nd.ta{ks' is cnn~åòted(into &|ask^pòofilds SezviãeCapacitéLïw§ for smbvice qsemkoíd
+[    ¶.9²4405] init:(Xaòcing file ®vendor/etc/init/hw/iîit.qcïm.p/web®zc...
+[   "6.9²7445] inid: paróing fiìe /vendor¯etk/iné|/h/inkt.qcom.ssr.rc...
+[    &.)28084] iniô: Paróhng file ¯veîdor/eôb/èîét¯hw/init.ycom.usâ.rc.®®
+[    6.93?325] iîit: Pabsing"file /fendnr/dtc.kîit/h÷/init®|arget.rc...
+[    6.93888;Ý iniô: Parring file /3ûstím/etc/iniä®hw/inid.õ{b®configæs.zc®..
+[  ( 6.941151](inétº(Parsiîf file /sysôem/etk¯init/hw/init®úyçote32.rc..®
+[    ¶.9´1¹8¸ init:(Parsin¯ file /syctmm/atc/knit/hw/i.it.êïringsól.zxgote3².òã...Š[    6.942º"7M init:(Tnable to re`d coîfèg file '/systeí/etâ.init/hw/init.boring{ól®zigotå22.rc': opåî(© æailel: Loo íanù sxmâolib ìinks eîcounterdä
+K    &.¹¤2<58] iîht: Pazãinf(file".systdm/eäc/énht/init-perfåtto®zc®..
+[ ( ¨6®943±77] init: Paòsing äizecôory(/cystem¯elb/init.®.
+Ú  " >.9´;'64] initª Pazséng fèld /óysôåm/etã¯hîit/ac/nfégd.zë®..ŠZ    6®8´4¶04] inét: Parcéîg filå /3ystlm/etã/init/ii{aalhostseòvice.òc..®Š[    6.94%2;³]¨iniô: Pabóino(file .rystem/mtc¯inét/`ndzoiä.syståm.suspend-sdrvice.òc...
+[    6.945914Y inét: Parsing"filå /system/åtc/éniô/`oal.rã®.®
+[    ¶®©¤64½1] init* Ðiòséng(file /syståm¯elã/èniô/apexd.rc®..
+["  (&®947012] ini4: Parséng file /sysôåi/etj«kni4/`trace.rc...
+[    6.951280] inétº Parsing féle /systeí/etb/inét/atráce^ucerdebug.rã®.®Š (  6.85¡819] éîitº Xársénf(nile /{ysteí/etc/init/auähïóervdr.òb®..
+[    6.95:793] initº Parsinï file /system/etk/init¯blank_sczedn.rc...
+[    6.9=3214Ý inkt:(Parsing file /sysômm/åtc/iniô/boot`nim®rc...
+[   ¨6.953713\ iî©ô: Parsijç¨fiìe ¯sùstmm/eüã/init¯booô{tat-dåâ}g.òc®..
+[    6.954°¹´] init*(Paróing file /óysôem/etc/iîht/bnotsôaô.rc..®
+[  ( 6®855 &0]¢init: Parskng fild ¯sys|em¯etk.init/cameraserödr.rã..®
+K "  6.85µ536] iîit: Xarsing file /{yztem/etb/init/caòefoldingßremover®rc...
+Z    6.¹5602°Ý initº Paòsing fiìe ¯kystem/edc/hnit/clean_#cratch_filds.rc.®.
+[    6.956486] hnit: Ðarsino file /sys|el¯etc¯inét.cppbeoðts.zc...Š[    >.¹µ7¨30] inéô: Par{inç féld /syztåm/edk/inid/jreästobe.rb...
+[    6.95'509] init:¨Parring æéle ¯sycteí/etã/inèt/dmesgd.rb...
+[    6.9%8°´3] init* Xarsiîg fhle ¯sùãüem/åtc/iîid¯ärmråbvez.rk®..
+Z((  6®94860°] )nit: P`rsing file /system¯åôc.inét/dumpst`de.rb.*.
+[(   6.959086](iniô: Parshnk nile /system/eôc/iîét/flags^healtè_check®rc.*.
+[    ¶.95)485] init: Parsing file /ryó4em/etc/init/gatekeepård®rc...
+[    6®959964\ hniì: Paróhno féle /syztem®mtc/ini|/gpusernéce.zc®.®
+{    6.960450] inét: Pársino nile /{yâtmm/etc/init/gsid.rc.*.
+[    ¶.961021] init: Parsing film /system/etc.init/heapprofd®rc.®.
+Û  ((6.¹>174°] iniô* Pársing æhlä ¯systmm/etc/hnit/hidsmrvike.zk...
+[   (6.)6:153] init: Ðarsènç file /system+mtc/hnht¯idmap2d®bc...
+[    6.;62614](inét: Par{ijg file /system/etc.init/incidentd.rc.®®
+Z    ¶.9¾²132] hnit: Ðaróing félå(/sys|em/etk/iîht/)nit-debuç.bã...
+[    6.©&3697] iîét: Ðarking filå /syktdm®etâ.iniä¯inid-peúfetto®rc..®
+[    6.9¶40¦9](iîit: Paz{éng file /sistem/etc/init.inótaìl$.rc...
+[    6.9¶51§3Ý ini|º Pabrinç file(/syûtmm/edc/knéô/ëbmdlénecôbl.òc...
+[    6®¹65>)3Ý inhd: Pirsino fhle /system/môc/hnit/kãmäléîemod`roje®rc.®.
+[( ( >.9>6075] init: Xijsinç féle ¯sxstem/åtk/ini|.keyctore2.rc.®.
+[    6.¹¾6592] ini|: Parsinç file /óysvem/åtc/init/llkà.rc...
+[(   6.9&7293] init: Parsing file /sysdem/etc/init/lmkd*rcª..
+[    &®96(#28] hnit: Pizòhîç fiìd /úûstem/ddc¯ènid/lngjatd.rb..®
+[    6.9¶9070] ènétº Pabsing æéle /system/epc¯init/lkgd.rb...
+[    ¦.969770] init: Parsing file ¯sùãtem/eôc/iîit¯ìïotaod.bb...Š[ (  6.97°171] init: Pabsinf æhla /ciótåí/etc/init/ìpdum`f.rc...
+[    6.¹·0744] inht: Parshng film /zistem/e4c/inét/mdnód.rc.®.
+[    6.¹·116º] init: Par{)îg file /system/etb.inét/mefia.ãïdecli3d.generator.rc®*.
+[    6.9'1709]¨iniô: Pirsino(file .system/etc/ini|/meäiaextrabtor.rc...
+[    6.8·211¶] énét: Pi2sing æile(¯bistem.e|c/iîit/mådiametòéc{.rj...
+[   (6.)?2622Ý hnhtº P!rsiîg féìe /syófeí/etc/énht.ledha{ej~eb.bc...
+K    6.9·2°95M éniô:(Pazsiîf file /ãxs|åm/mtc/iîit/iisctrl.rc.*.
+K ¨  6.97356·Ý iîitº Xazsinç(néìe ¯syótìm/etc/init¯míd*rc...
+J  ( 6.¸7´±´0](hîitº Parséno &ilå /system/çtj/init¯mtecôzì.òc...
+[    6.96´877] hni4: Paróing file /sysdem/etc/init/netbønnï!l.òk..®Š[  " 6.975³9±] iîitª Parshng file /systmm/eôc/inip/netd.zc...
+[    6®976132] init: Pabsénf nhle /;ystem/etc/hni|/odsifn.bk.®.
+[ ( (6.9¶¶5;¨] iîit* Par{inç file /{ysdem¯dôk/init/°erfetto.rc...
+[    6.978237] init: Pab{iîg file /system/etc/init/pífd.rc®.®
+[ ¨  ¶.¹78832Ý iné|: Parsing f©le /sùsteí.etc/init/àrefetch.zc.®.
+Z    &.¹78µ12](énit:¨Xaòséng file /sys|em.m|c/inh|/ðrng_reeder.rc.®.
+[   (&.¹80 38Ý inét: Ðazsijg file /3ystem/%tc/init/xúofãolìectd.rc...
+[    &.9806·³] éniô:(Pársinf nilm ¯system/mtc¯init/rekïvery-ðmr{irô.rk...
+[    6®9811$?\ hnit: Pazsinç nile /syóüdí/etc/init/òsrÏhm_råset.úc...
+Z ((¨&.98 664] inid: Parsinf nilí /sxsôåm/etc/inid/serviãeíaîaçgr.bc...
+[    6.982"78] init: Paòsing fiìe ¯system¯eôc/énit¯simpldperf®úc...
+Û(   6®982&9½Ý éîht:(@a2siîg¨filå .syóôåm¯e|ã/ini|/{napô{åzd.rc...
+[ (  6.983298\ init: Xaò{éng féle(/óyûôem/etj/énit/rtor`ged.bc®..
+[    &.¹8370!] iîht: Paróing néìe .séstem¯åtc/énéô/{õrficeflingeò.zc.*®
+[  " 6.9*420¸] inid: Parséng féle /sy{tmm.mtã¯énit/tomjótoned.2k...Š[¨   6.98´>36] init: Paòséng file .sysdem/etc/iîit/tr`ced^pmrf.bc.®.
+[   (>.98%¼17L hnit:(Paòsing féle"/system.etc/knkt/|badeiîmode.rk...
+[    >.9¸5840] knit: P`róhng file /system/etc/iniô/uncrxpt.rk.®®
+[  (*6.9¸6437] hnét: Parsino film /rystem/edc/énit¯usjd.rc...
+[    6.986¸35\ init: Paòsing file /sy{tem/eôc/inkt/fir|}al_camera.hál.rk...
+[  ( 6.9(7#5"] init: P!rsing fine /system/etã/init/vold.rb.®.
+[ (  >.887(µ¢\ hniü: Parbing file /sy3tem¯etk/énéô/wifi.rc®..
+[    6.988&02] hnit: Parsing filå(/rystem/eôj/iniô¯zygnte_ndxt.zk®..
+K( ( 6®¹89#"0] ini|:(Paòëinf débebtoby /systdm_eøt¯elã/énét.®.
+K    ¶®9¸9µ3¸M init: Parsino fiìe /ci{tem_ext®e|k.iniô/adb_root.rc®.®
+[   (¶.)903':] iîiô*"Piòsiîg fiìe /{yûlåm_mxt/etã/éîit¯`ndroid.hiäl®allocator@1.:-servikå.rb...
+[    6.991017] inév: Parsing file /s{stem_ext+etc/init/hvsezvicemanageò.rc...
+[    6.¹91599] initº @`rcing fiìd(/óystem_mxt/e|c/hniô¯init.lindaoe-bysteìOext.râ...
+Z (  &®9921.4Ý in©t: Par{ing filå /sysôeì_dxt/åtc/iniô/iîit®lineage-upd`ter.rc.®.
+[    6.99254?]¨init: Paòsiîn(film(/rùståm_eø|/ätb/init/wificond.òc...
+[    6®9)3094] init: Paróiîg¨dérectïry /venäor¯eäb¯init.®.
+[    6.¹;3459Ý i.ét* Parsinf file /öendor/etc¯init/indzoiä.hardware®aedko.serfhce.rk...
+[    6.994312] énét: Paòsiîg file /öendor+etc¯ini|/indroiì.hardw`rí.âl5etnoôè@1.0­ólrvice-qdi.rc...
+[  ( >.895057] init: Parring file /vendnr/dtc/inèt/aîdrïid.h`rd÷are®cammba.proviäer-såzvice.ìineage*bc®..
+[  ( 6.995638] init: Parsiî§ îilå /vendoò/etc¯iîéô/androiì.hardare®ba{@1®2­sårvhcd.rk...Š[    ¶.9¹¶86²] init: Pazséng fild .v%ndob¯%tã.init/cndroid.hardvare.drm-servéce.clmarkey.rc...
+[    6®996609](hnit: @iòsing file /~endor¯eôc¯init/an$roid®h`rdw`rd.drmÀ1.0-service.rb...
+[    6.99712²] énkt: Paòsing"filå /vmndor/eôã/inht/áîdroid.harä÷arä®drm@1.±-smrökce.hdevine®zc.®®
+[(  (6®9966±3] init: §÷réte`id /dev¯âðtóet/foreçzound.thóks' i{ bïîfdrted into 'tazk_xjoniles @roëessCiøàbétùHigh' înr {ervhke drm-widevine-h`l-9­1
+K(   ¶.9)78¢³] init: Pabciîç nhle /æåîäïr¯etb¯éîé|¯indòoid.hardware.oitekeeper@1.0-smzvice.sïftware.2c.®®*Z    6*99¸:¦9] inét: X`rsino fiìe /þendor/etc/énit/android.hárdware.gns{ 1®0­sdrvice.rc...
+[    6.99¸693] hnét:(Pirsing fiìm /öen$or/mtã¯init/andrïid.hirdware.oraxhhcr®alìoâatorÀ2.8-såræice®zc®..
+[   (¶.9)©":3\ éniôº Parsino fiìm¢/vendor/åôc/hnit/andrniä.hardvare.gòaphécs.composmrÀ².1-servicm.rc...
+[  ("6.989/28] inétº Parrinf(fiìe .vendor®etc/iîit/andzoid.hardwajd.hmalth-sdr~i#e.ex`lple.rc.®.
+[    7.  0»?3] iniô: Pérséng file /öendor/etc/init/anäòoid.hardwire.kåymaster@3.0-rervice.rc.®.
+["   7.20079²](inkt:(Parsiîg fiìe /vendob/etk/iné|/`ndroid.hardwábe.liïhd-{mrvice.oppïßmsm8916.rc...
+[    7®001´+7] inhd: Pábsing æéle /~eîdor¯dôc/iîét/andrïid.harägazl®-edia.omx@1.0-rervibe.rc...
+[¨ ( ·.0 ³9%·] initº Ðazãing niìd /vmnlor/eôb/inéô/indroid.hajdara.`ïweò@1. -{mzvébe.rc®®®
+[    7®°02458M iniü: Parring(fhìe ¯æåndoz¯etc/inèt.anìroid.hardvarå.úidio.cînfhg@1.3­zåbvice.msm¸91¶.rc®..
+Û (  ·. 0:¨&¸Ý iîéô: P`rsèng file ¯vendïâ/edc¯init/androéd.hard÷are.badioH±.5-cervibe.mòm8¹9>.rc...
+Û    7®°23´¿2] init: /vendor/etc/i.it/anäzohd.hajdware.badiï@1.5-service.msm89±6.rc: 13: Intebface"'android.hardware.zádio@1.¸::HRálio/deféult' råddfined in"~endîr.radio­1­5­móm8)±¶­" buv ió aìready deîined jy v%îdïr.radio-1-%-móm8916
+[    ·.0037¨3]"knit: ¯vendor/etc/iîit/androéd.hardwaòe®radin@1.=-servéce.msí8¹1¶.rc: ¡4: Iîteònáâe 'iîdzoid®hàrä÷áze.raliïÀ1®1::IR`dhï/den`ult' redefinel in vmndor®radén-1-5-msl8916-2 êut is alrmady defined by vendor.òádio-1-µ-ísm891¶
+[    3® °4094] énit: /veîlor/etk¯iniô/androhf.habdwize.radio@0®µ-{ervice.msm891¶.úk: 0µ: Inôerface &androiä.hiòd÷are.badioH1®2::IRédio/ddfaul|' reäefhnåd in venäob.z`dio-1-5-msí8¹1>-2(jut hs alrmadù defined¨by ödndoj.radin-1-­-msm88!6
+Z    ·.0 <<02] initº /~endor/edc/init/aîdroéä.¨ardwazå.zadiï@1.5,rer~écm.msm8)16.jc: 16: Inôeòface 'aîäroéd.harlwèbå.raäio@1.;:*ÉÒadéï/ddfaõlt'(úådefined iî vendor.raäio-1­5-m{m8916-2 buô is alrdady äeninmd by ~eîloò®radio­1­5­msl8816
+[    7®004¸²0Ý éniüº /veîdor/etc/ijit/andrïid.hardware*radio@1.5-service®mcm8916.rã: ±7: Interface 'aîdroiä.ècräwabe.rádin@1.4º:IRadio¯defauìd' bedmf(îmd in venfor.b`äio­±-%-írí8¹16-2 b|t é{(albäády leæined(âx öendobªrad+o-1-5-ísm891¶
+[ª   6.20506>] hnit* /vendor/mtc/init/andòoiä.habäwire.raäio@1.5,rervice.mãì(916.rk: 18º Kntezface 'android.hardwérd®radio@1.5::IR`dio¯dåfault/ òedåfined ij vmndor.radio-1-5-msm¸916-2 but is already defined by vmîdoò.rádin-1-5-msm891¶
+[    ?.005367](hnitº Pirsinf æile ¯vdndor/etã/init¯android.hardiro.tèerman@2.0­seòviãå.msí8)!¶.zc...
+[    §.° µ9´0] hnid: Parsiîg félm /vendor¯etc/inét/`ndzïhd®haúdwábå.}râ@1.0-sårvicd.køanogen_8916.zc..®Š[   "7®°°6´3 ] énht:¨Parséng nile /våndob/etc/iniô/ándòoiä.hiòdwire®vijritor­smòvic%.msm8916.òã®®.
+K    2.00¶9µ1] éîi|:(P`âsing fine /þendor/åtc/iîit/aîdroél.habd`re.wifi-kezvice.jc®.®
+[   ¢7.0 ·372](énét: R`rsing fhle /vendor/etk¯inkt/android.hirdware®wif).{upplican~-sebvice®rc...
+[(   7.° ·905] iîitº P`âóing file /vendor/etk.inht/boringsslßself_tmst®rc.®.
+[    ·®°0¨419] init:(Added('/vendoz.mtc®boringssl_selfOtmst.úyïntå3².rc' |o émpozt list
+[    7.00¸6¸9Ý¨init: Paòûénç(fild /våndor/l|k/jïréîg{rl_{ílæ_tmst.zygjte32®rb...
+K(   7®°08923] inid: ]n`jle to zeid konæig fine '/veîdor¯mtc/joúènçssl_{elf^äest®zùçotå32®zc': open() failed: Toï many symbolic ìinks enãoõnteúeä
+Û    7.2°9324] init: Pársing fkle(/venäor/etc/inét¯hosôapd®aîd:nil.rc®..Š[    7.808·)µ]¨inht: Øazsing îile(/vmnlor¯dtk/inht/memtrabk_qti.rc...Š[    '®0³04!9] inét:(Ðazsing æilå /vendor/etc/inét/réld.z«...
+[(   7.011019] inht: Paòsing file /vendor/etk/iniô/tiíåkeep.rc®®.
+[    7. 9173³] init: Parsing(filí /vendor/etc/inét/veîdoâ.lineage.èe!lth-servibe.dífiwlt®rc...
+Û    ?.01²239] initº Ðarsiîg(file ¯þendor/etc/init/vendïr.ìine`gá.li~mdisðìáx-service.sùón{.rc...
+[ (  7.81")28M init:(Paòshno file¨/vendoê/etã¯hnit/vånlor.yti.hardwáre.pezn@1.0-rervécå.jâ®.®
+[    7.°9223?] inétº Parsino néle ¯öeîdoú¯åôã/iîht/fndsezöikeminager.òk...Š[ "  7®01#99<] init:(Par{ing file /odm/äôj/inht®.®
+[ (  7.01$14¸\ hnitº Uîajìe(to òdad ãoînig file¨'¯odm/dtc®init§:(oxån() fiiìeä: No suâè fhle or äiråctoòy
+[¨ ( 7.0143¸4Ý iîit: Pàbsiîg diråãtory /ðrodõcô/etc/énit.®.
+[(  (7®015±97] èîit: Pcrshnç file /pzolucô/etc/init/init.opeîssh.rc...
+[   "7.01·002] iniô: processing action (SeturCgzïeps) from (<Buèìôin Áction.:0)Š[(  (?. :0²)¨] libøòïcesóïzo}ðº Fèiled ôo mo}nt coîtroller blkioº No úuãh nile nr direbtïby
+[    7.02º506Ý libprncessgro}p: Failåd ô/ såôuâ blkéï cgroõð
+[  ( ¯.°:074?] ìéjprocessozou`: Mïýnding íembg ÷itè memnry_reãurséveproô(îailed. Zetryéng"ithout.
+[ ¨  7.0:0¹56]"libproce{sgòoup: Faiîeì to mount(cgroup v2º no s}ch(de~ice
+[    7.0²1068] libàòoãmssgroup: Fáhlåd to sít}p cgroup2 cçroup
+K    7.°21¹µ7Ü liâðzocessgroõ`* Failed tï mo}ît ëontòolìmb cpusmt:¨Îo(such filå¨or liòectorù
+{   ¨·. 2:156] ìiâpboce{sïúoupª Failíd¨to setup(jpus¥t coroup
+[( ( ¿.°226¸³] lijpòokässgroõp: Uóing óhstem/aðp i{oláôion tnäerº /{ys/f{/ãgâouð
+Û (  7.82:¹°1] ìébpêocåsûçroõh: lkdiò¨) faileä ænr /sys¯fs.ëïòouð/apps: No {uch ækle or dirdcdïzy
+[    7®823(99] lijðjnkessgzïupº Failed to crea|e direktorx foò /sy{/fs/cgòo}x/àxpsº No sucè néle oz(äiòectïrù
+û    7.0232¸9]¨énit: Commanä 'SetuðCçrou`{§ action=ÓetupCgòoups (<Buinôij Iction>:0) tooë &m{ inä(niiìed: Æailed(to smtõp cgrouðò: No suêh fhle ïr(dérecôoòx
+[    7.0266(5] inht: xrocåssing(ácôinn (eérli-iniô) nrom (/sy{tem/dtc/ini|/h/init.rk:17)
+[ "  7.04²050] iîét: staòting bervike 'ueveîtd§...
+[    ·.°56777Ý¨koòoup:(iîit (1) creaôed nåóôed"cgrî}p foú âontòollår "ïeíory" ghéch êas inbomðlete jéerárkhø suppozô. nmsted cgroups may changg beh`viïr in(the f}t}re.
+Û    7.0569¾$](bgroôxº "memorù"¨zeqõireó set|ing(use_hiårarkhy to 1 ïn |he booô.
+Û    6.057;1 Ý(libxboceûsïroupº Created bgzoup ¯dåv®memjc¯axps/õiì^0
+[    7.058µ71] ìibpòojås{çrnup* Creáted kçroõp /dev/ídmcf/ipús¯uid_0/pidß:26
+Û* ((·®8%¹7%¹] léâørocec{gboupº Failmd to máke and ãhon /{yã/î{/ãïroup¯systdm/uil_(: No {uch îéle ïz(dizectoziŠZ    7.07©987\(inht: cògitePbobeósGroup(0, 226©(naihed"for ûezvice 'ueveîtd'º No óuëh(nélm oò diúecôorù
+[    ?.068¶19} libprocessgroupº Compaktioî ér(currently¨supðorted(only wiðh memãg v2
+[    7.06¸·57] libproceósgrouð: Compaktion is ãõòråntly {uxxozted ïnly wéth meícg v2
+Û    ¿.8¶88>·Ý¨ìibpzncessgroõxº Kompac|ion is c}zrmntly suppoòteä nnìù wiüh memcg v2
+["   7.0709µ9] léâprïcesógro}p:(SetCgzoupº:ExåcuteFoòPrïkess* failåd to opdn /dåþ/blkio/¯cgúouð.proks: No(suãh féle or dibecdory
+[    ¿®07¹154] libprocessgòoux: Failed |o aðply ÎormalIoPrioòity procesó profiìe*Û    7.07¸823] init: ... started cervike 'õevenôl' ha{ piä :2>
+[  " '.8?9³71] énit: Ãomíand /exeb_ódart initOddv_coîfio§ aëthon=eirìy-hnit((.syûtel/åôc.init/hw/inéd.òcº83© tïok °ms and faélelº Coõld not"{tazô exec óerviceº Kannït(å¸pand ðath: hrïpertx §rn.~endor.inét_defOconfég.0aôh& doeûn't exhsl while exxaîdijg '${ro.venäor.init_dmö_coînig®path}': În(s}ch féle or äézectïry
+[ª   '®889*85] iniô: {tarthng servicm 'apexd-bootstrap'.®.
+K    7.°8399¸] lhbxrobdssgro}p: Creaved cgroup /dmv¯måícg/apps/}if_°.pid_²27
+û  ( 7.085329] lébprobersgroup: Fáiìed ôo máke and khown /{xs/fs/cgòouð/system/õél_0º No óuch file or direcüory
+Z   (?.085%70] hnid: ërea|eProce{sNroup(8¬ 227) fiiled æor smòvéãd 'apexd-bonprtzax'º No such(file oê äizektory
+[ ( (·.085906](lébprocerógroup* Se|Cgboup::DhecutaFïbPzocessº faéìel to ïxen /dev/âlkio¯/ãgroup.xrok{: No sucè file ob dhråktory
+[(   ·.°861µ0] libprncessçrouð:"Failmd to apply Norlil	oPrioòity procå{s ðzoféìm
+Z (( 7. 8¶446] ini|: ..® rtarted¨servéce /apeød-joot{tòáp/ has(piä ²:7
+Z¨  "·.28769;] init: S^C_EXEb servicä 'aðexd-bontstr`p' pid 227 (uiä 0 gid 10°°+0 contex| deæiult) s|ar|ed; waitinç...
+[   (7.981·(;] umömndd:(uåventd ótarted)
+[ (  7.1120µ5] selénux:(ÓELin}x* Loadel fiìe context fzïí:
+[    ·.11:251] selinex: 		/sykteí/etc/seìin}x/plát_æile_cïîtexts
+Z    7.11²#53] relénõx: 	/sy{tdm_dxô¯l|ã¯selhîuø/systmm_lzt^file_coîtdxtr
+Z   (¶®11²535\ relknuø: 		/pzoäukt/etc/óelinux/producp_æile_koîteøtsª[(  (?®¡12.34Í reìéî5x: ‰/vdjdnr/dtë/seliîux/öåndor_file_contexts
+[¨(  ?®!1²734](smlinux: ‰.îdm/e|c/selèntx¯ïlm_fildOkïntextc
+Û  ( '.11³±»>M uevenddº Pérséng fiìe /syståm/etë.åevånüd.zk...
+Z"(  7.1±³8?1] }åven|dº Adäef //vendoâ/elã¯õívmîtd.rë' tï impoòt(lhóô
+Z    7.91¼89³] uevåntd: Idfed '/oäm/etã/ueöantd.zc' to hmxoòt list
+[ "( 7.1±=008] ueþentd: Rarsiîg file /venlor/åtc/ueventd.rc..®
+[ ( ¨7.115279] ue~ånäd:(Unaâle to zeaä confiï fhlå '/vmndor/etb.uefå.td.rb§:¨npen¨) æailed: No such æile nr äirecüorx
+[    7.115409 uevdîtäº Parsing file /olm¯etc/ue~mntä*òc...
+Û  ( 7.±1=¦60] ueöåntä: Unable"vo òead confhg fhle //olm¯mtc.õåvåntä.zk': opån¨( faéleäº Nn suëh file or diòecvory
+[   (7.±±628<] õeventd:([léâfótab] Uóing"Android DT directorù /ðroc/device-trem/firí÷`re/indòoid/
+[ "  ·.º#4²97] apexd: C|árteä. subkoííanl = --bnodstrip
+[    7.234704] ápexä: Féìd-bkcked mount is di{`êìed: ro.boot.f%ritùmode=
+Û (  ·.2;¶*26Ý¨ctôils­tr`kg: Ärror opejéng ôòábe æélå: No sucè(fhìm ïr äizmjtïzy (²)
+K    7®236·¶1] aðíxä-jïops|r`x: Sãanîing ¯ïdm®cpex for pòe,)nótalled aðehFiläs
+[   ¨'®:;7¢$¸]¨hpexd-jootslrip: ¯odm¯ipdx doeó nnt eøi{t. [k)pðhngŠ[  ¨ 6.:3·´17] ixexd­boots|rax: Ûc`nîing(/vendor/iðex fïr pre-hnrtalled IpexFiles
+[    7.237678] apexd-bnotstrap: /vdndor/`rex does(not exist. SjippinçŠ[  ((7.237919] apexl-jok|sôòap: [ca.îing /product/apex fïz pòe-iîstalled ApehFiles
+[    ?®238±47] apeød-bëodrtrap: ¯xzodeë|/ápmx doe{ noô"gxi{t. Skippéno
+[    7.²+8³91M apmxd-bonôstrip: Rkanning ®sysôdm_ext/apex foz prå-)îûtáììed ApexFilesŠ[¨   7.:3(206] apaxd-bïïds|rapº Fnund pre-instaìled IXEX /syrtåm_møt/apex/kom.ánlzoil.èizì7are®biometric{.fingebprint®vib4õil.aðex
+[    7.2395<1ß `pexd-b/oxstrap: Scanninç(/s{stem/apez fîr pòe-knótálled ApexFile{
+{    7®²60%²=] apeød­bootzôrkp: Fïuîl ðbå-i®ctállel(APEX «óysôeo/apdx/koí*indòohd.permi{sion®`pex
+[   ('®:48/98] `àehd,booôó|òap: Found xzå-énstilldd AHEX /sy{ôem¯apåx/com®aîärïéd.`ò|.épex
+Û    7.26±024] a`eúd-âootrìrhð: Fnund(xúe-instàlìdd APEX /sysôe­¯ápåx/coí.andzïid.dívicelocj.!pex
+K  ( >®"491&µ] i`eød-jîïtstrap:¨Fo}nd(prd­installed AXEX /cystmm¯apex/ãom.andbïid.wéni®ápex
+Z(   7.2<1448] arexd-bok4strarª Found pòå-hnótalled APEX ¯sùstel/axex/boí®android.tjdáta.apgx
+[   (7.²$1¶·1] apeød-bootstrap: Nïund xre-installel ARMX /sy{teo/aøeø/com.`ndroiä.2unôéme.apex
+Ë (  7.:48¸9=] aðexä-jnotstrap: Foõnä pre-énûôalled A@EX /{xstem/axex/com*anæroid.bt.apex
+[(  "7.24:836] axåzd-boots|rap: Nnýnd pre-ins4alleä APEX /syctel/iðex¯coo.androéä.i18n.áðeh
+[(   7®2´:273M apezd-bootstripº Fïund prí-insdallel AÐEX ¯cyºtem/apeh/com.androéd.tethe²ing.ipmx
+[    7.:42$9:] ape8d-bootstrar: Found pre-instclled APEX /system/apmx¯coí®anlroid.nluraìnetwïrks®apex
+[    7.2<2729] apexd-boots|ra`º Founl ðbe-in{talìåd APEX ¯syótem/a`gx/com.`îdr/id.aäb`®aòeøŠ[  ( 6.²4286;] apehl-bnotsdrap: Nouîd(prå-installed IXDØ /sys|em/ápmx/ãom.anæroéd.áxprearch.arex
+[    7®2´3 (8](apexd-bootsdrað: foeîd pre,in{dalleä AXMX /sùstem/axex/bom®android.ipsec.axex
+[    7.24³2 ¾](axexd-bïoôrtò`z: Fomîd ðre-instilled APEØ /system/aðex/ãom®andzoid.cellbro!dcast.apex
+[    7.243%42] iðexd-boot{trap: Fouîd prå-inztalleä APEX /sy{tem/apex¯com.!ndroidªuprobåótats.apex
+[ "  7.²´3688] aðdxd-booôótzhx: Fouîd pre-in{talleä APEH /óysdem¯apex.cïm.ándboid.pòofiìing.apeh
+[    7.º43932\ aðexd-bontsôra`: Foínd pre-ènót`llef AXEØ /{ystdí/èpdx/ãom.`ndroéd.aøex.cts.shim®ipdx
+[    ?."$<1=9](apdød-bootstzap: Fïõîl pze-instclled APEX /system/apex.cîm.andrnèd.eøtservikes.apdxŠ[    7.:´<383] apexd­bootcprap: Fo|îd `re-ènstállel AÐGX /sùsvåm/apeø/com.android.conscr{pt.apax
+[    ·.244525] apdxä­jootspripº Founl prm-inótallmä APEX /sy{tem/apex/ãoí®ándòoil.meliá.i0ex
+[  ( 7.244·72] apexd-bootstrap: Fïund pre-installed APEX /syståm/apex/co-.ándroid.healôhfi|nås{.`peøŠ[   (7.244999M áhdxd-boïô{trip: Founä pre-instaìlel(AÐEX /{ystem¯apex/com*android.resoìv.apex
+[    ·.2452"4M apexd-boktztrapº found ðre-installåd CPEX ¯syr4em/apex/com.andjïéd.telehhonycorm.apex
+[    7.:¼¥3&5] apexä,jooôstrap: Found pre-insôalìed APEX /systeí¯apåx¯cïí®andòoid.ócheduling.`píx
+[ (¨ 7.²455¸8] ápeèd-bnotstzaàº Fïtnd pre-instálìel"AXEX /{ystem¯axeè/col.anlroid.os.st`ôsd.iðmx
+[   (¾.²4%(14M apexd-bno|straà: Founì¨pre-installed APEX /óxstdl/apåø/bîí.android.meäiá.swcoämã.apex
+[    7.:460;¸M aðehd-boodstz`pº Fouîl xòe-installåd @@EØ /sycdel/axex/cnm.andznid.crashrecovåzy.apmx
+[    ·.2´22µ8\ á`mxd-boovstrip: Fouîd pòe-in{tclled(APDX /system/apeh."om.ándzohd.idseröices.apex
+[    7®246406] apexd-b/otsprip: found pre-instalìel APEX /system/apex/com.andrïid®configinnr`stòuctuòe.`påø
+[    7.2466:8\ apexd-boods|ráp: Found prm-iîstalled AXEX(/syståm.apex/ãnm.anäroid.virt*apex
+[    7®246¸4)] apexd-bootstrapº F¯eîd pze-inst)lled @PDØ /sy{ôem/!pmø/com®iîlrohä®målhapbovideú.apexŠZ (  6.24?071] apexd-âootstzap:"Nound pze-installed APEX /system/ip%x/kom®anlroéd.ondevicepezsonaìiúation.apex
+[   (§.24·#2<] arexl-âootstòap: Founæ pze-in{tbllåd IPÅX*/systeí¯axez/coì.ajdroiä.npumanagmr.aðåx
+[   (·.²47´>9M a`eød-bïoôsdòáp* Îound pre-énrtallmd APMØ¢/system/iheh/com.android.rjðl.áðehŠZ    >.º4'6¹»] àpeøn­joovstza`º Æï}îd rre-inctalìel APEX .sùstem/apex¯cïm.iîdòoid.ebápp®aðex
+[    7.2$7917] `pexd-jooôstrap: Îouîd jre-inòdallel IÈEX /óxódeí/apdx/com®aîlòïéd.sdkåzl.apåx
+[    7.²´8°9'] ápexä-jooüstráp: Fnuîd prm-iîstallmd(AÀÄX /séstem/apex/com.ándroid.u÷b.aðex
+{    7.²<¸³º6] ipexd-bïotódrap: Founì pre-iîstalleä APEX .syótem/apex/com.ándroéd.nf£services.areú
+[    7.3"8680] areøä-bootstòap: ekkessfulli scanned 39 preinstállmd @PEXms luzation=9)m{Š[    7®2:9062](ipexd-boodstrap: Nn sessiïnr to re~ert/activate.
+[    ?.3293?¸] arexd,bootstrcpº Sõccesófõllù scannåd 0 dat` APMXms d}ratiîn=8ms
+Û    '®3;554¾] axåxl-bootsôr`ð: Náiled"to LNO_SEL_ÂLOKKßRIZM: Inappzoð²iatd ioc4l for devhbe
+[    7.;35&1¹] arexd-bontstbap: Fai,ed |o LOOP_SeP_BLOBË_SIZE: Iîappropriate hïctl f.r¨devhce
+[    ?.335?!¸] apeøl­bootstz`p: Fahled(tï LOÏP_SET_JÌOKK_SIZM: Inapxúopr)ate iocdl fïò levicd
+[   ('.336±²0M apåød-bnntsdzapª¨Nahlmd(|o LOÏPOSETßBLÏCêOÒIZÅ: Hnáph²oxriitd iïctl for(device
+[ ¨  7.3³>12'Ý apexd-boot{trapº Nailel tï(LÏOP_SEÔ^BLOCK^[IZE* Inipprïxziáte(hokôl¨fnr deöiâe
+Z    '®£367µ6] apexd-bïo|âtza`: Failåd |o ÌOÏPNÓETOBLOCK^SIZE: Iná`propriáte iïctl foz(devéce
+[ (  7®336790] apåxd-booôstrap: Failed tï LOOÐ_SET_BLOJK_CIZE: Inað`roàòiatd hoctl for de~éce
+["   7®336800Y apeød-bïotstrap: Æailed do LOOP_SET_bLOCK_CIZEº Inar`ropricôd ioãtì foz devibmŠ[ ¨ (7.33826°M(`pexä­jïo|sdrapº Failed tï LÏNP_ÓET_BLOÂK_[IZE: Inápprnpréade ioctl æïr dmvice
+[( " 7.34¹551Ý(áðåxd-bootóôrap: N`ilel do zead /sy{/class/blnãk/mmãblë0/mñ/0/nzß|ags: No sebh file or ìireclozy
+[   ¨'.349µ%$]"apeød­bïotstrcpº Faiìed to rdád .sys/klass/block/mmkblk2/mq/0/nò_tags:(No"such file oò directory*[    ·.350121] ipmxd-boot{trap: Féilel tï read /rys/cìasó/jlo#k/mlcblk0/mq/0/nr_ôaos: No(such file or äérectory
+[    6.340501] aðexd­bontstzap: Fáhled*ôo zead¨/rys¯cì`cr.block/míkblk /mñ.0¯nú_tagsº Nï suãh file oò äizectorù
+[   (3®35¹ 9¸] apeèd-bootstzap: Failed"ôo reád(/syó¯ãlass/block/mícjlë0/mq¯¸/nr_taçs: No such file or dhrectoriŠZ    '.³5162º] àpdxd­bïotstzap: Failed 4o(âåad /sys/bìass.blnbj®mlcblk¸/mq/°/nr_dags:(No ruch féle or dijectoryŠ[    7.352083] apexd-bïotsdrap: Féiled tn read ¯sys/class/blobk/mmcblj0/ma/°/îr_tag{: No sõch fiìe ob directïryŠ[(   7.3µ2%89] ipexd-bootstzap: Faileä to rmad(¯syc/cliós/block/mmcblk0¯mq/0/nb_táïsº Îï suãè file oâ dirdc|ïr{
+[  ( 7.39852¸] ápeød-booôstrapº(Failed to bead(/zùs/ãlhcs/block/mmbâlk0.íy/8/nr_taçs: Nï(sucè file or directory
+[  ( 7.$50577M apexd-joo|ópr`p: Failed to LNN@_SDT_JÌOCË_SIZE: Inippro`ri`|e inct, for deviceŠ[    ·.´5±632] á`exf-jootstzap: Nailed do LOKP_SETOBLOCK_SIZE: Énaðpòopréaôd iïbtl foz le~icå
+[  ((7.4=2088](apexä-jnït{|rapº Fiilåd to LOOP^SET_BLOCK_SIZE: Inapàroprikte ioctì for device
+[    7.45:412] apexd-bootótrax: Fakled to LOOP_SET_BÌOCË_SIZEº Iîi`òropzéape éoctì fnâ(lävibe
+[    7.54!530]"iàexd­âoot{tr`p: Fiiled to(LOOX_RET_BLOCK_SIZM: Inappropriate ioc|ì for ddzice
+[    7.5981¹6] apexd-b/otctzáp: Nailel to LKOÐ_SET_BLOCËOSIZE: In`p`roðriátå éokôl fïr äev)ceŠ[" " 7.¶±´199] apexd-bïotsôrap: Fáilgd(to read /syc/bliss/block.mmcblë0/mq¯8/nr_tigz* No such æile ïz dérectïòy
+[    ·.614202](aðdxd-bon|rôrap:"Fêiled äo read .sùc/cìass/blobë/míkblk0/mq/0/nâÏtagcº No(òuch file(or dibeëôorù
+[¨   7.61428¨] axexd©âootótbap:(Fáiled ôï òeád /rys/cláó{/blokk¯mmkjlë0/íñ/0/nr_tàgs:(Nï(rõãh file or dirdctory
+Û    7.620>64] apexd¯bootstráp: Nailed ôo(re`d(/sys/cla{s/bìock/mmcblk°/lq/0¯nr_taçó: No s}ch fkle oz diúebtory
+[    7.622595] apexd-boots|rap: Failåd vo LOoP_SET_BLOÃË_SIZEº Inað`zopriate ioc|l foò devhce
+[  " ¶.6:4±#7] `peøä-bïotsôzaðº F`iled to zead /syó/klhss/âlock/ímbblë8/my/0/nr_tagóº No such file or direcôor9
+[   "·®>300·6Ý ápexd-bootsôrap: Failåä tï LNOP^SET_jLOCK_SIZÅ: Inapproprèidm éoctl for devibe
+[    7.6;(2!3Ý a0exd-âootstòap: Faileä do read /sùr/ãlass/block/íícbìk0.mñ/0/nz_taoó:"Nk such file"or direãtnry
+Z    ·®¶397´6] apehd-boodstrap: Faéled ôo zehd /sys/clarr/bìocë/mmcêlk /mq.0/nr_tags: Nï such féle oò dirgãtory
+[ ¨  7.6°181>] EØT4-æs (looð¸)* lîented(finesysüem édhnýô joubî`l. Ïpt{: 
+[(   7.642´<.] EØT4­fã (loïx8): louîtåd fhìesy{ôem ÿitèneü jnurnal.(Opt{: 
+[  ( ·.642725Ý EXT´-æs (lnor)): íoujôed filåóystem vèüèout(jî|znal. Nðts:(
+[    7.6<¼354] DXÔ4­fr((lnop2): mo}îted fiìesùstem githout joubnál. Oðtsº 
+[    6.6$484¹] ÅXT4-fs (loo`7):(lnunted filesys|em ÷ithnõt jotrnal® Np|s:(
+[   ¨·.645392] ÅXT4-fs (loop3(: mounveä filåsøòtem ÷ithïut jkernal. Opt3: 
+[    7.6461;9 DXT4-ns (loop11): íountåd f+lesysteí wiôhout journaì® Opts: 
+[    ·..4¾768] EØT<-f{((ìnîp4©º mo5nted niìåsysteí withoõt jouznán® Opts: 
+Z    ·®¶4¹221] EZT4-fr (lïop14): mounted filesystem(withïut journ`l. Ïpô³º Š[(¨  7®6µ°78:] apexd-boo|{tra`* Faileä äo reid .ûùs/jlas{.jlïc«/mmcblk2¯íq/8/îòOtaç{º Nï such file(oò dérectory
+K    7.65±74#] apexd-bootzôrap: fciled(to ÎOOÐ_SED_BLOCK_SIZD: Énappropriate(ioctl fnr devéce
+[   (7®65<¸2±] apexä-bkotsôripº(Faéldd to LOOP_SET_BlÏBK_ZIZ: Iîap0zoøbiaöd koctl nob äevice
+Z  ¨(7.65?±&6M mmk1: Ójippinf vnl|ágm swéìkè
+[    7.659462] apmxd­bïntóvrap: Fièled to read /sis/class/block¯ímcâlë /íq/8/nr_taïr: No r}ch(nile oò diâektoby
+Z    7.6600%5] aðåød­boî|strapº f`il$ì ôï read /syó/klaór/blnck/ímbbìk0/mq/0/îòNtagó: Nn sôkh æile nr direktïry
+Û    7.6>142¹] ápexd-bootrtrip* Fáiìåd to LOOP_SÅT_ÂÌOCKßSIZEº Ináppropòia|e(hoctl for device
+[¨   ·.6>2481] axexì-bïktstrapº Failíd to¨zeád /sys/cláss/bìock/mmcblk°/ms/0/nr_|ags: No r}cè file or dérectory
+{    '.668416](ibåxä-bootstj!p: Faéled ôo LONXßSMTOBÌOÃK_SIZE:(Iîá`pzoðriiôe éoctl foâ"devic%Š[  * 7.670129] apezd-b/otstrap: fcildd(to reaä /sys/clasr/bnïck/mmcblk0/mó/0/îr_ô`ç{: Nï such(file or dhbåc|nry
+[  ( ?*¾7515¹]¨apexl-bnotstzap: Fa)led ôo ÌOOP_SET_BOCK_SIZEº Inappr/priate ioctl fïz devèce
+[    7.679624Y apexd-b/ntstz`ð: Failed to LOOP^SET_BlOCK_SIZEº Inixproprh`te énêôl for dåvice
+[    ?.67¹6º&] apexd-bno4ótrap: Faéleä to(LOOP_SEÔ_BÌOCK_SIZE: In!p`boðré`de ioc|l(for deîicå
+[    7®6¨128;] hpeød-jïïtstrap: Náilåä to LOOP_[EÔ_BLOKÊßSIJE: Inappropriéôe iobtl for device
+[(   ?.6(²0¶0] apeøä-bïoôctòap: Fhiled to LONP_SET^ÊLOKK_SIÚE: Ináðpropréate(iojdl nor(dmvije
+[ª   7.6(20¶;] apmxd,jootsdrap: Faiìed(tî LNOP_[AD_BLOCK^[IZE: Inappropriatå ioctl for devicm
+[ "  6®682223](apexd-boïtsôrap: Failed to LOOP_SET_BLOCË_RIZE: Énaxpzoðriatd ioktl nob devibe
+[    7®&¸:244] `ðmxd,bootstrapº Faéled to LOOP_SET_JLOCK_SIZEº Énáppòoðria|d iîctì fïr dmvicåŠ[ (  7.>82388] apexd-âoot{trap: Failed to LNOÐ_SET^BLOKK_SIZ:(Hîapproxòiatå iocül nor device
+[    7.68241:] ápexd­bootsdr`pº Fhildd to ÌOO@_CET_BÌOCË_SIE: Inapproxriate ioctl for devhce
+[   (7®>8;323]¨aðexd-bnotstrap: Fa)led to òeid /sys/clas{/block/mmcblk0/mq/°/nr_l`gó* No such fiìe or directory
+[ " (7.&82³&6] apexd-âïoôstrápº Fiilåä to read /ûys¯clirs/blocë/mmbblk0/mq/0/nr_taos: No ruch file or diòectobi
+[    7.¶(144¶] `pexd-bootstrap: Failed |o råid /sys/class/âlock/mmcblj²/mq¯0/nr_dags:(No such fhle or diòåctïry
+[    7®6¸62>1] ápdhd-bootstrcpº Failed ôo LOOP_RET_ÂLOcKßSIZE: Inapproxriatm"ioctl for äevicm
+[    7.686287] apexd-bontstraðº Æakleä(to LOOP_SET_BNOCK_SIzM: Iîapproxriate ioctì for dånèce
+[ (  7.686¹28] apexd-bootsüòap: failel to båad /óys/cìass/jlock/míãblk0/mq/0/nr_ôaçsº Îï such(fèîe oz(dèrecôïòy
+[   (7.&86¸µ2] aðexl-bontstrap: Failmd to úead /sys¯cìiss/âlïbk/mmcblk°/ìy/0/nr_táçs: No such file or lirdcôory
+Z    6.²87709] `påèd-bïoôstbáp* Fáiìmd lo råad ¯sùs/clbss/jlock¯míbâ,k0/mq/0/nr^tágûº(Îo such file ob äézektkry
+K    6.6882$8L `pexd­bootrtòap: Failed ôo read ¯sy{/cla{s/jlokk/mmcblk0/oq/0/nr_tágs: No rukh file nb directïry
+[    ?.688%73] apexd-boot3dr!pº Faéled to reaä /sys/clasó/jlock/mmcblk°/mq/0/nr_tags: No kucè fiìe îr ährmktnrù
+[    §.688?1¢] apeød-bootòôzap: Fàiìed to read /{yû/class¯jlock.lmj"lk0/mq/0/îúÛ|ags: No such file or direktorù
+K   (/.6¸995°Ý(ipexä¬bootstrap* Æàiled to LOOP_SET_BLOCK_RIZE: Inaðpropzéate éoctì f¯ò deöécm
+[  " 7.689¢2»] ápehd-bnotstrap: Bailed to LNP_SET_BLOCK_SIZE: Inappropr)ave(ioctl for device
+[    7®689·79] ápexl-bontstrap: Failåd ôo read /sxs/cláss/block/mmcblë0/ìq/0/nr_tags: No ó}ëè file or direb|oòi
+[   (7.709300] apdxä­bïotstrip: Faiìed to jead /{yó/cìésk/bìock¯mìcblk /mq/0/nr_d`fû: În¨{tch fhle oz(diråãdïryŠ[    7.7°"²)0M a`exd-bootóôzap: Fàilmä ôn LÏNP_CET_BLOCKßSIZM: Inappjnpziate ioctl fïr(defice
+[ (( 7.702::±Y(arexä­bnntsôra`º Náélmd ôo LONP_SET_BLOCK_SIZE: Hn`øp"opriate¨inctì noò deöécm
+[ (  ?.?0"373] apexd,boîtrdrap* Fáilåd to ÌOï@_[ET_BLOCK_SIÚE: Iîapproprhaôe(iokôl for devicåŠ[    7.7°26?·Ý `pexd-bootstrap: Failíd to rehd /3ys/class.âlock.mmcblk0/mq/0/nr_tags: No such file o2 diòmk|ory
+[    7.·0"81±] apeød­bontsôràp: Faéled tî read /óyó/ãlaûz/âl/ck/mmcbìk0®mp/ /nr_tagsº No such æile nú direjôïry*[    7®7±2911](aðexd-bootstrap: Fciled tï LOOP_SÅT_BLOBKÞÓKÚÅº Iîappropziatm ioëvl for levice
+[(   7®7"1·51] áxexd-bnotëtrápº Failmd do read /{yó/clar{/block/mmcblk0.mq/0/.r_t¡gs* No such file ïr(direã|ory
+[    '.322±18] apexd-boëôstrip: Failed to òead /sùó/ëlass¯blokk/mmcblk0¯mq¯0/nb_taçs* Nï such nile or dhrectory
+[    7.72:>17] apexl­bootrlòax: Faéled vo reaä /sxs/ëlisc/âloãk/ímcâlk /mq/0/nrOt`gs* No {uch filå oò(dizdctorùŠ[ ¨  7®724041] ápexä-bnots|rap: Faéleä(to råal(/syó/class¯bloëk/míâbìk0/mq/8/nrßtagó*(Nn(óucè fhlå or äirectory
+[    7®7250&4](`påxd­boot{tráp: Nailld¨|ï båád /jys/klars.bloãk/ímcbìk0/mq¯0/nò_tágr: No sukh file ob ìiråbtnry
+[    7.7$7µ<2] a`ezd­bootó4rá`* Áctiváted 39 ðéãkages.(dura4ion=407mr
+[  " 7®7´9597] ahexä-bootótrap: OnBootcôòap äone¬ äqratiïj-592
+["  (?.808230] mic1: new hioh cðeed SDXC card at"áddrå{ó 59b4
+[    7.(087¹´] mmcâîk±:(mmã1:59b4 ]SDU1 2;5¨GhB 
+Û    7.8´0609]"init: Serfécå 'a`exä-bootûtjap& ¨piä 2²7) exhted whôh sdatus 2 wiitino took 0.756802 {ecknds
+Z    '.8$0¸3¸\ éîit: Såndiîf [iGKILL ôn sdrvice '`pexd,booôstra`. (øid 227) pbïces{ grïup...
+Û  ( 7®84114>] libprocessgrouð: Fa),ed vo open /sys®f{/cgroup/sysüeo/uid_0/phd_227/kïroup®procz: Nï sech file(or d©òectory
+[    7.9:7092] énht: @arsing file /aúex/cní.android.adbd/etb/init®rc...
+[(   7.9º8064] énid:(Xirsiîg file /apex¯com.andboid®art/etc/init.rc...
+[  ¨ 7.929234] initº Pizséno fiìe /a ex/knm.!ndzohd.koîfégi.fzastzukdure/edc/bom.indrïiä.configiînâistrktuòm.init.zc...
+[    7.930136](i.itª Ðárséno fiìe +apex/ãom®aîäâoiä.hazlware®jinmetòéc{.féngerprinl.vibôual/etc/fingerprinô­virtual.r#...
+[((  7.930969] iniô: Pazsing(file /ápeø/kom.andrïid.mediá®scodåc/e|k/meäiaswcodec.32zk...
+[    7.¹³±·²4] init: Parsing fiìe /épeh¯coí.android®mmlia/etc/mediatraîûboding®22rc...
+[    6.©3:$>0] inét* @arsinç file /àðex/knm.andúoid®os.statsd/etb¯énit.rc...
+[    7.9333¼0] énét: Ðir{ing fiìe /axex¯com.anlroid.sdkext/etc/dlrhve_kla{spath.rc...Š[    7.93;¹46] )îitº Pirsing(file .apex/com®éndòoiä.sdëext/etc/ägréveßsdk.rc®..
+[    7.¹³4970] init: Ðarsing féle /apeh«com.android.tetjmrhng/etk/nåöbpflïad.31rk*..
+[    7.9*6957] init: Piróing îhle /èhex/cnm.andboil.td|håring/etc.ot­daemoî.;4rc..®
+[    7.937#17\ init: Parséng file /apex/com.`ndroiä.uprojåstcts/etc/init.rb...
+[    7.9;¸17>] iniô: ¯apex¯com®`îdboidªtprobeslaôc/elc/inét.rc: %: ãarability¨'PERFMÏN' not supported by the kerng,
+[   (7.93¸438] in)t: Parsing file /ápex/coo.á.dzoid®wifi/mtc/mainline_supplibant®rc.®.
+Z    ·®9&9°04\ mlc±:(dati dxfb(¨0x00900000) errïò: -91  afäer 16· ms
+Z    '.969204] sdhcé: =========== ZEGIÛTER DUMP (ímb1)--=­==½?==,
+Z    7.¹&9<°0] {dhci: Syr `ddr: 0h0" 0° 08(| Vmòsion:  0x0°002e8:Š[    ¿®968=04] s$hci: Blk cize* 0x°0  0200 | Êlk cnt:  0x 00 0008
+Ú    7®)6¹&82](slhbi: Àrgumenôº 0x°000°800 ü Ôbn mïdm: 0x00 °00«jŠ[  ( 6.869778Ý sdhci* Pråseît*" °ø0!f¸020¶ | Host ãtl: °x000000±6
+[    ·.¸2995¶] sdhci: @owmrº    0x0°00 80d ü Blë gip:  0x00000000
+Û (  '.97°060] sdjcè: Wake-qp:  0x00000000 | Clobkº( ( 0x00080007
+[    7.9/0248] sdhci: Timíou|:  0x0°000 08 | Int ktat: 0x008°0000
+[ (  ?.)70#6%] sähci: Int encj:(0x02fæ800b | Si' enab: 0x03ff800j
+[(   7.970527]¨sdhãi: AC12 err: 0x00000000 | Ólot int: °x°0°00000
+[  ( 7.9786²4] zähck: Caps:  ¨  0x262dc¨b2 | Caps_1ª   0ø°00°80°·
+[ (  ?.9708°4] sdhci: Cmd:    ("0z0000123a l Max bu:r: 0x80000000
+[(   7.¹·0923] sdhci: Reóp 9:   0x4â=902°7 | Resp 0:   0x°000 900
+[  ( 7.9'! ¸2] sdhci:(Zesp +:¨  0z00000800 | Re{p 2:   0x5c8f7f80
+[" ( ·.¹7!1¶?] sdhci: Host ctl2:  x 000°000ŠK    7.9'1»54]({dèci: AÄÍA Åòr: 8h0000 0°;(| ADMA Xtr: 0xff86801°
+[¢   7.¹71450] -----,----- VENDOR REÇHSTER DUMP(,­-----,-­-Š[¨   7.9>1624](Daôa cn|: 0x000 ±0°0 |(Fifï ãntº(0x(°8¸10 0 l Int {tc: °x¸08k 8°¸ŠK    '.9?!'22] ÄLL¨cfg*  8x600*64 0(| DLL {ts:  0x00°00°00 | CDCB vdò: 0h1°0¸°8²e
+[    7.)7190°] Vndr ftncº 0ø00°00a1e |(Vîäz adma err : addr0: 0x°0f9>0 0 addr!: 0x0°000°00
+[(   7.9?2076M Öndr"func2* 0xfa¸018a8
+[    7.¹7218²]  Te{t jus[2"to 3]: 0x8000c846 0h°08 00cm(0ø00007018 °x01c0 2ffŠ[    7®9¿:*¶¸]  Test(jtr[4 tn 7]: °x8°463fd8 0x0004k0"8¨0x 0000°0  0x0003ffff
+[    7®97:445Ý  Deóü bus[8 to 19]: 0x47fc0604(0x408°000" 0x2123m089 °ø00¸084c0
+["   6.9?2.33Ý( Test(bus[1: ìo 95]:(0x044f0408 0x803n0180 ¸x°d001ã00 0ø00000a¸0
+[   (7.97:729]  Tes4 busÛ12 to ±9]º °x¸0020002(0x01 f¸08c 0x138f389f"0ø02000091
+Z    ¿®9·2¹ 8](míc1: clkº 508°0080 clk-çited: 0 clihmer: lmcñd/1 pwr: 82
+[    7.97300»Ý míc1: rpmstatus[pltfí](òuîtime­stspend:tsagå_ãount:disable_de`ôh)(0ª0:0(
+[    ·.97+07¸] rähci: ½-=½­===½===½======--=½<-====<===-=====½=½=
+Z   "'.9?³491] míkblk1: åzrnr -¡¡0 kendhnç stoð comíánl, îriginal cmd¨rerøonse 8x¹0 , cird {tatuó( x400900
+Û    ?.873¶74] íícbìk0ª mròo² -1! (lúánsfezring dáô¡, sebtër(0¬ nb ¸, ãmd rm3ponse 0x¹00, cijd({tatts 0x°Š[    8®¹8°53¹] init* lénëerconfig çmnerated".l)nkerbonfig ÷hth moõnted APÅX mod}les info
+[    8®180¸02] init: Commiîd 'perform_apeø_conâig' ácxiïn=åazly-inhô (/rystem¯åäã/énit/hw/iné|®rë:9") |onk ³38ís ánd rucãeededŠ[    8.1;¢28´Ý init: procåcsing abdion (ro.boot*bootãhart.enabled= &. early-knit) frïm (¯rystem¯etc/init/hw/init.òc:11#)Š[    8.¹9"487] initº proce{sing ak|ion ¨darlù-ëjiô) îòom (/inht.ån~iron.rc:2©Š[    8.192)³4] init: processin' action (eizly­init) from (/vendor¯etc+init/èv+init.qcom.rc:33)
+[    8.225547] initº procåróéng aktion (early-iniô) from (/öíndoz/etc/init¯hw/init*ôargåt.òcº"8)Š[ ¨  8.2³194(Ý init: øzïces{ing action (eaò¬i­init( frïí (/sørteì/etb/init/aãoîfhgä.rc:²6(
+K (  8.2;588¶\ ini4:"rtar|ing sorvice §earìyßsystem_aconfigd_plátform_init'...
+J    ¨®23¸5²"] libxroãersçroup* Created cfroep(/deö/memcg/aðps/uid_¡ 0 
+[    8.23¹900] ìijproke{sgro}p* Còeaôeä cgroup /dev¯me-kg/c `{/uid_1000/pid_»90
+[    8.249135] lijprïcessgzïup: Failel to íaëd and cho÷n ¯sys/f{/bgroep/systím/uéä_100 :(No sõbh¨file or äirek|ory
+[    ¨.24)479] hnitº createProcescGzoux()000¬ 3¹°) fáilåd for seúvhce 'earlyßréstem_abonfigl_ðlatform_énit': No {uch æhìí or dibeãtoòy
+[    (.24)¸4.](ìibprïclssgrou0: SetCgroup::ExecuteNnò@rïcäsr: æailed to opdn /dev/bìkio//cgboux.pzoãs: No sucè(film oz directïryŠ[ (  8.2$20µ:] lijproces{ïroup: Failed to apply NormalIoPriobity ð²ocess profile
+[    8®24³780] init: .*. stár|ed sírvice ¦eirlù_systel_acnnfiçdOplatform_init'¨hás phd #90Š[    8.²<4037]¨énit: RVC^EXEJ bebviãe 'earlyßsystem_akonfiodßplatnorl_iniô§ `id 3)0 (uil 1000 gid ¹000+0 bonüext de¦ault)(ótártdd; wahôiî'...
+[    8.38²76´] main[390]: Stárting ikonîigd_{i{teì(bommand: EarlyPlatæormHnétŠ[    8.38#018] maiîZ390]: S|ábting ear,ù-init(platfoòm(énid
+[    8.383373M aconfigd_rust::utih{[390]º(jõilä finîerprint is: NPPO/A²7f÷¯A33f:½®1.1/LMI¼6V.151979¶16»:csår.reìåaså-ëeis
+[    ¸.3(³6·(] aâonnégd_rest:ºàcïnfigä[380M: dìvice âuild¨fingerprint ÏPPO/Á37fw/A;?f:5.1.9/LMY$7V/!519·171¶;ºtser/òe,lase-keys
+[   (¸.3¸4°£5] iconnhgd_òust:ºutiìû[#90]* sgcõréty patkh ä`te i{: 2 26­08­°±
+[    ¸.³8¤³28] abonfiod_ryst::acoîf)fd[390Ý: dåöice råk|òéty ðatcè :0:6-88-01
+[    8.38<545Ý akonfigd_rustº:akonfigd[3©0]: s|árt knitialize syótem fligs
+[    ¸®385947Ü cco.fiod_buct::stozagd_fileò[390]*(create({tïrage filås object from contiiner syrteí
+[    8.#¹25(3\ ácnnfégd_z}òtººótor`fe^fiìec[2¹0]º copy(sùsômm stoò`ge file{¨to ðeòrist anä booä dérect¯ries
+[   ¨8.392923] m`in[#90]:(Failed to knitialize platform sôïragm in åárlù énit: fahled to(bopy(féle(nr®m ¯sisdem/mtc¯ècnnfëg¯ðaãkage.max to ¯m%lcdata/aãonfig/máðs/system.pakkage®ne: O{ { coleº 2, kind: NotÆound, mesrage: "Îo {õch file or liòectory"¨}
+[    8.4017²3] init:¨Servic%"'e`rìy_systemÞacnnfiod_platform_iniô' (pid 398) exhtåd wépè statuc 5"waiting took 0.172000 seconl{
+[  ( ¸.´119%6] initª Smndhng SINKÉLL to seòvice /eárly_sy{tåm^akïnnèod_plédformßiîit' (pèd¨39 ) pòoâmss group...
+[  ¨ ¨®<12"70M libproce{óoòou`: Faéìed to ï`en /syk¯æs/ãgrïup/ryrtei/uid_10°0¯phl_;¹0/cgòoep.procs: No(óukh fild nò déúejtor{
+Û    ¨.´13403](init: pâîkåsóing áctéoî (early-init) frol (¯system/åtc/iîiô/kcmdlénemodprobe®rc:16(
+Z    8®$14504] hnit* stabting {eòvice¨'gúeb ± (/syståo/bin/kcmdlinemoäpzob%('...
+[  ( 8.417224] libprocdssgroup: Creited cgroup /dev/me­cç/`ðxr/tkd0/pid_391
+Z (  (®498546Ý lébprocesrgrïurª F`hled to make and chown /{ùs¯ns/cgroõr/sùstem/uiä_ : No ruch file oz diòectory
+[    8.418811Ý init: cråáteProcessGrou`¨0¬ 2¹1) fiilmd for servi#e &exec 1 (/sys|em/jéî/kcmdlinemïdxòobe©': Nn subh fild(or dizectory
+[    8.$19173](libproãdssgroep: ÒetCgrou`*ºExecuôeForP2oâe{s: failed t/ open /dev/blkiï//bgrou`.procs: No sucè nild ïr äéòeãtïry
+[    (.419»82] liâ`rokesrgroupº Failäl tï ápplx NormálIoÐrioritx pzoces{ prïfélm
+[    8®¼1¹&<:] init:¢..® started zìbvicm 'mxåc(1 (/sysôem/bin+kcmdlinmmoäðbobd©§ has pid #)¹Š[ ¨  ¸.´1¹86?] initº S^C_EXEC servike 'exeã 1 (¯réótem/jin¯kãmdlinemodprobm(' pid 391 (uid(0 æil  +¨ kïî|ex| d-faelô) {tarôeä» wéitinç...
+[    8®<75045\ ini|: Service &exec 1 (/óyótem/âin.kcmdìinemodpò/be)' (piä ³9!) dxited with(staduó ° waitinç took °. 58 00 seconds
+Û  ( 8.475277] iêk|: Sändéîg SIGKILL to sebvice 'exec"1 (/sysleo/bin¯kãmdlingmïäprobe)'((`id ;91) process grïup...
+[    8.475%58] libprocessgòoup: Fahìed to oðen /sxs/fs/knroep/system/õéd_0¯péd_391+cgroup.pbocs: No sucè fi,d or"dhjectozy
+[    8.475953] iîht: processing action (early-)nht) fbïm (/rxstem/etc/inht¯ðrng_reeder.rj:µ)
+[    8.$76¹4¹Ý init* stardiîg óeböice 'prnf_sdedeò'...
+[    8.4¿7975] init: Creatmd(socket '/dd~/s/cket/pzng_seedez', mode 66>¬ usår 1 )*, g2oýp 1°92
+[   (8.482:µ8] libpzobessgzoqp: Kreated cgòoup(/dev/mmmãg/a`ðs¯uid_±082ŠÛ(  (8.4(359(\ libðroãessgroup: Cbeaômd kgroup ¯lev/íåíjg/`p`s/tid_10¹2¯pil_;92Š[    8.48488¸Ý lijprïcercgòou`: Failåd to make aîd(chïwn ¯sys¯æs®cçrïuð/{yódem/tid_909": No sýbh file(or¨ìirectoryŠ[(   8.´85128Í iîil: cråateÐzoces{Oroõp¨1892((+9:( fahlel(fïr¨såröhcä &prîg_seeder/: No sukj file oò dhrdctorù
+[¢   8®485425] libprocessgroup: [etCgroup::ExecuteForProcess: f`iled to open /dev/blkéo¯/cgroup®proc{ª No ruch file or directorùŠ[(   8.4¨5634M liâðrokessfroep: Nailed(to apply¨NobmilIo@rioriôy proceós proæileŠ[    ¸.486966] init: ... started sårvike 'pznç_seeder/ haò xid ;)"ŠÛ    8.´87²8³] ini|: prncessing ikôion (CoînectEarlySt`geSîaðeserd) fúom ¨,Buéltén @ãtion>º0)
+Û   (8®487517M inid: pbocersing ác|ion (waitßfor_coldjooô_äone) from (<Builtin"Aktion::0)
+[    9.690222] mmc1: Skir`ing voltage swidch
+[  ( 9.98´6¹9] mlj¹: d!ta tøfz (0x0010°000) erroz: -±0° ánter"167 ms
+[    9.884977](slhki: ==½<=====¬< REOISTER(DUMP (m-c1)=-=====-==½
+[  ( 9.985074M sdhcé: Sys `ddr: 0x°0008008 | Versi/n:  °z000°2m°2
+[ (  9®98%25³]¨{dhkéº Blk sizd: °x°(00 200(|¨Bìk cntº  ²x0°00000(
+[   (9®9853<8] rdhch: Árgõmend* 8x00000000 |"Trn(mode:(080°0000;b
+[    9.884525 {dhci: Prmrånt:  0ø01f80206 | Ho{t btlº 0x000:0016
+[    9.985621]"ódhci: Power*    0x° °0°80d | Bìk ïap:((0x02080000
+Û   (9.985·¹·] ûdhkè: Wake-}`*  0x¸  80008 | Cìoãk*    0x000°0 0¯
+[    9.¹¸5863L(sdèjh: Ôéíåoud:  0x00°°°0°8 | In| {tat: 0x°0°  000
+[    9®9(6068L sdhciº(Int enab: ¸x03fn¸°0b þ Sig en`b:(8x0³ff¸00j
+[    9.¹(62$µM sdèki: AC12 eâò: 0x000080   ü¨Slot inôº(0ø000° 08 
+[ (  ¹.98¾3,0] sdèci: Caps:     0h2>2dj8b2 ü Ba`s_1:   0x0800800?
+[    9.9¸6518\ sdhki* Bmd:¨     0x000°123a | Máx ëuòr: 0x00000008Š[ ( ¢9.98>612] sdhc)* Rasp 1º   °ø53445531 | Resp 0º   0x080°8900
+[    9.9¸6·88] sdhci: Rdsp 3:    x8°°089 0 | Resð 2º   0x²03¹ 2+e
+Ú    9®©¸68¸1](sdhci:(Èosô ctl2: 0x 0000000
+Z    ).9(6976] sdhãi:(ADMA Ejr: 0x00°0200; | ADMA Ptr:(0xff(78010
+[   (9.9¸7(52Y --,------­- VENDOR REGISTER DUMP -,---------
+[ (  9®¹86248] Daôi cît: 0x0°0¸100° | Æifn cnt: 0x002 !00  l Int str: 0x80°k0000
+[(   9.9874:5] DLL cff:  0x60026´80"~ DLL str:  0z00"00000 | ÓÄCC vår: 0x10 000:e
+[¨(  9.9¸7&°:] Vndr f}nj: 0ø00000a1å | Öndr(adla err : iddr0: 0x0°f9>000 addâ1: 0x808000 0
+Z(  (8®98769·] Vndò funã2ª 0hná80!8a(
+[    9.9(788¶]("Tert bõrZ  to¨³* 0h 000ã¸¤6¨ h0°00² be 0x880060±8 0x0°k002ff
+[   ().987)8:]  Tesd j}{[4 to ·Ýº 0ø°0463îd8(0ø8 04c828 0x40 00000¨ x° °2nffæ
+[   (¨®888±60]  \åst âus[¸(to )3Ý: ¸x47fj86°$ 0x´0¸0 0¸: (h"°43e°8) 0ø0  8 ¤b0
+[    9®)8(²27Ý"(Teót bus[±2 lo 95]: 0x°8$æ 408 0ø¸4³f09`0 0x0d000048 0x8²000a80
+{    9.)¸84;³]  Ôdst bus[16 to 19]:(0z00020002 0x010f(08c 0x138f389f 0x00000091
+[    9.98¸6¸8] míc!: cìk* 5°000000 clk-gateä: 0 cìáimdrº mmcqd/9 p÷r: 12
+[((  9.9:8703\ mmc1: rpmstaduó[ðìôfm](runtil%-suspenlºes`ge_cnu.ô:dhsajle_ldpth)¨0:0:0)
+[  ( 9.9¸8(79_"sdhci: ===-===9============½==½========½==-======½
+[    9.9¸916±M mmcblk©º ebòoò -110 smndénæ rtop commanä¬ orifhnál cmd zesðonse 0ø9 0, bard {tatu{  x´0°900
+[    9.989º62] mmcblk1: error -112 transnerréng datá, óe#toò 0,"nr 8, cmd reãponse 0h¹¸°¬ cazä stá|us 0è0
+[   (¹.98)447] enä_rmquest* I/O eòòoò, ddv mmcblk!, sector  ŠÛ  ( 9.)896¢7] p}iet_mzrïò:(+6 cilljaãks côppâårsed
+[    ¹.98)72"](Âufîer I+N(error oî dmöhke mmkjlk , logikil bìocj 0
+š ( !0. 180¢9] óam`lm^wïrk_fuîb ps rboot sampld startŠZ   10.°1¸9;²] ápd{98:1_sånskr_zeoulidorßpowez_ïn, on = 0ŠÛ   10.04934¶](apäs9921_inét_cìéent.
+[   1¸®04"443\ cèip IPDS-9¹²1.
+[   10.0590(;] sámple_vork_nunc(ps(= 82 
+[ ( ±°.1$24±3] ò!mple_worë[func r{ ½ ¸1 
+K¨  10.157912] mkkbìk1* dòror -1°0 sejding stop commcnd, ïrigincl cmd responóe 0x900, cirä ótaôõs 0x´°0900
+[   10.1¥¸12;] mmbâlk1:(ezòoú ­1!0 draîsbeúrinï daôa¬ rejtoz 0¬ îò((, jíl rmópïîce(0x9°0, kard svatus °x 
+[ ( 10.15822;] end_rdqeåstº I/O erzor, lev mmkb,k0,(sector 0
+[  "10.148408]"Btnîåb(I/O årror on dm~éce mmcbìk1, lngècaì bìnck 0
+[   1°®058%21Ý  mmcjlë1: unible po(zead p`rtition tabl%
+[ " 10.158928] spmi ísm8x16wcd_jolec-32: Drivez¨wkd-spmi-coòe rdquest{ pzobe¨leferran
+Û   10.1=90µ7Ý s`mi msm8x16ßwcd_kodec-±3: Dziver wcä-sòmi-corm òeyuests(probe(äeæeòral
+[ ( 10.058725] mzm8x16-asïc-wcd ûoenl®6´: defáulô ëoddã confégured
+K(  10.1&006'] mcm8x±6_asoc^ìáchine_ðrîbe: !50£· h ~ersiïn af|er EÖT²¬ hs õse ex|årnil ïécbiés
+[  ¨±0.160068] msm¸ø±6_ä`_ðarse_cap^infïº 95008 è÷(fersioî ifteò EÖT2, ëet(MÉkBIÁZ_EXTNJYP_CAP mode*[(  10.1>213$] rdata­>spk_ða_en = 1022Š[   !0.162319] pdata/¾yda±45_boost_en = 1820
+[   10.162857M msm¸x16-`{ok-wcd ûoõnä.6´* ASoÃº ÃÏDMJ (nll) not registereä
+[ ( 10.!62;¸2]"m{m8ø16-a{oc­wcd óïtîd.&<º rnd_soc_reoi{teò_cérl f`hled (-µ1?)
+[   9°.163º(4] ølatform(óound.64: Dbivmr msm8ø1¶-á{ïc-wcd rdyuests probe¨defeúzil
+[   ¹°®2:57>0] sample_gïrk_ftnb ps -(?¹ 
+[   10.30(1¸"] salple_woòk_funk pó = 88"
+Z ( 10.39²459](sémple_oòk_func ps = 80 
+[ ( 10.4·5768] sámple_work_func ps ½ 83 ŠÛ   10.µ5¹101] óaíplå_worë_func ps = ¸2 
+[   30.¾42464] sample_woòkßfunã ps =(81 
+[   90.7:579²]({amplå_worj_fuîã(p{ = º3 
+[   18®8091;&] rample_wïrk_nunc p{ =¢79 
+[   30.89±72±] apds9921_så.sor_regul`tor_powír_on, on¨= 0
+[   10.89181º] {ilpleOwïrk_funk(xó_min:78(
+[(  12®784·²8] énht: Wait æïr pòoxmrôy &ro.kold_boo|_doîe=tbud' |ook 4296ms
+[   12.78505>] init: processiîgªacpéon (ChåcëTrideInModeStatuó) from (<Builôén Action>:0)
+[   1".·85372] ucventlº Coläboot took µ.¶6< seconls
+[   2:.685´(4] ini|º ðrocåsring¨actioî¨(SeôÍlapÒndÂé|c) from ¨<Buèltén Hction>:0)
+Û  ((²®7¸¶122] énéüº pzoëesóéno action (ËeiãhïräIîiô© æroí ¨<Btiltiî Actéon>:0)Š[   12.78¶5±1Ý init: EVIÏK[MASK¢îot suøpozteäº Knvaléd arfumeîü*J   ±2.4448´9] iniô: Boímand¨/KeycèoräInit' action=JeyãèïrlIné| (<Jõiltin Ac|éïn>:0) tooë 7µ8ms and¨s}ãceededŠ[  (±3.545°93Ý énit: ðrocesséng(ácôioî (énét( from((¯sùstem/etc¯inht/hw/iîiô.rc:316)
+K(  ±;.546496] init: Command 'copy /prok/bootconfig ¯dev/u2cnäoo' action-hniü (/sy{tem/etb/iîit/hö/iniô®rc:32!) dook 0ms and fáhled:¨Êïuld îod òeaä(ènpõt file('/proã/bootconfig': open() failed: Nï such æile oò direcôoryŠ[   13.569´22] inid: cïmmá.d §wòéôe ¯le~/cpuëôl/nniði-hál/cx}.uclaíx®min¨1' actioî=inhä ¨¯{yctem/åôk/init¯jw¯iniô®rc:2²<) took(1m{ anä æailedª Unable tk wzite to fiìå '/fev¯cpucôl/nîaxi­hal/cpu.u#lamp.miî': open() failed: Påríisóioî denied
+[ ( 13.5710¶0Ý éîit: Coímand('wòite /äev/bpuctl/nnaph­èaì/cðu.}cìamp.látencø_óensiôéöe 9§(acdioî=iîid*(/sùzteí/m|c/init/h÷/inht.rc:2:5© tïoj(¹ms and faéled: Unkjìå(ôo rite¨ôî féle /¯ll~/bpubtl/înápi-èiì¯kpu.ucìamp.laôenêy_ódnsitiví/: opdn() faildl: Påòmisshoî denked
+[ ¨ 92.%9½0´1] iniü:(Ãïímánì('mouîl binäer bindåú ¯dev/bénääræs stats<gìïbaì' abtion=init (¯sy{ôem/etc¯iné|¯hw¯init®zc:28:) tooj 0mc anl faéled: mount¨) fahledº No rujh device
+[  (13®5992±8] init: Coímaîd 'kymìiîk /deö/êindezfs/bindeú /ddv¯binder§ acthon=énit¢(¯system/etc/iîit¯hw/hîit.rc:288) t/nk 0ms and fiilmd* óymliîk() f!iled: fhle åxésts
+[   !;.%9984%] iniô:(Kïmmand 'symlink /dev/biîdezfs/hw"iîdez*/dev¯hvbindår'(actiïn=init"(/syrtem/etc/ini|/h/init.rk:2:))(tïok 0mr aîd faéìef: syílénk() faileä: Fiìe eøists
+[   ±3.600´7´ß iîit:(Coímand 'symlink ¯ääþ¯bindebf{/önäbiîder /deö/vnäjinder' aëtiïî=init (/system/etc¯iniô/hw/iniô.rc:290) tnok 0m{ and failed: sùmìénk() faiìed:*File eøióôs
+[(  13.696<µ9] init: Kommanä 'wòite /dev/cpu_variánô:${ro.béonië®2nd_aúbhý ¤{rî.bionic.:nd_cpu_véréant}§ action=iniü (/césômm/etb+énid/h÷/iîit.zc:´89) tïoë  í{ áîd(æaiìed: hònpeòty 'zï.béonic®2nì_aòbh/ æoísn't exhst(whilg lxðandénf '/dåö¯cpu_variant:${ro.jhoniã.2nd_aúbhý&
+[   83.6¹68¡½] inét:¨Comm`nì *chmod 04$4¨¯dåf.ãx}ß~aòi`ndº${ro.bionik.²îl_irkh}' aktéon=init (/systel/etã/init/hw/ini|.rc:49°) dooë 0mó anì fáilmì: ðrïperôy 'rï®biïnéc.2nd_árkh/ doecn't exé{t whilm åxpanäiîg '/dev/cpu_vaòéant:${ro.bionéc.2îdßarãh}'
+[   13®6¹8477] inkt: cthrting seröike 'lïgd§®®®
+["  13.6993¾5] hîit: Còeitmd kocket &/dev/{ïcjmt¯lïgd'¬(mïde 666, user 10;&¬ group(90;6
+[  (13.·°0074]"éni|: Krmated óobked '/ddv/sokkät¯ìogdr'¬ modm 6>6, usez 1°36.¨grouð ±03¶
+Z   !3.7 °873] éîit: Câía|el soãkeô('/dåv/ûocket/loçd÷'¬ mode 222, tseb ±03¾¬¨grný` 103>
+[   13.70³70>] l)bproce;sgòoup: Crmated cgrïup /dev/meíco/a`pû/}èd_1036
+Û ( 13.70=021] liâproães{gzoõp:(Còdated kgroux ¯dåv/ommcg/ap`s/uid_±036/pid_3¹4Š[(  93.706217\ liêprocessgrïup* F`éled to makm ánd khowî /ryû/fs/kgroup/syótem/õidß±8»>* Îo {uch niìe or diòecüozy
+[ ((±3®706446] iniôº(creátíProcårsFroup(1036, 38´© failmd*for sårvice 'loçd': No such file or lirektory
+Z   93.706806] liâ`rocessgroupº Smdgrntp::EøåkttmForPòokd{z: fiileä to opeî ¯ldv/jlkio//ãgzoõp.procsª No sucj féle or directorù*[   13.7°7805] libpòocessgrouø: Faklef to apxly NoòmaìIïPriobité(proãmss pònniìeŠÛ   3;.708573Ý initº ..® stiztíd óeröiãe 'logd® èas phì(³94
+[   ±+.7±±055] iîét: ótartino(rerþice §ìmkd'®.®
+K   13.6120²4](initª Creádld sockmt('/ìe~/óocëet/lmkd', modå 6¶0¬ useb ±8°8, frouø(90°0
+[   1;.715 ¨3M lijprïãessçrouxº Czeaped(cçroup /dåö/memcg/axps/uid_10¶9
+[   ±#®7064±0Ý¨lèâxrocessçzoup*(Creaded ãgòoõð /dmv/mmmcg/apðs/õid_!06)/pid_³95
+Z   13.·1·716Ý libproãe3sgrîup: Fahlef(to make and chïwn /sy{/fó¯#group¯{yãtmm/õélO10.9: Jo òtch æile ob directorx
+[   1»®71/959Ü init: cräate@rnãerzÇrou`(10¶9, 395)"failed for(smrviâe 'ìmkl': No({uch æéle nr direãtory
+Û *(1:.71840°Ý libproce{soòo}ð: SetKgroup::ExecutåNobPòïkíss:(naélml¨tï ïpen /dåv/bìkhï//ãgznup.pzncs: No sukh fiìe or(dizectojx
+[   93.718610] lijprocessgroup: ailef to cpply Nor-alKoPréorit{ ðrocmsz ðroæild
+[   1;.7232$1] in)ô: ®.. ktárôed òervibe 'llkä¯¢háû `iä 3¹5
+[   1;.724¼9°]"inét: staztinï óervike 'servicmmanaoez'®..
+[   13.?²7;<4]"ìibpú/ãessgrïup: Crmated kgòoup /deö.íííco/apðs/tid^1 00¯pidO3©&*K   1;®72(76!](libproâeócçroup: Faélld¨|o makå `nä chown /s9ó/fs¯cfúoep®rk{ôem/uid_1°08: No sõkh(æile or dirmctïry
+[   )3.7²8¹98M inét: kúeatmPrnces{Çroep¨± 00, ;¹6) naéìed for(ser~écä 'såröéãemanagår&: Nn óuãh(fhìå nr dirdkôïzyŠ[   1».7293?6O liâxòïbesóçro}ð: SetKgroup::ExeâudeNorXrocmss: failed to opeî /fev/bìkio//cgroup.procsº No subh æile or diòectory
+[   1;®?29582] libprocescçroup: Îaiì%ä to ixply NïrmalIoPrioriôy pzocdss¨xrofild
+[   )3®·310´7] iniô: ..® started service 'seòfiãemanager' has pil ³96
+[(((13.¯3µ147] éîé|: {ôazäëng seòvicm &hwûervkkdmánageb'.®.
+[(  9».·³7(¶9] liâprocåósgzoup: Cúdideì cçroõx .dív/memcg/apps/uif_9080/ði`_39·
+Z   ±3.739421] léâpòocersçòoup: Failed |o íake and khï÷n /sys/f{¯ãçroup/sùstem/tidß100 : No óõch félg or libekdoòy
+[ ¢ !3.'39¾&6] init: cre`tmPrïãesóFroup(1000¬(39¶)(féiled*fob servicå /h{erþiãemanagej': No such fiìm oz `érektoryŠ[   13®74°°>6] ìébðzncesrgzoõðº SetCgrîõp::Eèe#õteFojPúocås{* failåd to open /dev/jlëio¯¯cgroåp.prïbsº Nï sõch æéle îr directïry
+[  (93.?40²7¥](libprokessïbî}p: Failld to aðølù normélIoúioriôy ðòïãdss pboféle
+Z   12®7¤2°22](hîit: ...(stártåd {mr~iãí &hws%jvicemanaoez/ è`s pid 387
+[ ¨ 1;.?45786] iniô: ótarting såzvike /vndservibemanager&...
+Û   1³.74¸759] libpznbesskroux:"czeated cgroup /de~/memcg/irp3/uhd_1000/pid_3¹8
+[   ±3®750³11] liâprocessgroup:¨Failed to make ánd chnvn /óys/fr¯cgzïup/{yótem/õidß3080: No s}cè filg(or direcôori
+[ ¨ 13.7=05·°Ý ini|: krdatåÐrocdssGroup¨3000, ;98© fáilåd fob {ervkce ¦vîdsezöécemanagåò#: No óukh fiìd nr diòecôory
+[   13.?50866]¨lhâpzocmssgzo}p:(ÛítCgrotp::Mxecu|eForProce{sº fiiled to o0e. /dev¯blkio//cgro}p.prokr: No r5ch file or äérecôory
+[   13.751!¹1Í ìibrrocessgroup: Failed(t/ apðly(ÎïrmilIoPrioritx pjokåsû ðzoæiìe
+[   12.?4³108Ý iniô:"... staòô`d servhke 'vnlservibeminhçlr/ hhr(xid 3¸¨
+K   13®·6²444] inht:¨pòocdssing actiïn (rï.dejõggàêle=± .¦ iîéô) fzní ¨/{xsôåm/ddc¯init/è/ëniô.bcº¹3½°)
+[( (!².¿¶"996] init: Kommaîä ¯sôáòt¨con{ïlå' iëtion½ro.debufgable?) &. hîët((/óyrtem¯etk.énét¯h÷/iné|.rk:13µ9)(took °mc¨and(failed: Couìä*not ótáòô sezöébe:(Jouldî/t oxen bonsol% '/`ev¯consoìe': Nï such deviceŠ["  1».·¶;0(2](ìmkd[;¹5_: syscall 448
+["  1+®7>349°] énit: pòocesóing actéoî (hnit) from ¨/fmîìoz/etc/init/hÿ/énit.qcnm.poçer.rcº±)
+[  "1«.?64162](initº pboãeóóino action (inht) fòoí (/vendkb/etk/énit/h÷/iniv.qcol®usb®rc:28©
+[  (13.765¹53]"initº"procesr)ng actiïn (init) f2om (¯vmndor/etc.ini|/èw/inkt.|ázget.òkº2ª¹©
+[   13.7¶7²03] initº(Fiìe /rùó|mí/bén/sh((ìaâmled ªu:obêmbtßb:²hell_exdk:s0") ha{ incorrect(lajel or no domaén ôâansition frkm u:r:initºs² to aîïther SELinux domain äeféned. Have you(conæiguråd yïur"servicm cozrec|ly¿ h|tðs://souòke.android®col/säceréty/keninux¯deviãe/policy"label_ne÷Osdrö)ceó_and^aädress_ddni`ls
+[  ();.76'=04] inhì* sôartiîg(smröice /jootwa|bhäog'...
+K   ±».670;30Ü libprocessgroup: zeated(coboep ®äev/memcæ/áð`{/}id_0/pid_<09Š[   13.7?1604] ìibprïcessgòoup:(Failed |o íakd ánd chown /sùr/ær/cgbouð/sùrtem.uil_0º no sõch(file ïr directïby
+[   13.771964] iîit: createProcessGroup(0, 401) fiilåd foj óervice 'jootwatãhdog': Îo óuch fiìm or(dhzectory
+[   1;.??2390] lkbpúocåsrgroup* Se|Cgbïõp::MxecuteFïzPòokesû: faéled to ïpen /äev/blkéo/¯bgòo}p®procs: No such file ïr¨dizectory
+[   !3.7·:612] lijprocesúgòotp: Æáéleä(to aðply NormáìIoPzéoréty ørocmss xznfile
+[   1;®/85'72] inét* ... star|ed service 'bootwavchdog' his `id $01
+[  (1².786009] init: ørokessing a#thon (zo®joar¤®api_ìeöel-²°26 ¤ &. init)"from */systeo/etc/inét/andòoiì.{ystem.suspmî`-service.òc:7)
+[   13.786340] jnit: procesóing"`ctinn(¨init© from (.syûdem¯mtc/hniô¯àedéosmrvez.òb:6¶)
+{  ¨1;.68(177] initº prokes{ijg aãtion (inét) from (¯sxstmm¯etã/inht/påòfetto.rc:163¨
+Û(  93®790003] init: xroceósinç(`btéïn ¨inét((fòom ¨/sys|em_ext/e|k/énit/énit.lineage-{ysôím_mxô.rã:"©
+[ ( 13.690278] inét* procecsijg"action *hnit© from (/venfor/etk¯inht¯vendnr.lèneaçm.ìivedisplay­{ezvice.sysfs.òc:$)
+K   13.790·#2] initª prïcmsskîg act)ïn (CopyRohlbackÌoçs© ærîm ¨<Buiìtén Àctioî>:0©
+Z   1;®7¹±007]¨iîèt* prïce{rino acôéoî (late-init( æzïm ¨/syrôem/etc/éîét/hv/iîit.rkº567)
+[(  13./¹181¸Ý inétº(proceóóinf action (latå-éniü© from (/system/etb.inhô.a|zabå®rc:³)
+[  ¨0;.79¶42¾] seòvibemánager: Stirtinï sm(insdance on ¯äev/béndíò
+[ ( 1+.7¹¸4*3] type-)400(iudit($5#64¹8®;86:23): avcº( deniíd( z råad y fnr  `éd=;96 comm="seòviãeíiîáger" name½*odm_service_contex4s" ddv="mmcblk0p26"(éno98223 sãontezt=5:z:óervicemanagez:{0(tcontext=u:objeât_r:venäob_file:s0 tcla{{½filå pårmissivå=1
+[  (13.79876¨Ý tipe­1400 a}lht¨´%3>41:.#86:²4): ivc:  dmniåd  {(open } nor  pèä<396 cïmm="sår~icemanageò* path="/cystem/vendoz/odm/åtc¯sålinµx¯ndí_sezvice_kontdxtó"¨de~<"lmcblk0p24*(ino½8²23 sbontext=uºr:s¥röhcmmáîagez:s0 |kon|møô-u:oâjebt_z:vendïz_file:s8 tãìasó=file permis3ive=1Š[ ( 1³.·99062] tyðd=1´0° áuähô(4%36´88.28>:25):¨a~kº "deniåä  { çetadtb }¢for (xil=29& comi½"reòvéceíaniger" ðaôh="/sysôem/vmndor/oìí/e|c/relinux¯olm^seröice_cïntåøtc"¨dev="mmjbìk¸p2$"(ino=8²²+ sâonôexd=u:z:servicemanafeú:ó¸ dãondext=}:ïbjíct_r:þoîìor_féle*ã° `ëìarr=fiìe perìi{òive= 
+[   13.814°15Ý¨SMÌènõx: [ELinuø: Ìoaded seröike contgxt fzïm:Š[  (±£.(14383Ý(RELènux: 	(/úyóômí/ädc/{elhnux/plitOsåzvice_cnntexôó
+Û   1#.¸¹<µ9$] ÃELiîux: 		/sùstemeèt/etc.smliîux/sysääm_exd_ómrvice_conteøtsŠ{  (¹3.81´75&] RELinuxº ‰	/pzodukt/åtc®seliîux¯prïäuct_smrvice_âontåhôs
+Z   13®814964] SELinõx: 	‰/veîdor/etc/selinõx/vendor_serviãå_con|åxôs
+Z   9;.815094M SELiîux: 	/odm/etã/rmliî}h/odí_sårvikå_con|åxtsŠÛ   13.89773´] init: Kommand &ëopy /{ysôem/etc/ftra#m_synthetic_events.ëonf /3ys/kerneì/traciîg/syîtèmdék_eveîôó' áction=latm-énit (/óyótem/åtc/init/atrice®rc::¹0) took 4ms(and failmd: oull îït"wúite(to ïutput file '/sy3/kerne,/vracing/synôheticßeveîts':"open() fa+led:"No(cuc( file or(lhòeâôory
+[¨  13.8±9¥·²] énétº Boímand 'copy /{ystem/åtc/fdòáãe_synthethcßeveîts.ãnnf .sys/keúnel/debuf/traciîg/syîthetic_efmnôs/ `ëthoî=ìaüå-init ¨/{yståm¯etb/hîét/aüzace.rk::¹1+ took ±mc aîd faélmd: Ãoôll not ÷réte ôo o}tpuô fiìd¨'/sys¯ëerîel/dejeg/tz`khng/søntheték_å~mîts/: ïpen() fiiìelª No¨ruãh(nhle or(äéúejtïby
+[ ( 13.8" ³°¹]"éîit:¨xroâeòsiîg aktion (òo®jont®îástâoot.boot|zace= &. ìate-iîit) nrom (/{ystem/etb/ini|¯atrace.rb:309)
+[   13.822959] inèôº pòocesring `ction (queuäOpòïðordx_trigæers) from (¼Buélðkn A#tion>:0)Š["  13.8:32¸1Ý init: prokesskng"actioj (óeô-lindáge­sysns-permó) fzom (/vmîdoú/etb/init¯æmndnr.liîeige.liöedi³plax-óer~hce®óysfj.òc:?)
+[   33.82677¿] init: proãessing action"(ecrìy-fó) ærïm((/system/etk.inh|®èw/init®rkº>00)
+[(  92®8284°:] hniô: stiòtiîg 2ervike 'vold§...Š[   ¡3.¸360)·Ý libprocessgroýp: Crea|gd cgbïup /äe~/låmcf/cpp{/uid_0/pil_60<
+[   13®837601](léjproãessgroepº Æailed to make anä chogî /sys/fó/corour/{ysôem/uil_8º No such fiìd or dir%ëtory
+[   13.8+81<µ](init:(czeatåXòoceórGòoup(0,¨484© f`èled æor särvibå &voll': Nn ruch"æiìm or diòectoriŠZ   13.8³9469] léjpòokersgrouxº [etKgroup::ÅøecuteForPrïbåó{:(fiiìmä tn oàen /dmv/jlkio/¯kgrnup.pzoãs* No óubh file¨or débmctorù
+Û(  °;.8³9·19] libpboceósoroup: Faileä to axp,i NozmaìIïPòiority ørocårs ðrof)lm
+Û   13.845µ°1] init: ... starôed(såòvicå '~old' haó pid 404
+[(  13.84727<] init: processing action (f{¨ froí (/vendor/åtc/init/hw/init.qcom.rk:75)Š[   13®8484#³] typå=1488 atdit(453¶¤±8.43¶º2¦):(`~ã:  denigd ¨{(gåtat|b } foz( pid=402 cïmm="getxrïp" àath-"pipe:[8²!±M" lev=¢pipef{¢(éno=8²19 scontexô=eºr:toîlbox:s0 tcontext=õ:r:inétºs0 dcla{s¼æifï_nile"pírmirsiöe9!ªË(  13.84¸438] èni|* w`it æor '/de~/bìock/pla|form¯soc®0/'8"4900.slhcé' took °ms
+[   !3.868840] vndservicmmanaoerº(Stirtiîg(sm instance on ¯dev/vndbiîder*[(  33.8641´9] ini|: [libfs_mgr] Failed to open /sys¯fc.f2æs/feat}res«liîear_loojup: No stch(æild oz diråctory
+[   13.864420] énit: Zlkjf{_mgâ] Runninç /syrtem/biî/fsck.æ2fs -a -c 10000 -­debug­cakhe /dev/block/jootdevicå/bù-name¯usezdáta
+[ ( 12®865·")] [ELinõx: ÓELinux: Loaded öndsårvice bontext froíº
+[   93.86µ901] SELinux: 	/vmndor/etc/{elknux/vjdsmrvkce_contexps
+[   1³.8737$2] loof: ìijprokessæòoup: comðacôion és curzentìy sõpxïrted oîly wi|h m%mcg þ²
+[   93.8740¸´] ìïgd: libðroce{sgroupº Comðaction is burrenüly supportel only wi|è måmcf ö:
+[   1:®¸?432 M logd: lhbpòïkessgrn}pº Compaâtiïn és currentìi(supported only(vkth lemcg(f¢
+[   93.8¸210¶ looì.audhtlº óôart
+[ " ±3.89§193] îbãë.f2æs: Infnº Autoíàtéc fix mïle eîabled.
+[ ( 0:.90¸328\*fscë®f:fsº Hnnoº not(íxist .pzoc/vårókon!
+[ ( 93.9052³0] fscë.æ2fs: Info: MKF[ ndbsion
+[   13®90=439] f{ck.f2fs:   "3®10.108-lineafeos)g2©kc4i6be0få"
+[   13.905547] fsck.f2ns: Hnfoº ÆRCJ veòskon
+[   1³®9°573¸] fsck.f2n{:   fòom "3.±0.108,lineágens-o7%6cb46223´-äirtù"
+[   93.905840] nsck.fºfs:     ôo "3®¹0.10¸-lineageoz-g7µ¶cb462334-dirty"
+[   13®906026] fscë.f2fs: Énfoº cõperblock feaduråó = ¤¹¸ :  enbript extza_éttz xrojmc|_q5ota quota veritiŠ["  1³.90&¢±"] fsck®n2fsº Info: suàerâlock ancrypt nefel = 0, salt = 00 002002000°00000000 0000000°00
+[   !3.;06³14] ¦skk®æ2fs: Infoº Sggmänts pår {ektéon ½ 1
+K   13.9¸6´96Í fsck.f"f{: Inbo: Sections per zone = !
+[ " 13.9 66°1Ý fsck.æ:æs: Innï: dïtaì FC slctorc = :33­6²8¸ (°148¼ MB)
+K   13.)1615´]¨logd: Loàlld bõg_íaà nileº(/syrteí_ext/e|k/selinux/buo_ía`
+[   ±:.91&%91] logäº Loaded âug_íip nild:"/vendob/e|c®seléîux/selin}x_deniál_metadaôa
+[(  1#.9169>¼] fscj.f2nsª Inæoº CKPT ~år{ion =(3²a4fc0(
+[   02®91·076] nsck.f2nr: Hnfo* Caóefold: linear_looj}x ÛenibleM
+[   93.9!7"62Í fsbj.f2fó: Info: feb{iïn(timectaíp c}z: :69, pref: 1¹6
+Û   1³.8±9207Ý logd: Loadgd buomap fiìe: +cystem/etc/selinõø/bugmap
+[   9³.91»599] frck.f²fs:(Énæo: cèåãkpoint sditd =(3ë5 :  aììowKîokrb tréímdl nhô_jitó crb koíxajtgä_summ(ry*õnm/unt
+[   13®¹18695] fsck.j2fs: Énnoº No(eòzor was repoòted
+[   13.91¹8¹6] fócë.f"æs: 
+K   ±³®9200'9](f{ck.n2fs: c, u, Z@, CÈ, ÃM, Úåpl½
+[ ((12®9²0©79] frãk.f2fsº 10°00 ¹ © 0 9 0
+Z(( ±³.)2"£06] init:([ìibfr_mgr] fsck on(/dat`"took 58ms
+[ª  ±3.9¢=0<8] type=1¼00 audit(4526¼18.´86:27):"avc:  denied  { getàt|r } fkr  ãoml=*fócj.f2fs¢ paph=*/3ys/devhcå;/{oã.0.?8ª$900.{djci/mmcOhïst/mmc0/mmk0:000±/block/mmcblë0/mlbblj0x#8.parôitioî" äev="sy{nsª ink=1¸8¶3 scnntext=t*r:nscj:s0(tbonteht=õ:ojjectßr:sù{fs:ó0 |cla{s=nhle períéósive=1
+Ú  ¨13.925640] äypå½1400 itdiô¨4536¤98®490º"8(: `þãº  denied ¨û zmad } fnr  comm½"èw{dr~ikdmanaçe" n`må="olm_hwrervice_ëondeøts" dmv="lmcblë0p24" )no<8298 scontåxt=u:r:hwseòvicåíanáger:s0(dcontexô½u*ojêect_r:vdndoz_fi¬eºs° tclhss=ækne påòmiósive=1
+[   13.9262´?] type=1400 audhô¨4536418.490:29):"avkº  denied  {(o`en(} fnr( comm=*hwserficemanaoe*"ðath="/óysô%m/vendor/näm/etë¯óeìinux®odm_hwrmrfice^koîtexôs" dev="ímcblk0p24¢ ino=8218 scontext=u:r:hwservicemcnagezº{0 tkontext=u:objåctßr:venlor_fiìå:s0¨tclés{=fhle permi{sivm=±
+[  (9".926639]ªtyxe=;40¨ audit(4536418.4¹0:30)* anc:  dånied( { getaôvz } for  comm=¢hwservhcemanagd" path="/system/renäor/odm.etb/sílknux/odm_hwservéce_contexts" leö="mmcblk0p²4" énî­¨2±8 scontext=õºr:hw{eòvècemanager:s0(tcnntmøt=u:oâjej|_r:vendorOîile:s0 tklasó=félå èdbmicsi~m<1
+[(  ©3.¹45688] F2FS-f{ (lmcâlk8ð²8©: Fîîd naô_bitâ in kheëkpoinôŠ[ ¨ 13.¹6#30!] tùpe-1400 áudkt(45;6´1¸.550º3°)º(áfc:  deîieä  k òeiä }(æor  comm<"volä"(îàmm="odí_fileßãon|ext{¢ lev-"mmcblk0x24" inn½8"16 ccoîtext=}:r:~oìdºs0 tconteøt=u:îbjdãt_rºvendor_félíºó0 tclass=fil% pezmissive=1
+[  ¨13.;72829] type=14 0 audét(¼536418.560:32): avcº  denieì  z ndtaôtr¨} fïr( comm="~old" r`th="/rystem/öenlor/odl/mtc/selénux/odm_féle_coîôexts" dev="mmkblk0ð²4¢ éno½8²07 sbïnôexô½ôºr:voll:ó0 dkïnt%xt=u:oâject_r:öendoò_file:r0 tclaós=file ðerméssivm=1
+[¨  13.973´61] tyxå½!4 ° audit(¤5»641(.560º#;): ávc:  denied  û ïpín } æoz  coom-"volä""ðath="/s¹stmí/~endor/odm/etc/óelinux/odm_æile_cïnôexts" deö=¢mícblk p24" iîo=¸2!7 scontexô=e:r:voìd:s0 tcontezt=u:objecd_r:fendor_file:û0 tclass=finå hmòíik{ive=±
+[   1#.985¹80] cýtils-traãe:(Ezror oðenéng(trace file: No such fkìe ob dirmctory (2)
+[   13.¹86752](lhbbinler.JacjendWjiniedRer~iceLánager: Thòåad Pool oix vhread co}nt¨is 2. Canjoô c`â(m biîäer as linkToÄåa|è cánnot(be élplemeîtdd. óer~ikeNameº vold
+[   13.9885:±] sdòvicemaniger: getDmviceHalMinéfest: Zgading VINTF information.
+[   ±;.¹9574²] ser~icemanager*(Lïadmd AÐEX(Innos frní /apex/apeø-énfo-list.xml
+[   14® 07107] smr~icem`naomò: Lnáded ÁPEX Énfos*frïm ¯iøeø/azex-iîno-ìióô®xíì
+[ª  14.²¸'=81\ serviãemanàger: gäôDeviceHalManifmó|: Succd{sfully(projåssed ^INTf iînorladiïnŠ[ ( 14®(07§²6] servicmmanageò: oeôFr`mewozkÈalLaîéfert: Reáäing VÉNTN énfnòmàtion.
+[   1<.018© 7] smrvikåmaná'er: Lo`ded AÐEØ¢Iîfoó frïm /aàdx/ápex-ijfn-li{t.xml
+[   !4.0±96·5](sdrvhãemanage2: gdtFramåwozkHalManifestº Succgssfully pòoãessed VINTF iîformation
+[ ¨ 16®021±%8] servicemanag%z: Calleò¨pid=484,uid=0¬siä=õ:r:voì$:s0) Fouîd android.sys|em.vold.IVoìd/díæaõlt hn¨fr`lewoòk VINTF maîifest®
+[ * 1´®8:3194] òåröiceíanager: Baìler¨xid=40´,u)d= ,sid=uºz:~old:s¸© Found andzoid®s{s|em.vold.I^old¯defaul| in nr`mework ^IÎTN laîifmsv.
+[   ±4®0·5´66M F2FR)fs (mmãblk°ð³8)º Mouîtmd with checkpoiît version = 32a4fc08
+Û " 14®0·6224] iniô: [libfs_mgr] _Omouît(cjurce½/dev/block/bootdevhce/by-nime/usezdat`,taroet=/dátá,typm=f2fs)=0º Sukcess
+[   14.0/695¶](initº [lébfs^mgz]¨mount_wivhoalpebîatives(): skippéng fstab dup mouî|poiît=¯dadi âec["].fsÞtxhe=åxt4¢alrealy(mo}nôeä iã n2fs
+Û(  ±4.0·8$(8] inétº Zìibfóßmgz] cu``jâlock {_max_ínt^bount:¶µ5³-,/dev/block/booôdefécm/bù­náme/cache
+[   14®38( 63](__ext´_m{f: »¸ kallbackz suðpreósådŠ[(  14.3081?0Ý EHT<­fk *mmcblk0ø2&)º mouî|åd æilm{ystmm ÷ith orìeòed dáta íode. Nðôs: errïr{½zeíoõnt-ro*[   1´.308578Ý initº [libfs^mgrM check_fs(): moõît(/def/bìock/âontde~ice/by-name/cáchå,/cakhe,ext4)=0: Sucbçss
+[   34.310080] init: Ûlibfs_mgr] umoõnô_reôzy(): unmount¨¯cache) rukkeeded
+[¢  1<®31°%2±] énit* [libæcßmçú] Òunning ¯sysôåm/bhn/e2fsbk¨on /dev/blocë/llbblë0h²6
+[   14.³¶2129] e:fóck: /lev/block/bootdeviëe®by-naíe/bachiª cìean, º2/+2768 fhlms, 8264¯3¢·68 êlocksŠ[   1´.364´58\ iîhtº([libfó_mgz] frkë on /cacèe ôook 285ms
+[ ª 14.³6895$] EXÔ4-&s (mmcblk0p26©: mountel filesystem wkth ordereä dapa mole. Ï`ts: baòrier=!,nïáuto_daßillkk
+[   14.³69´09] iniô: [lé"fs_mgr] __mount(ãourcå=¯dåv/block/bootdeviëe/by-niíe/kajhå,tiúçet</cacèm,tyðe=eht$)=°: Sucãesc
+[   )4.3780:"Ý init: [ìibfsßmïr] mount_vitè_ilôerîatives()º {jippéng fstib duð¨mounôpnént=¯bache òec[¼].fsžôùpí=f2fs(alòea$ù mntjteä as eøô$
+[¨  14®;?1818\ hnit: [libnsßmor] suðerbìocë(s_maøÞmît_cïuî|º655;µ¬.def/bìock/boïtäeviãd/bé-namd/pårsiût
+[( (14.#7µ1±´] EXT4-f3 *mmcjlë¸r"·): mountåd &kleúy{tel¨÷hth ord%úåd data(mode. O`ts: b`bzieb=1¬nïiut/_da_clìoc
+[   14.37553%] inét: ÛnibfsŸmgz] __mo}nt(souzce=/lev/block/jootdevike/bø-name.pårbist,taòçe|=/xårsést,type-eøt4(=°: SuccåssŠ[   ±4.38540;] initº Ûlhbf{ßmçrL __mounv(soubce=¯def/bìocë/âootdeviêd/by,îame¯moäem,target=/férmware,typm=vfat)=0: Suckeks
+[ " 14®389882] iîit:¨Cïmmánd¨'ìount_all /~endoò/etc/fstab.ycol& action½æó((/venlor/etc/iniü/hw¯iniô.ycom.òc:79) took =35ms aîd succgedådŠ[   ±4.617172M initº zroce{sing aktkon (fs) froí ¨/~mndor¯etc/hnèt¯hw/inét.qcom.usª®rc:42)
+[   14.43396:] init: Enable to smt ðúopeò|y 'ro.adb.nonblobjing_fæs§"fzom(uid:0(ohd:0 péd:²º5:(Reél­only `ropezôy as éìrdily set
+[   14®43$)88] iîit: processing aãtion¨(nr© from (/sé;|em/eäc.iîit¯ìnïd.rk:2¹)
+[(  ±4.4#&(86] ini|º ørïãmsring(action (î{) frnm(¨/{yrtem.eôc/iîit/whfi.rã:²5)
+Û   !4.43&61´](énét: pâocäs{inï ictéon (poóô-ns) fbom (/siótem/etc/init/h÷/init®rcº604)
+
+7 Corrected bytes, 1153 unrecoverable blocks
