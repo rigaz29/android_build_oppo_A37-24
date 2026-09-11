@@ -1,0 +1,129 @@
+From 89f6cbb219f3ef5440e78145feea97eea378c5f5 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 14:06:03 +0000
+Subject: [PATCH] tombstoned: jalur mundur ketika O_TMPFILE tidak didukung
+
+O_TMPFILE masuk kernel 3.11 bersama dukungan ext4-nya. Di kernel 3.10
+openat(O_TMPFILE) gagal dengan EOPNOTSUPP, PLOG(FATAL) membunuh tombstoned,
+dan init menghidupkannya kembali -- setiap crash memicu putaran itu sekali
+lagi:
+
+  F tombstoned: failed to create temporary tombstone in /data/tombstones:
+                Operation not supported on transport endpoint
+  init: Service 'tombstoned' (pid 2181) exited with status 1
+
+Akibatnya perangkat tidak pernah menghasilkan satu pun tombstone, justru
+pada saat paling dibutuhkan: selama bring-up, ketika surfaceflinger crash
+berulang tiap lima detik.
+
+Bila O_TMPFILE ditolak, berkas sementara dibuat bernama lewat mkostemp() dan
+saat crash selesai dipindahkan dengan renameat() alih-alih linkat().
+renameat() mengganti sasaran secara atomik, sehingga jaminan bahwa tidak ada
+tombstone basi yang tertinggal tetap utuh.
+
+Berkas sementara dapat tertinggal bila proses crash mati sebelum dumpnya
+tuntas. Itu jauh lebih murah daripada tidak punya tombstone sama sekali, dan
+hanya terjadi pada dump yang memang tidak pernah selesai.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ debuggerd/tombstoned/tombstoned.cpp | 54 +++++++++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 3 deletions(-)
+
+diff --git a/debuggerd/tombstoned/tombstoned.cpp b/debuggerd/tombstoned/tombstoned.cpp
+index 1c7cfef51..550a23314 100644
+--- a/debuggerd/tombstoned/tombstoned.cpp
++++ b/debuggerd/tombstoned/tombstoned.cpp
+@@ -26,6 +26,7 @@
+ #include <string>
+ #include <unordered_map>
+ #include <utility>
++#include <vector>
+ 
+ #include <event2/event.h>
+ #include <event2/listener.h>
+@@ -57,6 +58,11 @@ static InterceptManager* intercept_manager;
+ struct CrashArtifact {
+   unique_fd fd;
+ 
++  // [A37] Terisi hanya pada jalur mundur non-O_TMPFILE: jalur lengkap berkas
++  // sementara bernama, yang di-renameat() ke tempatnya saat crash selesai.
++  // Kosong berarti berkas dibuat dengan O_TMPFILE dan dipasang lewat linkat().
++  std::string temp_path;
++
+   static CrashArtifact devnull() {
+     CrashArtifact result;
+     result.fd.reset(open("/dev/null", O_WRONLY | O_CLOEXEC));
+@@ -140,6 +146,34 @@ class CrashQueue {
+     CrashArtifact result;
+ 
+     result.fd.reset(openat(dir_fd_, ".", O_WRONLY | O_APPEND | O_TMPFILE | O_CLOEXEC, 0660));
++
++    // [A37] O_TMPFILE baru ada sejak kernel 3.11, dan dukungan ext4-nya masuk
++    // di rilis yang sama. Di kernel 3.10 openat() di atas gagal dengan
++    // EOPNOTSUPP, PLOG(FATAL) membunuh tombstoned, dan init menghidupkannya
++    // lagi -- setiap crash memicu putaran itu sekali lagi. Akibatnya perangkat
++    // tidak pernah punya satu pun tombstone, justru ketika paling dibutuhkan.
++    //
++    // Jalur mundurnya adalah berkas sementara bernama, yang saat crash selesai
++    // di-renameat() alih-alih di-linkat(). renameat() mengganti secara atomik,
++    // jadi jaminan "tidak ada tombstone basi yang membingungkan" tetap utuh.
++    //
++    // Berkas sementara bisa tertinggal bila proses crash mati sebelum
++    // dumpnya selesai. Itu jauh lebih murah daripada tidak punya tombstone
++    // sama sekali, dan hanya terjadi pada dump yang memang tidak pernah tuntas.
++    if (result.fd == -1 && (errno == EOPNOTSUPP || errno == EINVAL || errno == EISDIR)) {
++      std::string tmpl = dir_path_ + "/.tmp_tombstone_XXXXXX";
++      std::vector<char> buf(tmpl.begin(), tmpl.end());
++      buf.push_back('\0');
++      int tmpfd = mkostemp(buf.data(), O_APPEND | O_CLOEXEC);
++      if (tmpfd != -1) {
++        result.fd.reset(tmpfd);
++        result.temp_path = buf.data();
++        if (fchmod(result.fd.get(), 0660) != 0) {
++          PLOG(WARNING) << "failed to chmod temporary tombstone " << result.temp_path;
++        }
++      }
++    }
++
+     if (result.fd == -1) {
+       PLOG(FATAL) << "failed to create temporary tombstone in " << dir_path_;
+     }
+@@ -399,7 +433,21 @@ static void crash_request_cb(evutil_socket_t sockfd, short ev, void* arg) {
+   }
+ }
+ 
+-static bool rename_tombstone_fd(borrowed_fd fd, borrowed_fd dirfd, const std::string& path) {
++static bool rename_tombstone_fd(const CrashArtifact& artifact, borrowed_fd dirfd,
++                                const std::string& path) {
++  // [A37] Jalur mundur non-O_TMPFILE: berkasnya sudah bernama, jadi ia
++  // dipindahkan, bukan ditautkan. renameat() sekaligus menimpa sasaran lama.
++  if (!artifact.temp_path.empty()) {
++    if (renameat(AT_FDCWD, artifact.temp_path.c_str(), dirfd.get(), path.c_str()) != 0) {
++      PLOG(ERROR) << "failed to rename tombstone to " << path;
++      unlink(artifact.temp_path.c_str());
++      return false;
++    }
++    return true;
++  }
++
++  borrowed_fd fd = artifact.fd;
++
+   // Always try to unlink the tombstone file.
+   // linkat doesn't let us replace a file, so we need to unlink before linking
+   // our results onto disk, and if we fail for some reason, we should delete
+@@ -451,11 +499,11 @@ static void crash_completed(borrowed_fd sockfd, std::unique_ptr<Crash> crash) {
+     if (!paths.proto) {
+       LOG(ERROR) << "missing path for proto tombstone";
+     } else {
+-      rename_tombstone_fd(crash->output.proto->fd, queue->dir_fd(), *paths.proto);
++      rename_tombstone_fd(*crash->output.proto, queue->dir_fd(), *paths.proto);
+     }
+   }
+ 
+-  if (rename_tombstone_fd(crash->output.text.fd, queue->dir_fd(), paths.text)) {
++  if (rename_tombstone_fd(crash->output.text, queue->dir_fd(), paths.text)) {
+     if (crash->crash_type == kDebuggerdJavaBacktrace) {
+       LOG(ERROR) << "Traces for pid " << crash->crash_pid << " written to: " << paths.text;
+     } else {

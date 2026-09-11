@@ -1,0 +1,12 @@
+tertahan-detik=84 tanpa-kemajuan=45 batas=45 kompilasi-ART=39
+init.svc.zygote=running
+init.svc.surfaceflinger=running
+init.svc.adbd=running
+init.svc.servicemanager=running
+init.svc.vold=running
+sys.usb.state=adb
+sys.usb.config=adb
+sys.usb.configfs=0
+ro.crypto.state=unsupported
+sys.boot_completed=
+dev.bootcomplete=
