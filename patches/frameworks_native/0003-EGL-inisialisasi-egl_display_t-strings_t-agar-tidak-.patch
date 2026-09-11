@@ -1,0 +1,56 @@
+From 7e340994da612a1c2d421a0c56d576cb0a887c19 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 11:27:45 +0000
+Subject: [PATCH] EGL: inisialisasi egl_display_t::strings_t agar tidak SIGSEGV
+ saat eglInitialize gagal
+
+DisplayImpl() hanya menginisialisasi dpy dan state. Empat pointer di
+queryString baru diisi setelah cnx->egl.eglInitialize() berhasil; pada
+cabang else mereka dibiarkan berisi sampah.
+
+findExtension() menjaga NULL dengan 'if (exts)', tapi sampah bukan-NULL
+lolos cek itu dan langsung masuk strstr():
+
+  signal 11 (SIGSEGV), fault addr 0x200
+    #00 strchr+4                       libc.so
+    #01 strstr+10                      libc.so
+    #02 egl_display_t::initialize+962  libEGL.so
+    #03 GLESRenderEngine::create       surfaceflinger
+
+Terpantau di msm8916 dengan kernel 3.10 ketika /dev/kgsl-3d0 tidak dapat
+dibuka: eglInitialize mengembalikan EGL_NOT_INITIALIZED, lalu libEGL
+men-SIGSEGV surfaceflinger dan menutupi kegagalan EGL yang sebenarnya.
+Dengan pointer bernilai nullptr, findExtension mengembalikan false dan
+kegagalan EGL terlaporkan apa adanya.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ opengl/libs/EGL/egl_display.h | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/opengl/libs/EGL/egl_display.h b/opengl/libs/EGL/egl_display.h
+index 867a1173b9..9f8d76db0d 100644
+--- a/opengl/libs/EGL/egl_display.h
++++ b/opengl/libs/EGL/egl_display.h
+@@ -89,11 +89,16 @@ public:
+ 
+     inline uint32_t getRefsCount() const { return refs; }
+ 
++    // [A37] Wajib diinisialisasi. DisplayImpl() hanya mengisi dpy dan state,
++    // sedangkan queryString baru diisi setelah eglInitialize() berhasil. Bila
++    // eglInitialize() gagal (mis. /dev/kgsl-3d0 EACCES), pointer ini berisi
++    // sampah bukan-NULL sehingga lolos cek `if (exts)` di findExtension() dan
++    // strstr() men-SIGSEGV surfaceflinger, menutupi kegagalan EGL yang asli.
+     struct strings_t {
+-        char const* vendor;
+-        char const* version;
+-        char const* clientApi;
+-        char const* extensions;
++        char const* vendor = nullptr;
++        char const* version = nullptr;
++        char const* clientApi = nullptr;
++        char const* extensions = nullptr;
+     };
+ 
+     struct DisplayImpl {

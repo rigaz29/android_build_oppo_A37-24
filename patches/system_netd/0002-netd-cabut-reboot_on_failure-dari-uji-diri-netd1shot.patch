@@ -1,0 +1,37 @@
+From ac043a41734526d4d3a2bf781665f25683c6a127 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 11:46:18 +0000
+Subject: [PATCH] netd: cabut reboot_on_failure dari uji-diri netd1shot
+
+netd1shot memverifikasi netd dapat dijalankan sekali dengan benar, dan
+me-reboot perangkat bila tidak. Andaian di baliknya adalah netd yang gagal
+menandakan kerusakan fatal. Di kernel tanpa eBPF andaian itu tidak berlaku:
+netd sengaja berjalan tanpa BPF, dan reboot_on_failure mengubah keadaan yang
+tertangani menjadi bootloop pada detik ~14 -- sebelum zygote sempat jadi.
+
+Shutdown yang dipicunya pun tidak pernah tuntas: init tetap berjalan dengan
+zygote pada status 'stopping' sampai watchdog boot mengambil alih.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ server/netd.rc | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/server/netd.rc b/server/netd.rc
+index 38f7cd4c..791c231f 100644
+--- a/server/netd.rc
++++ b/server/netd.rc
+@@ -10,7 +10,11 @@ service netd1shot /system/bin/netd oneshot
+     updatable
+     # these two only apply to 'netd1shot'
+     oneshot
+-    reboot_on_failure reboot,netd1shot-fail
++    # [A37] reboot_on_failure DICABUT. Uji-diri ini mengandaikan netd yang gagal
++    # berarti modul rusak dan rollback layak dilakukan. Pada perangkat tanpa
++    # eBPF, netd memang selalu gagal sebagian, sehingga baris ini mengubah
++    # degradasi yang bisa ditoleransi menjadi bootloop permanen.
++    # reboot_on_failure reboot,netd1shot-fail
+ 
+ # Keep in sync with 'netd1shot' above.
+ service netd /system/bin/netd
