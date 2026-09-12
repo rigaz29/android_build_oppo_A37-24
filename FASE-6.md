@@ -11,10 +11,10 @@ partisi.
 
 | | |
 |---|---|
-| Tambalan diterapkan | 27 dari kit 23.2, plus 13 baru untuk 24.0 |
+| Tambalan diterapkan | 27 dari kit 23.2, plus 14 baru untuk 24.0 |
 | Repo di-fork untuk itu | 8 (kemudian dikonversi jadi patch) |
 | Flash ke perangkat | 12 |
-| Titik henti berbeda yang ditemukan | 12 |
+| Titik henti berbeda yang ditemukan | 13 |
 | Boot penuh | **ya, 12 September 2026** |
 
 ---
@@ -334,7 +334,50 @@ Proses yang berjalan: `com.android.systemui`, `com.android.launcher3`,
 `org.lineageos.setupwizard`, `com.android.managedprovisioning`.
 Bukti mentahnya di `report/boot-berhasil/`.
 
-### Dua pelajaran yang paling mahal
+### Tetapi boot saja belum berarti stabil
+
+Beberapa menit sesudah homescreen, perangkat me-restart sendiri. Bukan panik:
+init melakukan shutdown tertib, dan alasannya tercatat jelas.
+
+    sys.boot.reason                 = reboot,factory_reset
+    crashrecovery.rescue_boot_count = 4
+    sys.system_server.crash_java    = 3
+    init: Reboot ending, jumping to kernel
+    Restarting system with command 'recovery'
+
+Itu **RescueParty** -- mekanisme pemulihan Android yang naik bertahap ketika
+system_server crash berulang, dan tingkat terakhirnya menghapus /data.
+Perangkat menghapus datanya sendiri, persis sebagaimana dirancang.
+
+Akarnya satu lapis lebih dalam lagi, dan pesan pengecualiannya sendiri yang
+menuntun ke sana:
+
+    IllegalStateException: Lost network stack. This is not the root cause of
+    any issue, it is a side effect of a crash that happened earlier.
+
+Yang jatuh lebih dulu adalah proses networkstack:
+
+    FATAL EXCEPTION: NetworkMonitor/100
+    Process: com.android.networkstack.process
+    java.lang.ExceptionInInitializerError
+      at NetworkStackBpfNetMaps.getInstance(NetworkStackBpfNetMaps.java:66)
+    Caused by: IllegalStateException: Cannot open configuration map
+    Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
+
+Yang membuatnya fatal bukan pengecualiannya, melainkan **letaknya**: di dalam
+inisialisasi statis `SingletonHolder`. Satu panggilan yang gagal menjatuhkan
+seluruh proses, bukan sekadar panggilan itu. -> patch 0011
+
+Pelajaran ketiga, dan yang paling mudah terlewat: **`sys.boot_completed=1`
+bukan bukti ROM sehat.** Ia hanya membuktikan boot selesai. Kestabilan harus
+diperiksa terpisah -- umur proses `system_server` dibanding uptime, dan
+penghitung RescueParty.
+
+Kabar baik yang ikut terlihat di boot itu: WiFi bekerja.
+
+    DhcpClient: Confirmed lease ... DHCP server 192.168.0.1
+
+### Tiga pelajaran yang paling mahal
 
 **Menutup satu lubang sering hanya memindahkan kegagalan.** Peta BPF null ->
 peta yang mengabaikan segalanya -> peta berbasis memori: tiga iterasi untuk

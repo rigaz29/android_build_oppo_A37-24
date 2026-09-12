@@ -1,0 +1,207 @@
+From 72db18ef81a93e5ed46fedfc82a8416b9cc0548c Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Sat, 12 Sep 2026 00:33:45 +0000
+Subject: [PATCH] NetworkStackBpfNetMaps: jangan melempar dari inisialisasi
+ statis
+
+Ketiga getter di Dependencies melempar IllegalStateException ketika peta BPF
+tidak dapat dibuka. Letaknya yang membuat ini fatal: pemanggilan terjadi di
+dalam inisialisasi statis SingletonHolder, sehingga yang jatuh bukan satu
+panggilan melainkan SELURUH proses networkstack:
+
+  FATAL EXCEPTION: NetworkMonitor/100
+  Process: com.android.networkstack.process
+  java.lang.ExceptionInInitializerError
+    at NetworkStackBpfNetMaps.getInstance(NetworkStackBpfNetMaps.java:66)
+    at ConnectivityManager.isUidNetworkingBlocked(:6811)
+    at TcpSocketTracker.pollSocketsInfo(:334)
+  Caused by: IllegalStateException: Cannot open configuration map
+  Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
+
+Akibat berantainya sampai jauh. system_server melihat networkstack hilang
+dan sengaja bunuh diri:
+
+  IllegalStateException: Lost network stack. This is not the root cause of
+  any issue, it is a side effect of a crash that happened earlier.
+    at ConnectivityModuleConnector.maybeCrashWithTerribleFailure(:328)
+
+Crash berulang itu menaikkan tingkat RescueParty, dan tingkat terakhirnya
+adalah factory reset -- perangkat menghapus datanya sendiri:
+
+  crashrecovery.rescue_boot_count = 4
+  sys.system_server.crash_java    = 3
+  sys.boot.reason                 = reboot,factory_reset
+
+Peta pengganti membuat konstruktor selesai. Pembacaan nilainya tidak perlu
+ditambal: keempat helper di BpfNetMapsUtils -- isChainEnabled, getUidRule,
+getUidNetworkingBlockedReasons, getDataSaverEnabled -- sudah menangkap
+Throwable dan mengembalikan nilai bawaan yang aman.
+
+Ketiga peta dibuka read-only dan ditulis oleh proses lain, jadi peta yang
+selalu kosong memang memadai di sini; tidak perlu menyimpan isi seperti pada
+BpfNetMaps.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../android/net/NetworkStackBpfNetMaps.java   | 121 +++++++++++++++++-
+ 1 file changed, 118 insertions(+), 3 deletions(-)
+
+diff --git a/framework/src/android/net/NetworkStackBpfNetMaps.java b/framework/src/android/net/NetworkStackBpfNetMaps.java
+index b7c4e34fad..37edd4ac01 100644
+--- a/framework/src/android/net/NetworkStackBpfNetMaps.java
++++ b/framework/src/android/net/NetworkStackBpfNetMaps.java
+@@ -30,6 +30,7 @@ import com.android.internal.annotations.VisibleForTesting;
+ import com.android.modules.utils.build.SdkLevel;
+ import com.android.net.module.util.BpfMap;
+ import com.android.net.module.util.IBpfMap;
++import com.android.net.module.util.Struct;
+ import com.android.net.module.util.Struct.S32;
+ import com.android.net.module.util.Struct.U32;
+ import com.android.net.module.util.Struct.U8;
+@@ -97,7 +98,27 @@ public class NetworkStackBpfNetMaps {
+                 return new BpfMap<>(CONFIGURATION_MAP_PATH, BpfMap.BPF_F_RDONLY,
+                         S32.class, U32.class);
+             } catch (ErrnoException e) {
+-                throw new IllegalStateException("Cannot open configuration map", e);
++                // [A37] Peta ini tidak pernah ada di kernel tanpa eBPF, dan
++                // melempar di sini terjadi di dalam inisialisasi statis
++                // SingletonHolder -- sehingga menjatuhkan SELURUH proses
++                // networkstack, bukan sekadar satu panggilan:
++                //
++                //   FATAL EXCEPTION: NetworkMonitor/100
++                //   java.lang.ExceptionInInitializerError
++                //     at NetworkStackBpfNetMaps.getInstance(:66)
++                //   Caused by: IllegalStateException: Cannot open configuration map
++                //   Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
++                //
++                // system_server lalu melihat networkstack hilang dan bunuh
++                // diri lewat ConnectivityModuleConnector, RescueParty naik
++                // tingkat, dan tingkat terakhirnya adalah factory reset --
++                // perangkat menghapus datanya sendiri.
++                //
++                // Peta pengganti membuat konstruktor selesai. Pembacaan
++                // nilainya sudah aman: keempat helper di BpfNetMapsUtils
++                // menangkap Throwable dan mengembalikan nilai bawaan.
++                android.util.Log.w(TAG, "Cannot open configuration map", e);
++                return new UnavailableBpfMap<>();
+             }
+         }
+ 
+@@ -107,7 +128,27 @@ public class NetworkStackBpfNetMaps {
+                 return new BpfMap<>(UID_OWNER_MAP_PATH, BpfMap.BPF_F_RDONLY,
+                         S32.class, UidOwnerValue.class);
+             } catch (ErrnoException e) {
+-                throw new IllegalStateException("Cannot open uid owner map", e);
++                // [A37] Peta ini tidak pernah ada di kernel tanpa eBPF, dan
++                // melempar di sini terjadi di dalam inisialisasi statis
++                // SingletonHolder -- sehingga menjatuhkan SELURUH proses
++                // networkstack, bukan sekadar satu panggilan:
++                //
++                //   FATAL EXCEPTION: NetworkMonitor/100
++                //   java.lang.ExceptionInInitializerError
++                //     at NetworkStackBpfNetMaps.getInstance(:66)
++                //   Caused by: IllegalStateException: Cannot open uid owner map
++                //   Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
++                //
++                // system_server lalu melihat networkstack hilang dan bunuh
++                // diri lewat ConnectivityModuleConnector, RescueParty naik
++                // tingkat, dan tingkat terakhirnya adalah factory reset --
++                // perangkat menghapus datanya sendiri.
++                //
++                // Peta pengganti membuat konstruktor selesai. Pembacaan
++                // nilainya sudah aman: keempat helper di BpfNetMapsUtils
++                // menangkap Throwable dan mengembalikan nilai bawaan.
++                android.util.Log.w(TAG, "Cannot open uid owner map", e);
++                return new UnavailableBpfMap<>();
+             }
+         }
+ 
+@@ -117,7 +158,27 @@ public class NetworkStackBpfNetMaps {
+                 return new BpfMap<>(DATA_SAVER_ENABLED_MAP_PATH, BpfMap.BPF_F_RDONLY, S32.class,
+                         U8.class);
+             } catch (ErrnoException e) {
+-                throw new IllegalStateException("Cannot open data saver enabled map", e);
++                // [A37] Peta ini tidak pernah ada di kernel tanpa eBPF, dan
++                // melempar di sini terjadi di dalam inisialisasi statis
++                // SingletonHolder -- sehingga menjatuhkan SELURUH proses
++                // networkstack, bukan sekadar satu panggilan:
++                //
++                //   FATAL EXCEPTION: NetworkMonitor/100
++                //   java.lang.ExceptionInInitializerError
++                //     at NetworkStackBpfNetMaps.getInstance(:66)
++                //   Caused by: IllegalStateException: Cannot open data saver enabled map
++                //   Caused by: ErrnoException: nativeBpfFdGet failed: ENOSYS
++                //
++                // system_server lalu melihat networkstack hilang dan bunuh
++                // diri lewat ConnectivityModuleConnector, RescueParty naik
++                // tingkat, dan tingkat terakhirnya adalah factory reset --
++                // perangkat menghapus datanya sendiri.
++                //
++                // Peta pengganti membuat konstruktor selesai. Pembacaan
++                // nilainya sudah aman: keempat helper di BpfNetMapsUtils
++                // menangkap Throwable dan mengembalikan nilai bawaan.
++                android.util.Log.w(TAG, "Cannot open data saver enabled map", e);
++                return new UnavailableBpfMap<>();
+             }
+         }
+     }
+@@ -184,4 +245,58 @@ public class NetworkStackBpfNetMaps {
+     public boolean getDataSaverEnabled() {
+         return BpfNetMapsUtils.getDataSaverEnabled(mDataSaverEnabledMap);
+     }
++    /**
++     * [A37] Peta pengganti untuk kernel tanpa eBPF.
++     *
++     * Ketiga peta di kelas ini dibuka read-only -- ditulis oleh BpfNetMaps di
++     * system_server, dibaca di sini. Tanpa eBPF tidak ada yang menulis maupun
++     * membacanya, jadi peta yang selalu kosong sudah memadai; yang penting
++     * konstruktor tidak melempar. Seluruh pembacaan nilai melewati
++     * BpfNetMapsUtils, yang sudah menangkap Throwable dan mengembalikan nilai
++     * bawaan yang aman.
++     */
++    private static class UnavailableBpfMap<K extends Struct, V extends Struct>
++            implements IBpfMap<K, V> {
++        @Override
++        public void updateEntry(K key, V value) { }
++
++        @Override
++        public void insertEntry(K key, V value) { }
++
++        @Override
++        public void replaceEntry(K key, V value) { }
++
++        @Override
++        public boolean insertOrReplaceEntry(K key, V value) {
++            return false;
++        }
++
++        @Override
++        public boolean deleteEntry(K key) {
++            return false;
++        }
++
++        @Override
++        public K getNextKey(@NonNull K key) {
++            return null;
++        }
++
++        @Override
++        public K getFirstKey() {
++            return null;
++        }
++
++        @Override
++        public boolean containsKey(@NonNull K key) {
++            return false;
++        }
++
++        @Override
++        public V getValue(@NonNull K key) {
++            return null;
++        }
++
++        @Override
++        public void close() { }
++    }
+ }
