@@ -1,0 +1,117 @@
+From d9b7f6b645b1c8d71213461d9e4cc3090955a02c Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Fri, 11 Sep 2026 18:49:57 +0000
+Subject: [PATCH] libeventpolling: jangan abort ketika ring buffer eBPF tidak
+ ada
+
+Ring buffer eBPF tidak pernah ada di kernel 3.10 -- bpfRingbufProg.bpf gagal
+dimuat dengan ENOSYS pada boot awal. GetRingbuf() memakai konstruktor
+BpfRingbuf(path), yang menurut catatan hulunya sendiri sengaja abort dalam
+keadaan itu:
+
+    // Creates a ringbuffer wrapper from a pinned path. This initialization
+    // will abort on error. To handle errors, initialize with Create instead.
+    BpfRingbuf(const char *path)
+
+Abort itu menjatuhkan system_server sekitar sembilan menit setelah boot,
+ketika LocalNetEventListener dibentuk:
+
+  Fatal signal 6 (SIGABRT) in system_server
+    #03 LocalNetEventHandler::GetRingbuf()
+    #04 nativeGetLocalNetAccessRingbufFd
+    #09 LocalNetEventListener.<init>
+
+LocalNetEventRingbuf kini memakai ctor-kosong terlindung dan Init(), jalur
+yang sama persis dengan BpfRingbuf::Create, lalu mengembalikan nullptr bila
+gagal. Tidak ada yang perlu diubah di sisi Java: JNI-nya sudah memeriksa
+fd.ok() dan mengembalikan null. GetNewRingbufFd mengembalikan unique_fd
+kosong, dan ConsumeAll mengembalikan daftar kosong.
+
+Peristiwa akses jaringan lokal memang tidak terpantau tanpa eBPF. Itu sudah
+pasti di kernel ini, dengan atau tanpa perubahan ini.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../libeventpolling/LocalNetEventHandler.cpp  | 26 ++++++++++++++++---
+ .../libeventpolling/LocalNetEventHandler.h    | 15 ++++++++++-
+ 2 files changed, 37 insertions(+), 4 deletions(-)
+
+diff --git a/service/native/libs/libeventpolling/LocalNetEventHandler.cpp b/service/native/libs/libeventpolling/LocalNetEventHandler.cpp
+index 59c28445fb..ebd2c3e3e3 100644
+--- a/service/native/libs/libeventpolling/LocalNetEventHandler.cpp
++++ b/service/native/libs/libeventpolling/LocalNetEventHandler.cpp
+@@ -36,8 +36,25 @@ using bpf::RingbufEventPoller;
+ LocalNetEventHandler::LocalNetEventRingbuf *LocalNetEventHandler::GetRingbuf() {
+     static LocalNetEventRingbuf *const sRingbuf =
+         []() -> LocalNetEventRingbuf * {
+-        auto rb = std::make_unique<LocalNetEventRingbuf>(
+-            LOCAL_NET_NOTE_OP_RINGBUF_PATH);
++        // [A37] Ring buffer eBPF tidak pernah ada di kernel 3.10 --
++        // bpfRingbufProg.bpf gagal dimuat dengan ENOSYS pada boot awal.
++        // Konstruktor BpfRingbuf(path) sengaja abort dalam keadaan itu, dan
++        // abort di sini menjatuhkan system_server sekitar sembilan menit
++        // setelah boot, ketika LocalNetEventListener dibentuk:
++        //
++        //   Fatal signal 6 (SIGABRT) in system_server
++        //     #03 LocalNetEventHandler::GetRingbuf()
++        //     #04 nativeGetLocalNetAccessRingbufFd
++        //
++        // Init() menempuh jalur yang sama tanpa abort, persis seperti
++        // BpfRingbuf::Create. nullptr di sini sudah tertangani: JNI-nya
++        // memeriksa fd.ok() dan mengembalikan null ke Java.
++        auto rb = std::make_unique<LocalNetEventRingbuf>();
++        if (!rb->InitFrom(LOCAL_NET_NOTE_OP_RINGBUF_PATH)) {
++            ALOGW("Local net event ringbuf unavailable; "
++                  "local network access events are disabled");
++            return nullptr;
++        }
+         return rb.release();
+     }();
+     return sRingbuf;
+@@ -46,8 +63,11 @@ LocalNetEventHandler::LocalNetEventRingbuf *LocalNetEventHandler::GetRingbuf() {
+ // static
+ std::vector<uint32_t> LocalNetEventHandler::ConsumeAll() {
+     std::vector<uint32_t> uids_pids;
++    // [A37] Tanpa ring buffer tidak ada peristiwa untuk dikonsumsi.
++    LocalNetEventRingbuf *ringbuf = GetRingbuf();
++    if (ringbuf == nullptr) return {};
+     base::Result<int> ret =
+-        GetRingbuf()->ConsumeAll([&](const LocalNetNoteOp &event) {
++        ringbuf->ConsumeAll([&](const LocalNetNoteOp &event) {
+             uids_pids.push_back(event.uid);
+             uids_pids.push_back(event.pid);
+         });
+diff --git a/service/native/libs/libeventpolling/include/libeventpolling/LocalNetEventHandler.h b/service/native/libs/libeventpolling/include/libeventpolling/LocalNetEventHandler.h
+index ce46620ef7..2fee42ddca 100644
+--- a/service/native/libs/libeventpolling/include/libeventpolling/LocalNetEventHandler.h
++++ b/service/native/libs/libeventpolling/include/libeventpolling/LocalNetEventHandler.h
+@@ -36,7 +36,12 @@ class LocalNetEventHandler {
+     // Returns a duplicate of the ring buffer file descriptor. This is needed so
+     // we can pass the file descriptor via jni for use in polling in java.
+     static android::base::unique_fd GetNewRingbufFd() {
+-        return GetRingbuf()->GetDuplicateFd();
++        // [A37] GetRingbuf() dapat mengembalikan nullptr di kernel tanpa eBPF.
++        // unique_fd kosong membuat fd.ok() bernilai salah, yang memang sudah
++        // ditangani pemanggil JNI-nya dengan mengembalikan null ke Java.
++        LocalNetEventRingbuf *ringbuf = GetRingbuf();
++        if (ringbuf == nullptr) return android::base::unique_fd();
++        return ringbuf->GetDuplicateFd();
+     }
+ 
+     // Consumes all available events in the ring buffer. Returns a list of
+@@ -51,6 +56,14 @@ class LocalNetEventHandler {
+         LocalNetEventRingbuf(const char *path)
+             : BpfRingbuf<LocalNetNoteOp>(path) {}
+ 
++        // [A37] Konstruktor di atas sengaja abort bila peta tidak ada; lihat
++        // catatan hulu di BpfRingbuf.h. Pasangan ctor-kosong + InitFrom ini
++        // menempuh jalur yang sama dengan BpfRingbuf::Create, yaitu memakai
++        // ctor terlindung lalu Init() yang mengembalikan Result.
++        LocalNetEventRingbuf() : BpfRingbuf<LocalNetNoteOp>() {}
++
++        bool InitFrom(const char *path) { return Init(path).ok(); }
++
+         android::base::unique_fd GetDuplicateFd() {
+             return android::base::unique_fd(
+                 fcntl(mRingFd.get(), F_DUPFD_CLOEXEC, 0));

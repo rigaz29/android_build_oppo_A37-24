@@ -1,0 +1,70 @@
+From e478e6faf6f3fd87d2e2cac8477dfca4524ab660 Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Sat, 12 Sep 2026 00:05:30 +0000
+Subject: [PATCH] libeventpolling: LoopbackEventHandler juga memakai Create,
+ bukan ctor yang abort
+
+Saudara kelas ini sudah diperbaiki, yang ini terlewat. Pola kegagalannya sama
+persis: konstruktor BpfRingbuf(path) sengaja abort ketika peta tidak ada, dan
+di kernel 3.10 peta itu tidak pernah ada.
+
+Kali ini abortnya terjadi jauh lebih dalam -- pada
+ConnectivityService.systemReadyInternal, sesudah boot phase 550 dan sesudah
+SystemUI serta Launcher sempat dijalankan:
+
+  Fatal signal 6 (SIGABRT) in system_server
+    #02 LoopbackEventHandler::GetPoller()::$_0::operator()()
+    #03 LoopbackEventHandler::Start()
+    #06 ConnectivityService.systemReadyInternal
+
+com.android.systemui dan com.android.launcher3 lalu ikut mati dengan
+DeadSystemException -- gejala, bukan sebab.
+
+Sisa GetPoller() sudah benar sejak semula: ia mengembalikan nullptr bila
+RingbufEventPoller::Create gagal, dan Start() maupun Stop() sudah
+memeriksanya. Yang kurang hanya satu langkah sebelumnya.
+
+Seluruh pohon disisir untuk pemakaian lain konstruktor itu. Dua yang ada --
+libmeminfo/libmemevents dan UprobeStats -- sudah memakai jalur Init/Create
+berpemeriksaan, jadi tidak ada lagi yang tersisa.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+---
+ .../libeventpolling/LoopbackEventHandler.cpp  | 22 ++++++++++++++++++-
+ 1 file changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/service/native/libs/libeventpolling/LoopbackEventHandler.cpp b/service/native/libs/libeventpolling/LoopbackEventHandler.cpp
+index 942bbf653b..81ffea436e 100644
+--- a/service/native/libs/libeventpolling/LoopbackEventHandler.cpp
++++ b/service/native/libs/libeventpolling/LoopbackEventHandler.cpp
+@@ -53,8 +53,28 @@ bpf::RingbufEventPoller<LoopbackAccessEvent> *
+ LoopbackEventHandler::GetPoller() {
+     static bpf::RingbufEventPoller<LoopbackAccessEvent> *const sPoller =
+         []() -> bpf::RingbufEventPoller<LoopbackAccessEvent> * {
+-        auto rb = std::make_unique<BpfRingbuf<LoopbackAccessEvent>>(
++        // [A37] Ring buffer eBPF tidak pernah ada di kernel 3.10. Konstruktor
++        // BpfRingbuf(path) sengaja abort dalam keadaan itu -- lihat catatan
++        // hulu di BpfRingbuf.h -- dan abort itu menjatuhkan system_server pada
++        // ConnectivityService.systemReadyInternal, sesudah boot phase 550 dan
++        // sesudah SystemUI serta Launcher sempat dijalankan:
++        //
++        //   Fatal signal 6 (SIGABRT) in system_server
++        //     #02 LoopbackEventHandler::GetPoller()::$_0::operator()()
++        //     #03 LoopbackEventHandler::Start()
++        //     #06 ConnectivityService.systemReadyInternal
++        //
++        // Create() menempuh jalur yang sama tanpa abort. Sisa fungsi ini sudah
++        // menangani kegagalan dengan benar: ia mengembalikan nullptr, dan
++        // Start() maupun Stop() sudah memeriksanya.
++        auto rbResult = BpfRingbuf<LoopbackAccessEvent>::Create(
+             LOOPBACK_ACCESS_RINGBUF_NETD_PATH);
++        if (!rbResult.ok()) {
++            ALOGW("Loopback access ringbuf unavailable: %s",
++                  rbResult.error().message().c_str());
++            return nullptr;
++        }
++        auto rb = std::move(rbResult.value());
+ 
+         auto callback = [](const std::vector<LoopbackAccessEvent> &events) {
+             for (const LoopbackAccessEvent &event : events) {
