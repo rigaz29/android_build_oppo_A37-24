@@ -11,12 +11,13 @@ partisi.
 
 | | |
 |---|---|
-| Tambalan diterapkan | 27 dari kit 23.2, plus 14 baru untuk 24.0 |
+| Tambalan diterapkan | 27 dari kit 23.2, plus 16 baru untuk 24.0 |
 | Repo di-fork untuk itu | 8 (kemudian dikonversi jadi patch) |
 | Flash ke perangkat | 12 |
 | Titik henti berbeda yang ditemukan | 13 |
 | Boot penuh | **ya, 12 September 2026** |
 | Stabil + internet | **ya, terverifikasi terpisah** |
+| Uptime terpanjang | **2 jam 17 menit tanpa restart** |
 
 ---
 
@@ -427,7 +428,102 @@ Jaringan berfungsi penuh:
 Seluruh tumpukan firewall dan statistik per-uid berbasis eBPF mati permanen
 di kernel ini, dan internet tetap jalan.
 
-### Empat pelajaran yang paling mahal
+## 8. Dua bug yang hanya muncul sesudah ROM dipakai
+
+Boot yang berhasil tidak menutup pekerjaan. Dua cacat baru muncul ketika ROM
+mulai benar-benar dipakai, dan keduanya luput dari seluruh pemeriksaan boot.
+
+### Browser tidak bisa dibuka -- WebViewUpdateServiceImpl2
+
+    FATAL EXCEPTION: main
+    Process: org.lineageos.jelly
+    Caused by: MissingWebViewPackageException: Failed to load WebView
+      provider: No WebView installed
+
+Paketnya sehat sepanjang waktu: terpasang di
+/system/product/app/webview/webview.apk, ABI armeabi-v7a yang benar, dan
+dumpsys menyebutnya "Valid package ... installed/enabled for all users".
+Yang salah adalah pemilihannya. Konstruktor Impl2 mengambil penyedia
+availableByDefault PERTAMA lalu berhenti, tanpa memeriksa apakah paketnya
+ada:
+
+    for (WebViewProviderInfo provider : webviewProviders) {
+        if (provider.availableByDefault) { defaultProvider = provider; break; }
+    }
+
+Daftar penyedia LineageOS menempatkan com.google.android.webview di urutan
+pertama dan com.android.webview di urutan terakhir. Tanpa GApps yang
+terpilih adalah paket yang tidak pernah ada, dan implementasi ini -- berbeda
+dengan yang lama -- tidak punya jalan mundur:
+
+    W WebViewUpdateServiceImpl2: Default WebView package
+      (com.google.android.webview) not found
+    E WebViewUpdateServiceImpl2: Could not find a loadable WebView package
+
+Perbaikannya memilih penyedia bawaan pertama yang BENAR-BENAR TERPASANG,
+sehingga urutan prioritas tetap dihormati bila GApps ada. -> patch
+frameworks_base/0009
+
+### Low memory killer lumpuh total -- lmkd
+
+Yang ini tidak pernah menjatuhkan apa pun, dan justru itu yang berbahaya.
+Satu-satunya tandanya adalah banjir baris log, 157 kali dalam satu boot:
+
+    E lowmemorykiller: pidfd_open for pid N failed; errno=38
+
+pidfd_open baru ada sejak kernel 5.3. Di kernel 3.10 ia selalu ENOSYS, dan
+cmd_procprio keluar lebih awal -- sehingga TIDAK ADA satu pun proses yang
+pernah terdaftar ke lmkd. Daftar prosesnya kosong, low memory killer tidak
+punya apa pun untuk dibunuh, dan OOM killer kernel yang mengambil alih
+dengan pilihan korban jauh lebih buruk, termasuk system_server. Pada
+perangkat RAM 1 GB ini akibatnya parah.
+
+Sisa lmkd ternyata sudah siap menghadapi pidfd < 0 di seluruh jalur lain,
+jadi yang diperlukan hanya berhenti menolak pendaftaran, ditambah kill(2)
+biasa di reaper ketika pembunuhan lewat cgroup tidak dapat dipakai.
+-> patch system_memory_lmkd/0002
+
+### Terbukti sesudah flash
+
+    webview_provider (setelan tersimpan) = null
+    Current WebView package = (com.android.webview, 152.0.7977.64)
+    relros started/finished = 1/1
+
+Setelan tersimpan kosong, jadi WebView terpilih otomatis -- bukan warisan
+perbaikan manual.
+
+    pidfd_open errno=38 : 157 -> 0
+    lmkd fd terbuka     : 67
+    /sys/fs/cgroup/system/uid_1000/pid_3121/cgroup.procs
+    /sys/fs/cgroup/apps/uid_10148/pid_5955/cgroup.procs
+
+lmkd kini memegang cgroup.procs untuk layanan sistem dan aplikasi -- persis
+deskriptor yang dipakainya membunuh process group. Jalur itu berada di
+hierarki v1 bernama yang dipasang patch system_core/0003, jadi kedua
+perbaikan saling menyambung.
+
+    uptime 2 jam 17 menit, zygote dan system_server tidak pernah restart
+
+### Pelajaran kelima
+
+**Berhenti mengeluh bukan berarti berfungsi.** Menghilangkan 157 baris error
+itu mudah; yang membuktikan lmkd benar-benar hidup adalah daftar deskriptor
+cgroup.procs yang dipegangnya. Setiap perbaikan perlu bukti positif bahwa
+fungsinya berjalan, bukan sekadar bukti negatif bahwa errornya hilang.
+
+### Sapuan bug tersembunyi
+
+Sebelum membangun, seluruh subsistem disapu lewat adb. Yang sehat: sensor
+(4 h/w aktif), kamera (2 perangkat), audio (msm8x16sndcardm), telepon (SIM
+LOADED, IN_SERVICE), WiFi, getar (AMPLITUDE_CONTROL, dua getaran tercatat
+selesai), layar 720x1280@60, baterai. Nol tombstone, nol ANR, nol layanan
+restarting; tiga system_app_crash yang tersimpan semuanya browser.
+
+Sengaja tidak ditambal karena kosmetik: resonantFrequencyHz=NaN (motor ERM
+memang tidak melaporkan profil frekuensi) dan "Failed to find HDMI node"
+(A37 memang tidak punya HDMI).
+
+### Lima pelajaran yang paling mahal
 
 **Menutup satu lubang sering hanya memindahkan kegagalan.** Peta BPF null ->
 peta yang mengabaikan segalanya -> peta berbasis memori: tiga iterasi untuk
@@ -445,7 +541,7 @@ melewatkan `getL4sEnabledMap` karena namanya mengandung angka -- dan skrip
 verifikasinya memakai pola yang sama, sehingga melaporkan bersih padahal
 tidak.
 
-## 8. Utang yang harus dibayar sebelum rilis
+## 9. Utang yang harus dibayar sebelum rilis
 
 Semuanya diagnostik, sengaja dipasang, dan harus dicabut:
 

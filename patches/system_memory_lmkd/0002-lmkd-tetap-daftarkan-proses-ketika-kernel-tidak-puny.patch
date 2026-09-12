@@ -1,0 +1,89 @@
+From 964de63630a8c04bc9c820fdb64aa96b735fac7b Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Sat, 12 Sep 2026 06:46:27 +0000
+Subject: [PATCH] lmkd: tetap daftarkan proses ketika kernel tidak punya
+ pidfd_open
+
+pidfd_open baru ada sejak kernel 5.3. Di kernel yang lebih tua ia selalu
+gagal dengan ENOSYS, dan cmd_procprio keluar lebih awal:
+
+    int pidfd = TEMP_FAILURE_RETRY(pidfd_open(proc.pid, 0));
+    if (pidfd < 0) {
+        ALOGE("pidfd_open for pid %d failed; errno=%d", proc.pid, errno);
+        return;
+    }
+
+Akibatnya tidak ada satu pun proses yang terdaftar ke lmkd. Daftar
+prosesnya tetap kosong, low memory killer tidak punya apa pun untuk
+dibunuh, dan OOM killer kernel yang mengambil alih -- dengan pilihan korban
+yang jauh lebih buruk, termasuk system_server. Pada perangkat RAM 1 GB ini
+akibatnya parah, sementara gejalanya senyap: satu-satunya tanda adalah
+banjir baris log itu, 157 kali dalam satu boot.
+
+Sisa lmkd sudah siap menghadapi pidfd < 0, jadi tidak ada jalur baru yang
+perlu dibuat:
+
+  start_wait_for_proc_kill(pidfd < 0 ? pid : pidfd)   lmkd.cpp:2543
+  if (procp->pidfd >= 0 && ...) close(...)            lmkd.cpp:980
+  if (target.pidfd < 0) return false;                 reaper.cpp:269
+
+Satu lubang tersisa di reaper: bila pembunuhan lewat cgroup tidak dapat
+dipakai, ia jatuh ke pidfd_send_signal -- yang juga kernel 5.1+ dan pasti
+gagal dengan pidfd -1. kill(2) biasa melakukan hal yang sama untuk satu
+proses; yang hilang hanyalah jaminan anti-daur-ulang pid dari pidfd.
+
+Kegagalan pidfd_open selain ENOSYS tetap dilaporkan dan tetap membatalkan
+pendaftaran, supaya kerusakan yang sebenarnya tidak tersamar.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: Iae4720170783ccb84d6f3b03e8a85c6a02ccdd5a
+---
+ lmkd.cpp   | 12 +++++++++++-
+ reaper.cpp |  7 +++++++
+ 2 files changed, 18 insertions(+), 1 deletion(-)
+
+diff --git a/lmkd.cpp b/lmkd.cpp
+index d7f10e7..19f38d1 100644
+--- a/lmkd.cpp
++++ b/lmkd.cpp
+@@ -1204,10 +1204,20 @@ static void register_oom_adj_proc(const struct lmk_procprio& proc, struct ucred*
+     procp = pid_lookup(proc.pid);
+     if (!procp) {
+         int pidfd = TEMP_FAILURE_RETRY(pidfd_open(proc.pid, 0));
+-        if (pidfd < 0) {
++        if (pidfd < 0 && errno != ENOSYS) {
+             ALOGE("pidfd_open for pid %d failed; errno=%d", proc.pid, errno);
+             return;
+         }
++        // [A37] pidfd_open baru ada sejak kernel 5.3. Di kernel yang lebih tua
++        // ia selalu ENOSYS, dan keluar di sini membuat proses TIDAK PERNAH
++        // terdaftar -- daftar proses lmkd tetap kosong, sehingga low memory
++        // killer tidak punya apa pun untuk dibunuh dan OOM killer kernel yang
++        // mengambil alih. Pada perangkat RAM 1 GB akibatnya parah, dan
++        // gejalanya senyap: hanya banjir baris log ini.
++        //
++        // Sisa lmkd sudah siap untuk pidfd < 0 -- start_wait_for_proc_kill
++        // memilih pid, pid_remove menjaga pidfd >= 0 sebelum menutup, dan
++        // Reaper::async_kill menolak rapi. Jadi cukup lanjutkan tanpa pidfd.
+ 
+         procp = new (std::nothrow) struct proc();
+         if (!procp) {
+diff --git a/reaper.cpp b/reaper.cpp
+index 69b6a5e..bfcc3fb 100644
+--- a/reaper.cpp
++++ b/reaper.cpp
+@@ -151,6 +151,13 @@ static bool kill_cgroup_or_process(const Reaper::target_proc& target) {
+         // Most, *but not all* processes are in their own cgroups managed by Android, for example
+         // children of adbd. For these processes, the best thing we can do is kill the individual
+         // process since we don't want to kill the entire cgroup.
++        // [A37] pidfd_send_signal baru ada sejak kernel 5.1, dan di kernel
++        // yang lebih tua target.pidfd memang selalu -1. kill(2) biasa
++        // melakukan hal yang sama untuk satu proses; yang hilang hanyalah
++        // jaminan anti-daur-ulang pid yang diberikan pidfd.
++        if (target.pidfd < 0) {
++            return ::kill(target.pid, SIGKILL) == 0;
++        }
+         return pidfd_send_signal(target.pidfd, SIGKILL, NULL, 0) == 0;
+     }
+ 

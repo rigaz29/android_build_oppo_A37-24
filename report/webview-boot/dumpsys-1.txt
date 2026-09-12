@@ -1,0 +1,15 @@
+Current WebView Update Service state
+  Current WebView package is null
+  Minimum targetSdkVersion: 33
+  Minimum WebView version code: -1
+  Number of relros started: 0
+  Number of relros finished: 0
+  WebView package dirty: false
+  Any WebView package installed: false
+  Preferred WebView package: none
+  WebView packages:
+    com.google.android.webview is NOT installed.
+    com.google.android.webview.beta is NOT installed.
+    com.google.android.webview.dev is NOT installed.
+    com.google.android.webview.canary is NOT installed.
+    Valid package com.android.webview (versionName: 152.0.7977.64, versionCode: 797706400, targetSdkVersion: 36) is  installed/enabled for all users

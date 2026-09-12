@@ -1,0 +1,29 @@
+=== WebView terpilih otomatis (setelan kosong) ===
+webview_provider (setelan tersimpan) = [null]
+Current WebView Update Service state
+  Current WebView package (name, version): (com.android.webview, 152.0.7977.64)
+  Minimum targetSdkVersion: 33
+  Minimum WebView version code: 797706400
+  Number of relros started: 1
+  Number of relros finished: 1
+  WebView package dirty: false
+  Any WebView package installed: true
+
+=== lmkd melacak proses ===
+fd terbuka: 67
+/sys/fs/cgroup/system/uid_1000/pid_3121/cgroup.procs
+/sys/fs/cgroup/apps/uid_10148/pid_5955/cgroup.procs
+/sys/fs/cgroup/apps/uid_10118/pid_5944/cgroup.procs
+/sys/fs/cgroup/system/uid_1073/pid_6167/cgroup.procs
+/sys/fs/cgroup/system/uid_1001/pid_6275/cgroup.procs
+/sys/fs/cgroup/system/uid_1068/pid_6272/cgroup.procs
+
+=== kestabilan ===
+uptime=8395s
+ 2008    02:18:29 zygote
+ 3121    02:18:20 system_server
+ 6108    02:16:46 webview_zygote
+ 6167    02:16:45 com.android.networkstack.process
+
+=== versi ===
+24.0-20260912_065009-UNOFFICIAL-A37 / Android 17

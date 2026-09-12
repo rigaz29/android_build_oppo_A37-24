@@ -1,0 +1,123 @@
+From ff99fedd7c1de1e08f961a4ac1132b066ce3c55c Mon Sep 17 00:00:00 2001
+From: rigaz29 <ryanbagas27@gmail.com>
+Date: Sat, 12 Sep 2026 06:38:43 +0000
+Subject: [PATCH] WebViewUpdateService: utamakan penyedia bawaan yang
+ benar-benar terpasang
+
+Konstruktor mengambil penyedia availableByDefault pertama lalu berhenti,
+tanpa memeriksa apakah paketnya ada:
+
+    for (WebViewProviderInfo provider : webviewProviders) {
+        if (provider.availableByDefault) {
+            defaultProvider = provider;
+            break;
+        }
+    }
+
+Daftar penyedia LineageOS menempatkan com.google.android.webview di urutan
+pertama dan com.android.webview di urutan terakhir. Pada pemasangan tanpa
+GApps, yang terpilih adalah paket yang tidak pernah ada -- dan
+findPreferredWebViewPackage di implementasi ini tidak punya jalan mundur ke
+penyedia berikutnya, berbeda dengan perilaku lama:
+
+  W WebViewUpdateServiceImpl2: Default WebView package
+    (com.google.android.webview) not found
+  E WebViewUpdateServiceImpl2: WebViewPackageMissingException:
+    Could not find a loadable WebView package
+
+Akibatnya setiap aplikasi yang menyentuh WebView gagal dijalankan. Browser
+bawaan pun tidak bisa dibuka:
+
+  FATAL EXCEPTION: main
+  Process: org.lineageos.jelly
+  Caused by: MissingWebViewPackageException: Failed to load WebView provider:
+    No WebView installed
+
+Paketnya sendiri sehat sepanjang waktu: terpasang di
+/system/product/app/webview/webview.apk, ABI armeabi-v7a yang benar untuk
+perangkat 32-bit ini, dan dumpsys menyebutnya "Valid package ...
+installed/enabled for all users". Menyetelnya manual dengan
+'cmd webviewupdate set-webview-implementation com.android.webview' langsung
+berhasil: relro dibuat, webview_zygote hidup, browser jalan.
+
+Urutan prioritas tetap dihormati -- yang dipilih adalah penyedia TERPASANG
+pertama menurut urutan daftar, jadi bila Google WebView ada ia tetap menang.
+Bila tidak satu pun terpasang, perilakunya kembali seperti semula sehingga
+paket yang menyusul dipasang belakangan tetap dikenali.
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01LNj1ooNG9oaHyTCkS34dhg
+Change-Id: I74e759b8c20f9042d5dccb95c94d6e7be670b426
+---
+ .../webkit/WebViewUpdateServiceImpl2.java     | 46 ++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 2 deletions(-)
+
+diff --git a/services/core/java/com/android/server/webkit/WebViewUpdateServiceImpl2.java b/services/core/java/com/android/server/webkit/WebViewUpdateServiceImpl2.java
+index 335ad366d7b0..24661683f32c 100644
+--- a/services/core/java/com/android/server/webkit/WebViewUpdateServiceImpl2.java
++++ b/services/core/java/com/android/server/webkit/WebViewUpdateServiceImpl2.java
+@@ -110,13 +110,46 @@ class WebViewUpdateServiceImpl2 {
+         mSystemInterface = systemInterface;
+         WebViewProviderInfo[] webviewProviders = getWebViewPackages();
+ 
++        // [A37] Utamakan penyedia bawaan yang BENAR-BENAR TERPASANG.
++        //
++        // Semula perulangan ini mengambil penyedia availableByDefault yang
++        // pertama lalu berhenti, tanpa memeriksa apakah paketnya ada. Daftar
++        // penyedia LineageOS menempatkan com.google.android.webview di urutan
++        // pertama dan com.android.webview di urutan terakhir, sehingga pada
++        // pemasangan tanpa GApps yang terpilih adalah paket yang tidak pernah
++        // ada -- dan findPreferredWebViewPackage tidak punya jalan mundur:
++        //
++        //   W WebViewUpdateServiceImpl2: Default WebView package
++        //     (com.google.android.webview) not found
++        //   E WebViewUpdateServiceImpl2: WebViewPackageMissingException:
++        //     Could not find a loadable WebView package
++        //
++        // Akibatnya setiap aplikasi yang menyentuh WebView gagal dijalankan:
++        //
++        //   MissingWebViewPackageException: Failed to load WebView provider:
++        //     No WebView installed
++        //
++        // Urutan prioritas tetap dihormati: yang dipilih adalah penyedia
++        // TERPASANG pertama menurut urutan daftar, jadi bila Google WebView
++        // ada ia tetap menang. Bila tidak satu pun terpasang, perilakunya
++        // kembali seperti semula -- penyedia bawaan pertama -- supaya paket
++        // yang menyusul dipasang belakangan tetap dikenali.
+         WebViewProviderInfo defaultProvider = null;
++        WebViewProviderInfo firstAvailableByDefault = null;
+         for (WebViewProviderInfo provider : webviewProviders) {
+-            if (provider.availableByDefault) {
++            if (!provider.availableByDefault) {
++                continue;
++            }
++            if (firstAvailableByDefault == null) {
++                firstAvailableByDefault = provider;
++            }
++            if (defaultProvider == null && isProviderPackageInstalled(provider)) {
+                 defaultProvider = provider;
+-                break;
+             }
+         }
++        if (defaultProvider == null) {
++            defaultProvider = firstAvailableByDefault;
++        }
+         if (defaultProvider == null) {
+             // This should be unreachable because the config parser enforces that there is at least
+             // one availableByDefault provider.
+@@ -125,6 +158,15 @@ class WebViewUpdateServiceImpl2 {
+         mDefaultProvider = defaultProvider;
+     }
+ 
++    /** [A37] Apakah paket penyedia ini ada di perangkat. */
++    private boolean isProviderPackageInstalled(WebViewProviderInfo provider) {
++        try {
++            return mSystemInterface.getPackageInfoForProvider(provider) != null;
++        } catch (NameNotFoundException e) {
++            return false;
++        }
++    }
++
+     public void packageStateChanged(String packageName, int changedState, int userId) {
+         // We don't early out here in different cases where we could potentially early-out (e.g. if
+         // we receive PACKAGE_CHANGED for another user than the system user) since that would
