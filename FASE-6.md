@@ -16,6 +16,7 @@ partisi.
 | Flash ke perangkat | 12 |
 | Titik henti berbeda yang ditemukan | 13 |
 | Boot penuh | **ya, 12 September 2026** |
+| Stabil + internet | **ya, terverifikasi terpisah** |
 
 ---
 
@@ -373,11 +374,60 @@ bukan bukti ROM sehat.** Ia hanya membuktikan boot selesai. Kestabilan harus
 diperiksa terpisah -- umur proses `system_server` dibanding uptime, dan
 penghitung RescueParty.
 
+Pelajaran keempat menyusul langsung sesudahnya: **tidak adanya crash juga
+bukan bukti perbaikan bekerja**, kalau jalur yang diperbaiki belum pernah
+dilewati. Kode yang dibuat malas hanya berjalan ketika dipicu; sampai
+pemicunya terjadi, "tidak crash" dan "belum dicoba" terlihat persis sama.
+
 Kabar baik yang ikut terlihat di boot itu: WiFi bekerja.
 
     DhcpClient: Confirmed lease ... DHCP server 192.168.0.1
 
-### Tiga pelajaran yang paling mahal
+### Terbukti stabil, dan kali ini jalurnya memang dilewati
+
+Sesudah patch 0011, build 24.0-20260912_003359. Tiga hal diperiksa terpisah,
+karena satu saja tidak cukup:
+
+**Jalur yang dulu crash benar-benar dijalankan.** Ini yang paling mudah
+terlewat. Pada pemeriksaan pertama sesudah flash, ROM terlihat stabil --
+tetapi WiFi belum tersambung, `NetworkMonitor` belum pernah jalan, dan
+`NetworkStackBpfNetMaps` yang dibuat malas lewat `SingletonHolder` belum
+pernah diinstansiasi. Stabil karena belum disentuh, bukan karena sembuh.
+Sesudah WiFi disambungkan:
+
+    NetworkMonitor: 48 baris log
+    Cannot open configuration map          1x
+    Cannot open uid owner map              1x
+    Cannot open data saver enabled map     1x
+
+Ketiga peta tetap gagal dibuka -- memang tidak akan pernah bisa di kernel ini
+-- tetapi getternya mencatat lalu mengembalikan peta pengganti, dan prosesnya
+selamat.
+
+**Umur proses dibanding uptime.** Ini pembeda antara hidup dan crash-loop:
+
+    uptime = 565s
+    zygote                            08:00
+    system_server                     07:52
+    com.android.networkstack.process  06:18   (PID tetap 6139)
+
+Bandingkan dengan boot sebelumnya: `system_server` berumur 2 detik pada
+uptime 579 detik.
+
+**RescueParty diam.**
+
+    crashrecovery.rescue_boot_count = 1
+    sys.system_server.crash_java    = (kosong)
+
+Jaringan berfungsi penuh:
+
+    wlan0 192.168.0.188/24 state UP
+    ping 8.8.8.8 -> 2/2, 0% loss, rtt 75 ms
+
+Seluruh tumpukan firewall dan statistik per-uid berbasis eBPF mati permanen
+di kernel ini, dan internet tetap jalan.
+
+### Empat pelajaran yang paling mahal
 
 **Menutup satu lubang sering hanya memindahkan kegagalan.** Peta BPF null ->
 peta yang mengabaikan segalanya -> peta berbasis memori: tiga iterasi untuk

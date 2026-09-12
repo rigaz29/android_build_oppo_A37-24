@@ -1,0 +1,21 @@
+=== kestabilan (uptime vs umur proses) ===
+uptime=565s
+ 2008       08:00 zygote
+ 3136       07:52 system_server
+ 5938       06:19 com.android.systemui
+ 6139       06:18 com.android.networkstack.process
+
+=== RescueParty ===
+crashrecovery.rescue_boot_count=1
+sys.system_server.crash_java=[]
+
+=== jaringan ===
+31: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    inet 192.168.0.188/24 brd 192.168.0.255 scope global dynamic wlan0
+2 packets transmitted, 2 received, 0% packet loss, time 1002ms
+rtt min/avg/max/mdev = 76.009/77.260/78.512/1.281 ms
+
+=== versi ===
+ro.lineage.version=24.0-20260912_003359-UNOFFICIAL-A37
+ro.build.version.release=17
+kernel=3.10.108-lineageos-g756cb462334-dirty
