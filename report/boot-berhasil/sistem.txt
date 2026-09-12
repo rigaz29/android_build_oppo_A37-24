@@ -1,0 +1,10 @@
+320.36 540.13
+---
+MemTotal:        1932180 kB
+MemFree:           14360 kB
+Buffers:            6544 kB
+Cached:          1177472 kB
+---
+Filesystem            Size Used Avail Use% Mounted on
+/dev/block/mmcblk0p38  11G 1.0G   10G  10% /data/user/0
+/dev/block/mmcblk0p24 2.6G 1.9G  714M  74% /

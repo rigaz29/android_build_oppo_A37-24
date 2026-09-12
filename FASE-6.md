@@ -11,15 +11,15 @@ partisi.
 
 | | |
 |---|---|
-| Tambalan diterapkan | 27 (dari kit 23.2, semuanya menempel mulus) |
+| Tambalan diterapkan | 27 dari kit 23.2, plus 13 baru untuk 24.0 |
 | Repo di-fork untuk itu | 8 (kemudian dikonversi jadi patch) |
-| Flash ke perangkat | 4 |
-| Titik henti berbeda yang ditemukan | 4 |
-| Boot penuh | **belum** |
+| Flash ke perangkat | 12 |
+| Titik henti berbeda yang ditemukan | 12 |
+| Boot penuh | **ya, 12 September 2026** |
 
 ---
 
-## 1. Delapan titik henti, dan kenapa itu kemajuan
+## 1. Dua belas titik henti, dan kenapa itu kemajuan
 
 Tiap perbaikan memindahkan kegagalan lebih dalam. Itu bukan basa-basi: ia
 membuktikan hipotesis sebelumnya benar, karena gejalanya tidak berulang.
@@ -34,6 +34,10 @@ membuktikan hipotesis sebelumnya benar, karena gejalanya tidak berulang.
 | 6 | surfaceflinger SIGSEGV di libEGL, 18 kali | ~5 detik sekali |
 | 7 | surfaceflinger SIGABRT `gralloc-mapper is missing`, 17 kali | ~5 detik sekali |
 | 8 | zygote SIGABRT `createProcessGroup` saat fork system_server | 31 kali |
+| 9 | `NetworkStatsService` melempar saat peta BPF tak terbuka | boot phase 200 |
+| 10 | `BpfNetMaps` mengembalikan null, pemakainya men-dereferensi | ConnectivityService |
+| 11 | `setChildChain` membaca `.val` dari nilai null | ConnectivityService |
+| 12 | dua ring buffer eBPF memakai ctor yang sengaja abort | phase 550 |
 
 ### Flash 1 — fstab tidak pernah sampai ke ramdisk
 
@@ -312,12 +316,41 @@ tanpa klaim apa pun soal partisi, lalu ditimpa tmpfs di `early-init`.
 Sesudahnya ketiga layanan `aconfigd` keluar dengan status 0 (sebelumnya 5,
 6, dan 1) dan apexd tidak lagi gagal menulis konfigurasinya.
 
-## 7. Belum terbukti
+## 7. Terbukti: ROM boot
 
-Boot penuh. Semua yang di atas memindahkan kegagalan, belum
-menghilangkannya. Yang sudah pasti: perangkat kini mencapai **boot
-animation**, surfaceflinger stabil, dan zygote hidup sampai titik fork
-system_server.
+12 September 2026, pukul 00:2x. Diverifikasi lewat adb ke perangkat yang
+sedang berjalan, bukan dari layar:
+
+    sys.boot_completed        = 1
+    dev.bootcomplete          = 1
+    init.svc.bootanim         = stopped
+    ro.build.version.release  = 17
+    ro.build.version.sdk      = 37
+    kernel                    = 3.10.108-lineageos-g756cb462334-dirty
+    boot phase                = 1000  (PHASE_BOOT_COMPLETED)
+    crash                     = 0
+
+Proses yang berjalan: `com.android.systemui`, `com.android.launcher3`,
+`org.lineageos.setupwizard`, `com.android.managedprovisioning`.
+Bukti mentahnya di `report/boot-berhasil/`.
+
+### Dua pelajaran yang paling mahal
+
+**Menutup satu lubang sering hanya memindahkan kegagalan.** Peta BPF null ->
+peta yang mengabaikan segalanya -> peta berbasis memori: tiga iterasi untuk
+satu persoalan, karena dua yang pertama menambal gejala di titik terdekat.
+Baru yang ketiga menutup kelasnya. Gejalanya pun sempat identik meski
+penyebabnya sudah bergeser, dan itu hampir menyesatkan.
+
+**Memperbaiki satu berkas tanpa menyisir tetangganya.** `LoopbackEventHandler`
+duduk di direktori yang sama dengan `LocalNetEventHandler` dengan bug yang
+sama persis, dan terlewat. Satu siklus build dan flash terbuang. Sesudahnya
+seluruh pohon disisir, dan ternyata tidak ada pemakai ketiga.
+
+Satu lagi yang lebih kecil tapi sama jenisnya: pola pencarian `get[A-Za-z]+`
+melewatkan `getL4sEnabledMap` karena namanya mengandung angka -- dan skrip
+verifikasinya memakai pola yang sama, sehingga melaporkan bersih padahal
+tidak.
 
 ## 8. Utang yang harus dibayar sebelum rilis
 

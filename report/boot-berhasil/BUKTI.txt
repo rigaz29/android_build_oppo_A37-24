@@ -1,0 +1,8 @@
+sys.boot_completed=1
+dev.bootcomplete=1
+init.svc.bootanim=stopped
+ro.lineage.version=24.0-20260912_000544-UNOFFICIAL-A37
+ro.build.version.release=17
+ro.build.version.sdk=37
+kernel=3.10.108-lineageos-g756cb462334-dirty
+uptime=323s
