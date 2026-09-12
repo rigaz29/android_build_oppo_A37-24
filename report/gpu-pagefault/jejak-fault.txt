@@ -1,0 +1,14 @@
+[ 2100.829984] kgsl kgsl-3d0: |kgsl_iommu_fault_handler| GPU PAGE FAULT: addr = BF049400 pid = 5944
+[ 2100.830407] kgsl kgsl-3d0: ---- nearby memory ----
+[ 2100.830571] kgsl kgsl-3d0: [BF047000 - BF048000] (+guard)  (pid = 5944) (egl_surface)
+[ 2100.830760] kgsl kgsl-3d0:  <- fault @ BF049400
+[ 2100.830862] kgsl kgsl-3d0: [BF04A000 - BF06E000] (+guard)  (pid = 5944) (egl_surface)
+[ 2104.835586] kgsl kgsl-3d0: |kgsl_iommu_fault_handler| GPU PAGE FAULT: addr = BF049400 pid = 5944
+[ 2104.835981] kgsl kgsl-3d0: ---- nearby memory ----
+[ 2104.836141] kgsl kgsl-3d0: [BF047000 - BF048000] (+guard)  (pid = 5944) (egl_surface)
+[ 2104.836324] kgsl kgsl-3d0:  <- fault @ BF049400
+[ 2104.836429] kgsl kgsl-3d0: [BF04A000 - BF06E000] (+guard)  (pid = 5944) (egl_surface)
+[ 2107.882543] Watchdog bark! Now = 2107.882536
+[ 2107.882648] Watchdog last pet at 2087.490352
+[ 2107.882837] cpu alive mask from last pet 0-3
+[ 2107.882932] Causing a watchdog bite!

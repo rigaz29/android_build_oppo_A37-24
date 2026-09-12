@@ -1,0 +1,902 @@
+--------- beginning of main
+09-12 17:58:11.853  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:11.874  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1957, identity=0x10004
+09-12 17:58:11.883  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:11.907  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1958, identity=0x10004
+09-12 17:58:11.920  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:11.940  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1959, identity=0x10004
+09-12 17:58:11.950  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:11.974  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1960, identity=0x10004
+09-12 17:58:11.987  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:11.992  6275  6611 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+09-12 17:58:11.992  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:11.992  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:11.992  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:11.992  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:11.995  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:11.995  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:11.995  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:11.995  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:11.995  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:12.000  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:12.001  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:12.001  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:12.001  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:12.003  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:12.003  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:12.004  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:12.004  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:12.007  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:12.007  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:12.007  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:12.007  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:12.007  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:12.008  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1961, identity=0x10004
+09-12 17:58:12.010  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:12.010  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:12.010  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:12.010  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:12.017  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.040  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1962, identity=0x10004
+09-12 17:58:12.048  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.074  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1963, identity=0x10004
+09-12 17:58:12.107  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1964, identity=0x10004
+09-12 17:58:12.120  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.140  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1965, identity=0x10004
+09-12 17:58:12.150  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.173  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1966, identity=0x10004
+09-12 17:58:12.186  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.207  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1967, identity=0x10004
+09-12 17:58:12.215  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.240  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1968, identity=0x10004
+09-12 17:58:12.273  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1969, identity=0x10004
+09-12 17:58:12.284  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.307  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1970, identity=0x10004
+09-12 17:58:12.320  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.340  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1971, identity=0x10004
+09-12 17:58:12.347  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.373  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1972, identity=0x10004
+09-12 17:58:12.383  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.407  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1973, identity=0x10004
+09-12 17:58:12.416  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.440  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1974, identity=0x10004
+09-12 17:58:12.453  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.473  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1975, identity=0x10004
+09-12 17:58:12.506  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1976, identity=0x10004
+09-12 17:58:12.519  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.540  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1977, identity=0x10004
+09-12 17:58:12.548  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.696625, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.573  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1978, identity=0x10004
+09-12 17:58:12.586  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.607  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1979, identity=0x10004
+09-12 17:58:12.617  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.640  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1980, identity=0x10004
+09-12 17:58:12.654  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.673  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1981, identity=0x10004
+09-12 17:58:12.683  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.706  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1982, identity=0x10004
+09-12 17:58:12.719  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.740  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1983, identity=0x10004
+09-12 17:58:12.749  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.773  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1984, identity=0x10004
+09-12 17:58:12.785  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.806  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1985, identity=0x10004
+09-12 17:58:12.817  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.839  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1986, identity=0x10004
+09-12 17:58:12.852  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.873  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1987, identity=0x10004
+09-12 17:58:12.882  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.906  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1988, identity=0x10004
+09-12 17:58:12.919  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.737701, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.939  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1989, identity=0x10004
+09-12 17:58:12.950  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.451172, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:12.973  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1990, identity=0x10004
+09-12 17:58:12.986  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.532776, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.006  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1991, identity=0x10004
+09-12 17:58:13.017  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.737701, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.039  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1992, identity=0x10004
+09-12 17:58:13.073  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1993, identity=0x10004
+09-12 17:58:13.082  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.106  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1994, identity=0x10004
+09-12 17:58:13.119  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.139  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1995, identity=0x10004
+09-12 17:58:13.149  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.172  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1996, identity=0x10004
+09-12 17:58:13.185  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.206  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1997, identity=0x10004
+09-12 17:58:13.239  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1998, identity=0x10004
+09-12 17:58:13.252  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.272  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=1999, identity=0x10004
+09-12 17:58:13.282  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.306  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2000, identity=0x10004
+09-12 17:58:13.319  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.339  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2001, identity=0x10004
+09-12 17:58:13.349  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.372  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2002, identity=0x10004
+09-12 17:58:13.385  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.405  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2003, identity=0x10004
+09-12 17:58:13.415  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.439  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2004, identity=0x10004
+09-12 17:58:13.459  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.369751, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.472  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2005, identity=0x10004
+09-12 17:58:13.479  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.491943, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.505  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2006, identity=0x10004
+09-12 17:58:13.539  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2007, identity=0x10004
+09-12 17:58:13.547  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.573669, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.572  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2008, identity=0x10004
+09-12 17:58:13.585  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.369751, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.605  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2009, identity=0x10004
+09-12 17:58:13.614  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.639  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2010, identity=0x10004
+09-12 17:58:13.652  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.672  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2011, identity=0x10004
+09-12 17:58:13.683  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.705  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2012, identity=0x10004
+09-12 17:58:13.718  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.738  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2013, identity=0x10004
+09-12 17:58:13.748  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.772  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2014, identity=0x10004
+09-12 17:58:13.784  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.805  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2015, identity=0x10004
+09-12 17:58:13.815  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.838  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2016, identity=0x10004
+09-12 17:58:13.850  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.872  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2017, identity=0x10004
+09-12 17:58:13.881  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.905  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2018, identity=0x10004
+09-12 17:58:13.918  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.938  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2019, identity=0x10004
+09-12 17:58:13.948  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:13.972  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2020, identity=0x10004
+09-12 17:58:13.984  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.005  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2021, identity=0x10004
+09-12 17:58:14.014  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.038  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2022, identity=0x10004
+09-12 17:58:14.051  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.071  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2023, identity=0x10004
+09-12 17:58:14.105  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2024, identity=0x10004
+09-12 17:58:14.117  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.138  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2025, identity=0x10004
+09-12 17:58:14.171  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2026, identity=0x10004
+09-12 17:58:14.184  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.205  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2027, identity=0x10004
+09-12 17:58:14.214  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.238  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2028, identity=0x10004
+09-12 17:58:14.250  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.271  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2029, identity=0x10004
+09-12 17:58:14.281  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.305  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2030, identity=0x10004
+09-12 17:58:14.319  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.338  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2031, identity=0x10004
+09-12 17:58:14.349  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.371  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2032, identity=0x10004
+09-12 17:58:14.385  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.404  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2033, identity=0x10004
+09-12 17:58:14.414  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.438  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2034, identity=0x10004
+09-12 17:58:14.451  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.471  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2035, identity=0x10004
+09-12 17:58:14.481  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.504  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2036, identity=0x10004
+09-12 17:58:14.517  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.538  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2037, identity=0x10004
+09-12 17:58:14.549  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.696625, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.553  6275  6611 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+09-12 17:58:14.553  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:14.554  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.554  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.554  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:14.556  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:14.556  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:14.556  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.556  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.556  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:14.559  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:14.559  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.559  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.559  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:14.564  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:14.564  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.564  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.564  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:14.567  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:14.567  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:14.567  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.568  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.568  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:14.570  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:14.570  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:14.570  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:14.570  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:14.571  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2038, identity=0x10004
+09-12 17:58:14.581  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.604  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2039, identity=0x10004
+09-12 17:58:14.611  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.637  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2040, identity=0x10004
+09-12 17:58:14.646  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.671  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2041, identity=0x10004
+09-12 17:58:14.680  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.704  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2042, identity=0x10004
+09-12 17:58:14.737  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2043, identity=0x10004
+09-12 17:58:14.771  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2044, identity=0x10004
+09-12 17:58:14.784  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.804  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2045, identity=0x10004
+09-12 17:58:14.815  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.837  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2046, identity=0x10004
+09-12 17:58:14.850  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.871  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2047, identity=0x10004
+09-12 17:58:14.879  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.904  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2048, identity=0x10004
+09-12 17:58:14.937  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2049, identity=0x10004
+09-12 17:58:14.948  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:14.970  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2050, identity=0x10004
+09-12 17:58:14.984  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.004  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2051, identity=0x10004
+09-12 17:58:15.012  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.037  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2052, identity=0x10004
+09-12 17:58:15.046  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.070  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2053, identity=0x10004
+09-12 17:58:15.077  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.104  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2054, identity=0x10004
+09-12 17:58:15.112  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.137  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2055, identity=0x10004
+09-12 17:58:15.146  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.158  9227  9227 I adbd    : adbd service requested 'shell,v2,TERM=screen.xterm-256color,raw:ls /sdcard/DCIM/Camera/ 2>&1|grep -ci jpg'
+09-12 17:58:15.170  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2056, identity=0x10004
+09-12 17:58:15.181  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.204  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2057, identity=0x10004
+09-12 17:58:15.210  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.237  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2058, identity=0x10004
+09-12 17:58:15.244  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.270  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2059, identity=0x10004
+09-12 17:58:15.280  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.303  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2060, identity=0x10004
+09-12 17:58:15.317  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.337  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2061, identity=0x10004
+09-12 17:58:15.347  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.370  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2062, identity=0x10004
+09-12 17:58:15.384  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.403  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2063, identity=0x10004
+09-12 17:58:15.413  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.437  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2064, identity=0x10004
+09-12 17:58:15.451  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.470  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2065, identity=0x10004
+09-12 17:58:15.480  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.503  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2066, identity=0x10004
+09-12 17:58:15.516  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.537  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2067, identity=0x10004
+09-12 17:58:15.548  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.570  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2068, identity=0x10004
+09-12 17:58:15.585  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.603  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2069, identity=0x10004
+09-12 17:58:15.614  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.637  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2070, identity=0x10004
+09-12 17:58:15.651  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.670  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2071, identity=0x10004
+09-12 17:58:15.677  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.703  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2072, identity=0x10004
+09-12 17:58:15.714  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.736  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2073, identity=0x10004
+09-12 17:58:15.748  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.770  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2074, identity=0x10004
+09-12 17:58:15.784  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.803  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2075, identity=0x10004
+09-12 17:58:15.813  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.836  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2076, identity=0x10004
+09-12 17:58:15.851  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.869  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2077, identity=0x10004
+09-12 17:58:15.879  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.903  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2078, identity=0x10004
+09-12 17:58:15.917  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.936  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2079, identity=0x10004
+09-12 17:58:15.943  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:15.969  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2080, identity=0x10004
+09-12 17:58:15.978  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.003  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2081, identity=0x10004
+09-12 17:58:16.013  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.036  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2082, identity=0x10004
+09-12 17:58:16.049  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.069  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2083, identity=0x10004
+09-12 17:58:16.080  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.103  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2084, identity=0x10004
+09-12 17:58:16.116  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.136  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2085, identity=0x10004
+09-12 17:58:16.169  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2086, identity=0x10004
+09-12 17:58:16.183  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.202  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2087, identity=0x10004
+09-12 17:58:16.212  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.236  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2088, identity=0x10004
+09-12 17:58:16.249  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.269  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2089, identity=0x10004
+09-12 17:58:16.279  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.302  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2090, identity=0x10004
+09-12 17:58:16.315  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.336  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2091, identity=0x10004
+09-12 17:58:16.346  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.369  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2092, identity=0x10004
+09-12 17:58:16.382  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.402  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2093, identity=0x10004
+09-12 17:58:16.412  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.436  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2094, identity=0x10004
+09-12 17:58:16.449  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.469  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2095, identity=0x10004
+09-12 17:58:16.479  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.502  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2096, identity=0x10004
+09-12 17:58:16.516  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.535  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2097, identity=0x10004
+09-12 17:58:16.546  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.569  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2098, identity=0x10004
+09-12 17:58:16.582  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.602  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2099, identity=0x10004
+09-12 17:58:16.612  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.635  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2100, identity=0x10004
+09-12 17:58:16.648  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.737701, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.669  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2101, identity=0x10004
+09-12 17:58:16.679  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.702  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2102, identity=0x10004
+09-12 17:58:16.735  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2103, identity=0x10004
+09-12 17:58:16.747  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.769  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2104, identity=0x10004
+09-12 17:58:16.785  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.802  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2105, identity=0x10004
+09-12 17:58:16.813  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.835  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2106, identity=0x10004
+09-12 17:58:16.848  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.868  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2107, identity=0x10004
+09-12 17:58:16.878  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.902  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2108, identity=0x10004
+09-12 17:58:16.916  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.935  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2109, identity=0x10004
+09-12 17:58:16.944  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:16.968  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2110, identity=0x10004
+09-12 17:58:16.982  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.002  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2111, identity=0x10004
+09-12 17:58:17.012  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.035  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2112, identity=0x10004
+09-12 17:58:17.047  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.068  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2113, identity=0x10004
+09-12 17:58:17.079  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.101  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2114, identity=0x10004
+09-12 17:58:17.115  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.135  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2115, identity=0x10004
+09-12 17:58:17.145  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.168  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2116, identity=0x10004
+09-12 17:58:17.177  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.201  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2117, identity=0x10004
+09-12 17:58:17.235  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2118, identity=0x10004
+09-12 17:58:17.251  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.268  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2119, identity=0x10004
+09-12 17:58:17.278  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.301  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2120, identity=0x10004
+09-12 17:58:17.315  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.335  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2121, identity=0x10004
+09-12 17:58:17.344  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.368  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2122, identity=0x10004
+09-12 17:58:17.381  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.401  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2123, identity=0x10004
+09-12 17:58:17.412  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.434  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2124, identity=0x10004
+09-12 17:58:17.448  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.468  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2125, identity=0x10004
+09-12 17:58:17.501  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2126, identity=0x10004
+09-12 17:58:17.516  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.534  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2127, identity=0x10004
+09-12 17:58:17.545  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.568  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2128, identity=0x10004
+09-12 17:58:17.581  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.594  9227  9227 I adbd    : adbd service requested 'shell,v2,TERM=screen.xterm-256color,raw:ls -la /sdcard/DCIM/Camera/ 2>&1|tail -2'
+09-12 17:58:17.601  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2129, identity=0x10004
+09-12 17:58:17.608  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.634  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2130, identity=0x10004
+09-12 17:58:17.641  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.668  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2131, identity=0x10004
+09-12 17:58:17.674  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.701  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2132, identity=0x10004
+09-12 17:58:17.709  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.734  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2133, identity=0x10004
+09-12 17:58:17.741  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.443848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.767  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2134, identity=0x10004
+09-12 17:58:17.776  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.801  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2135, identity=0x10004
+09-12 17:58:17.809  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.834  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2136, identity=0x10004
+09-12 17:58:17.845  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.867  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2137, identity=0x10004
+09-12 17:58:17.876  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.901  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2138, identity=0x10004
+09-12 17:58:17.914  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.934  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2139, identity=0x10004
+09-12 17:58:17.943  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:17.967  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2140, identity=0x10004
+09-12 17:58:17.980  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.000  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2141, identity=0x10004
+09-12 17:58:18.011  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.034  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2142, identity=0x10004
+09-12 17:58:18.067  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2143, identity=0x10004
+09-12 17:58:18.078  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.100  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2144, identity=0x10004
+09-12 17:58:18.115  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.485840, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.134  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2145, identity=0x10004
+09-12 17:58:18.146  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.167  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2146, identity=0x10004
+09-12 17:58:18.179  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.200  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2147, identity=0x10004
+09-12 17:58:18.210  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.234  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2148, identity=0x10004
+09-12 17:58:18.248  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.267  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2149, identity=0x10004
+09-12 17:58:18.278  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.532776, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.300  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2150, identity=0x10004
+09-12 17:58:18.333  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2151, identity=0x10004
+09-12 17:58:18.342  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.367  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2152, identity=0x10004
+09-12 17:58:18.382  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.401886, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.400  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2153, identity=0x10004
+09-12 17:58:18.410  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.433  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2154, identity=0x10004
+09-12 17:58:18.447  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.467  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2155, identity=0x10004
+09-12 17:58:18.477  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.500  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2156, identity=0x10004
+09-12 17:58:18.513  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.533  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2157, identity=0x10004
+09-12 17:58:18.567  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2158, identity=0x10004
+09-12 17:58:18.580  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.600  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2159, identity=0x10004
+09-12 17:58:18.610  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.633  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2160, identity=0x10004
+09-12 17:58:18.647  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.666  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2161, identity=0x10004
+09-12 17:58:18.673  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.737701, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.700  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2162, identity=0x10004
+09-12 17:58:18.710  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.733  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2163, identity=0x10004
+09-12 17:58:18.742  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.766  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2164, identity=0x10004
+09-12 17:58:18.780  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.800  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2165, identity=0x10004
+09-12 17:58:18.833  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2166, identity=0x10004
+09-12 17:58:18.846  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.866  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2167, identity=0x10004
+09-12 17:58:18.877  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.899  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2168, identity=0x10004
+09-12 17:58:18.913  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.933  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2169, identity=0x10004
+09-12 17:58:18.940  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.966  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2170, identity=0x10004
+09-12 17:58:18.975  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.451172, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:18.999  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2171, identity=0x10004
+09-12 17:58:19.033  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2172, identity=0x10004
+09-12 17:58:19.042  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.491943, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.066  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2173, identity=0x10004
+09-12 17:58:19.076  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.099  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2174, identity=0x10004
+09-12 17:58:19.113  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.133  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2175, identity=0x10004
+09-12 17:58:19.166  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2176, identity=0x10004
+09-12 17:58:19.179  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.401886, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.199  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2177, identity=0x10004
+09-12 17:58:19.209  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.232  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2178, identity=0x10004
+09-12 17:58:19.246  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.266  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2179, identity=0x10004
+09-12 17:58:19.274  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.299  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2180, identity=0x10004
+09-12 17:58:19.308  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.332  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2181, identity=0x10004
+09-12 17:58:19.339  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.366  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2182, identity=0x10004
+09-12 17:58:19.372  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.399  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2183, identity=0x10004
+09-12 17:58:19.432  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2184, identity=0x10004
+09-12 17:58:19.466  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2185, identity=0x10004
+09-12 17:58:19.474  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.499  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2186, identity=0x10004
+09-12 17:58:19.511  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.485840, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.532  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2187, identity=0x10004
+09-12 17:58:19.542  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.443848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.565  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2188, identity=0x10004
+09-12 17:58:19.579  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.485840, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.599  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2189, identity=0x10004
+09-12 17:58:19.609  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.401886, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.632  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2190, identity=0x10004
+09-12 17:58:19.646  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.485840, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.665  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2191, identity=0x10004
+09-12 17:58:19.676  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.699  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2192, identity=0x10004
+09-12 17:58:19.732  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2193, identity=0x10004
+09-12 17:58:19.741  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.765  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2194, identity=0x10004
+09-12 17:58:19.778  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.799  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2195, identity=0x10004
+09-12 17:58:19.807  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.832  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2196, identity=0x10004
+09-12 17:58:19.845  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.865  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2197, identity=0x10004
+09-12 17:58:19.872  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.898  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2198, identity=0x10004
+09-12 17:58:19.908  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.932  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2199, identity=0x10004
+09-12 17:58:19.941  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.401886, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.965  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2200, identity=0x10004
+09-12 17:58:19.978  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:19.998  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2201, identity=0x10004
+09-12 17:58:20.007  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.032  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2202, identity=0x10004
+09-12 17:58:20.045  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.065  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2203, identity=0x10004
+09-12 17:58:20.076  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.098  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2204, identity=0x10004
+09-12 17:58:20.112  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.131  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2205, identity=0x10004
+09-12 17:58:20.140  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.491943, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.165  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2206, identity=0x10004
+09-12 17:58:20.180  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.198  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2207, identity=0x10004
+09-12 17:58:20.208  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.231  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2208, identity=0x10004
+09-12 17:58:20.245  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.265  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2209, identity=0x10004
+09-12 17:58:20.275  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.298  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2210, identity=0x10004
+09-12 17:58:20.311  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.331  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2211, identity=0x10004
+09-12 17:58:20.340  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.365  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2212, identity=0x10004
+09-12 17:58:20.377  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.398  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2213, identity=0x10004
+09-12 17:58:20.407  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.431  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2214, identity=0x10004
+09-12 17:58:20.444  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.464  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2215, identity=0x10004
+09-12 17:58:20.476  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.498  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2216, identity=0x10004
+09-12 17:58:20.515  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.531  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2217, identity=0x10004
+09-12 17:58:20.540  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.564  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2218, identity=0x10004
+09-12 17:58:20.576  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.598  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2219, identity=0x10004
+09-12 17:58:20.609  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.632  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2220, identity=0x10004
+09-12 17:58:20.654  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+--------- beginning of system
+09-12 17:58:20.662  5944  8257 D PowerUI : can't show warning due to - plugged: true status unknown: false
+09-12 17:58:20.665  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2221, identity=0x10004
+09-12 17:58:20.672  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.698  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2222, identity=0x10004
+09-12 17:58:20.707  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.443848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.731  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2223, identity=0x10004
+09-12 17:58:20.739  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.764  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2224, identity=0x10004
+09-12 17:58:20.780  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.797  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2225, identity=0x10004
+09-12 17:58:20.806  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.831  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2226, identity=0x10004
+09-12 17:58:20.846  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.864  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2227, identity=0x10004
+09-12 17:58:20.897  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2228, identity=0x10004
+09-12 17:58:20.910  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.931  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2229, identity=0x10004
+09-12 17:58:20.940  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.964  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2230, identity=0x10004
+09-12 17:58:20.979  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:20.997  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2231, identity=0x10004
+09-12 17:58:21.007  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.030  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2232, identity=0x10004
+09-12 17:58:21.044  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.532776, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.064  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2233, identity=0x10004
+09-12 17:58:21.074  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.696625, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.097  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2234, identity=0x10004
+09-12 17:58:21.111  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.130  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2235, identity=0x10004
+09-12 17:58:21.140  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.164  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2236, identity=0x10004
+09-12 17:58:21.177  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.197  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2237, identity=0x10004
+09-12 17:58:21.205  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.230  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2238, identity=0x10004
+09-12 17:58:21.243  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.264  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2239, identity=0x10004
+09-12 17:58:21.272  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.297  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2240, identity=0x10004
+09-12 17:58:21.312  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.330  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2241, identity=0x10004
+09-12 17:58:21.340  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.364  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2242, identity=0x10004
+09-12 17:58:21.377  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.397  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2243, identity=0x10004
+09-12 17:58:21.404  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.430  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2244, identity=0x10004
+09-12 17:58:21.440  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.464  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2245, identity=0x10004
+09-12 17:58:21.472  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.497  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2246, identity=0x10004
+09-12 17:58:21.511  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.530  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2247, identity=0x10004
+09-12 17:58:21.539  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.563  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2248, identity=0x10004
+09-12 17:58:21.578  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.597  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2249, identity=0x10004
+09-12 17:58:21.607  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.630  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2250, identity=0x10004
+09-12 17:58:21.643  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.663  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2251, identity=0x10004
+09-12 17:58:21.672  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.697  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2252, identity=0x10004
+09-12 17:58:21.710  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.730  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2253, identity=0x10004
+09-12 17:58:21.740  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.763  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2254, identity=0x10004
+09-12 17:58:21.777  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.796  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2255, identity=0x10004
+09-12 17:58:21.807  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.830  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2256, identity=0x10004
+09-12 17:58:21.843  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.863  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2257, identity=0x10004
+09-12 17:58:21.873  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.896  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2258, identity=0x10004
+09-12 17:58:21.910  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.930  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2259, identity=0x10004
+09-12 17:58:21.939  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.963  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2260, identity=0x10004
+09-12 17:58:21.976  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:21.996  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2261, identity=0x10004
+09-12 17:58:22.006  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.029  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2262, identity=0x10004
+09-12 17:58:22.043  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.063  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2263, identity=0x10004
+09-12 17:58:22.072  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.096  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2264, identity=0x10004
+09-12 17:58:22.108  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.129  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2265, identity=0x10004
+09-12 17:58:22.139  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.163  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2266, identity=0x10004
+09-12 17:58:22.176  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.196  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2267, identity=0x10004
+09-12 17:58:22.205  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.229  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2268, identity=0x10004
+09-12 17:58:22.242  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.262  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2269, identity=0x10004
+09-12 17:58:22.296  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2270, identity=0x10004
+09-12 17:58:22.310  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.329  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2271, identity=0x10004
+09-12 17:58:22.336  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.362  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2272, identity=0x10004
+09-12 17:58:22.374  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.396  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2273, identity=0x10004
+09-12 17:58:22.405  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.429  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2274, identity=0x10004
+09-12 17:58:22.443  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.462  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2275, identity=0x10004
+09-12 17:58:22.471  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.496  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2276, identity=0x10004
+09-12 17:58:22.509  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.529  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2277, identity=0x10004
+09-12 17:58:22.538  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.288513, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.562  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2278, identity=0x10004
+09-12 17:58:22.576  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.532776, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.595  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2279, identity=0x10004
+09-12 17:58:22.602  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.573669, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.629  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2280, identity=0x10004
+09-12 17:58:22.645  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.662  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2281, identity=0x10004
+09-12 17:58:22.673  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.695  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2282, identity=0x10004
+09-12 17:58:22.709  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.729  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2283, identity=0x10004
+09-12 17:58:22.738  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.762  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2284, identity=0x10004
+09-12 17:58:22.775  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.795  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2285, identity=0x10004
+09-12 17:58:22.806  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.829  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2286, identity=0x10004
+09-12 17:58:22.842  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.862  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2287, identity=0x10004
+09-12 17:58:22.870  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.895  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2288, identity=0x10004
+09-12 17:58:22.929  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2289, identity=0x10004
+09-12 17:58:22.938  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.962  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2290, identity=0x10004
+09-12 17:58:22.975  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:22.995  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2291, identity=0x10004
+09-12 17:58:23.005  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.028  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2292, identity=0x10004
+09-12 17:58:23.042  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.655579, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.062  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2293, identity=0x10004
+09-12 17:58:23.095  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2294, identity=0x10004
+09-12 17:58:23.107  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.573669, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.128  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2295, identity=0x10004
+09-12 17:58:23.138  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.161  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2296, identity=0x10004
+09-12 17:58:23.175  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.195  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2297, identity=0x10004
+09-12 17:58:23.205  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.228  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2298, identity=0x10004
+09-12 17:58:23.238  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.261  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2299, identity=0x10004
+09-12 17:58:23.270  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.295  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2300, identity=0x10004
+09-12 17:58:23.309  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.328  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2301, identity=0x10004
+09-12 17:58:23.336  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.361  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2302, identity=0x10004
+09-12 17:58:23.395  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2303, identity=0x10004
+09-12 17:58:23.403  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.428  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2304, identity=0x10004
+09-12 17:58:23.440  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.461  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2305, identity=0x10004
+09-12 17:58:23.469  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.494  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2306, identity=0x10004
+09-12 17:58:23.507  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.528  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2307, identity=0x10004
+09-12 17:58:23.561  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2308, identity=0x10004
+09-12 17:58:23.577  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.594  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2309, identity=0x10004
+09-12 17:58:23.603  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.628  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2310, identity=0x10004
+09-12 17:58:23.642  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.661  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2311, identity=0x10004
+09-12 17:58:23.694  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2312, identity=0x10004
+09-12 17:58:23.708  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.728  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2313, identity=0x10004
+09-12 17:58:23.736  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.761  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2314, identity=0x10004
+09-12 17:58:23.774  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.794  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2315, identity=0x10004
+09-12 17:58:23.803  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.778839, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.828  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2316, identity=0x10004
+09-12 17:58:23.840  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.737701, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.861  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2317, identity=0x10004
+09-12 17:58:23.869  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.894  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2318, identity=0x10004
+09-12 17:58:23.907  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.927  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2319, identity=0x10004
+09-12 17:58:23.937  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.961  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2320, identity=0x10004
+09-12 17:58:23.974  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:23.994  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2321, identity=0x10004
+09-12 17:58:24.004  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.027  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2322, identity=0x10004
+09-12 17:58:24.061  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2323, identity=0x10004
+09-12 17:58:24.069  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.861237, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.094  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2324, identity=0x10004
+09-12 17:58:24.109  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.820007, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.127  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2325, identity=0x10004
+09-12 17:58:24.137  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.160  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2326, identity=0x10004
+09-12 17:58:24.173  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.194  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2327, identity=0x10004
+09-12 17:58:24.203  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.227  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2328, identity=0x10004
+09-12 17:58:24.239  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.260  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2329, identity=0x10004
+09-12 17:58:24.269  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.294  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2330, identity=0x10004
+09-12 17:58:24.305  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.327  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2331, identity=0x10004
+09-12 17:58:24.336  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.360  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2332, identity=0x10004
+09-12 17:58:24.373  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.394  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2333, identity=0x10004
+09-12 17:58:24.403  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.427  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2334, identity=0x10004
+09-12 17:58:24.440  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.359985, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.460  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2335, identity=0x10004
+09-12 17:58:24.467  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.493  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2336, identity=0x10004
+09-12 17:58:24.505  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.527  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2337, identity=0x10004
+09-12 17:58:24.537  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.560  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2338, identity=0x10004
+09-12 17:58:24.573  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.593  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2339, identity=0x10004
+09-12 17:58:24.602  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.627  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2340, identity=0x10004
+09-12 17:58:24.639  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.660  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2341, identity=0x10004
+09-12 17:58:24.669  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.693  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2342, identity=0x10004
+09-12 17:58:24.706  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.726  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2343, identity=0x10004
+09-12 17:58:24.737  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.760  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2344, identity=0x10004
+09-12 17:58:24.773  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.318146, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.792  6275  6611 D SatelliteController: isInCarrierRoamingNbIotNtn: satellite is disabled
+09-12 17:58:24.792  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:24.792  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.792  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.792  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:24.795  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:24.795  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:24.795  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.795  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.795  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:24.798  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2345, identity=0x10004
+09-12 17:58:24.803  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.808  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:24.808  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.809  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.809  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:24.812  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Checking connect type from PLMN config for subId: 1
+09-12 17:58:24.812  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.812  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.812  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:24.813  6275  6611 D SatelliteController: getSatellitePerPlmnConfiguration: invalid subId or not supported via carrier.
+09-12 17:58:24.814  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: config: null
+09-12 17:58:24.814  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.814  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.814  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectTypeViaConfigUpdater: return null (satelliteConfig is null)
+09-12 17:58:24.815  6275  6611 D SatelliteController: getCarrierRoamingNtnConnectType: Falling back to global carrier config connect type: 0
+09-12 17:58:24.815  6275  6611 D TelephonyConfigUpdateInstallReceiver: getConfigParser: domain=satellite
+09-12 17:58:24.815  6275  6611 V SatelliteController: satelliteConfigParser is not ready
+09-12 17:58:24.815  6275  6611 D SatelliteController: isSatelliteAttachSupportedViaConfigupdater: return null (satelliteConfig is null)
+09-12 17:58:24.827  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2346, identity=0x10004
+09-12 17:58:24.836  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.860  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2347, identity=0x10004
+09-12 17:58:24.866  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.614624, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.893  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2348, identity=0x10004
+09-12 17:58:24.906  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.573669, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.926  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2349, identity=0x10004
+09-12 17:58:24.935  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.443848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.960  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2350, identity=0x10004
+09-12 17:58:24.974  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:24.993  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2351, identity=0x10004
+09-12 17:58:25.002  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.026  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2352, identity=0x10004
+09-12 17:58:25.039  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.059  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2353, identity=0x10004
+09-12 17:58:25.070  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.093  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2354, identity=0x10004
+09-12 17:58:25.106  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.126  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2355, identity=0x10004
+09-12 17:58:25.137  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.159  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2356, identity=0x10004
+09-12 17:58:25.172  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.193  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2357, identity=0x10004
+09-12 17:58:25.202  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.226  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2358, identity=0x10004
+09-12 17:58:25.259  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2359, identity=0x10004
+09-12 17:58:25.270  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.292  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2360, identity=0x10004
+09-12 17:58:25.305  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.276367, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.326  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2361, identity=0x10004
+09-12 17:58:25.336  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.151276, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.359  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2362, identity=0x10004
+09-12 17:58:25.392  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2363, identity=0x10004
+09-12 17:58:25.400  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.426  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2364, identity=0x10004
+09-12 17:58:25.438  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.459  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2365, identity=0x10004
+09-12 17:58:25.469  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.492  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2366, identity=0x10004
+09-12 17:58:25.505  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.985229, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.526  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2367, identity=0x10004
+09-12 17:58:25.536  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.559  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2368, identity=0x10004
+09-12 17:58:25.572  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.592  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2369, identity=0x10004
+09-12 17:58:25.602  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.068176, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.626  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2370, identity=0x10004
+09-12 17:58:25.641  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.659  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2371, identity=0x10004
+09-12 17:58:25.692  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2372, identity=0x10004
+09-12 17:58:25.701  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.725  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2373, identity=0x10004
+09-12 17:58:25.736  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.943848, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.759  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2374, identity=0x10004
+09-12 17:58:25.771  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.026672, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.792  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2375, identity=0x10004
+09-12 17:58:25.825  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2376, identity=0x10004
+09-12 17:58:25.838  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.859  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2377, identity=0x10004
+09-12 17:58:25.869  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.892  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2378, identity=0x10004
+09-12 17:58:25.905  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.234619, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.925  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2379, identity=0x10004
+09-12 17:58:25.934  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.109711, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.947  9227  9227 I adbd    : adbd service requested 'shell,v2,TERM=screen.xterm-256color:export ANDROID_LOG_TAGS="''"; exec logcat '-d' '-t' '900''
+09-12 17:58:25.959  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2380, identity=0x10004
+09-12 17:58:25.972  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 446.192932, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549
+09-12 17:58:25.992  2052 11546 E mm-camera: cpp_hardware_process_frame:1099, v4l2 ioctl() failed. rc:-1, trans_code:-11, frame_id=2381, identity=0x10004
+09-12 17:58:25.999  2052 11698 E mm-camera-sensor: port_sensor_handle_aec_update:832 g 16.925549 lux idx 445.902527, nr-y: 16.925549, nr-cbcr: 16.925549, asf: 16.925549

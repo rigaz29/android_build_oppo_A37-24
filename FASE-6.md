@@ -523,7 +523,87 @@ Sengaja tidak ditambal karena kosmetik: resonantFrequencyHz=NaN (motor ERM
 memang tidak melaporkan profil frekuensi) dan "Failed to find HDMI node"
 (A37 memang tidak punya HDMI).
 
-### Lima pelajaran yang paling mahal
+## 9. GPU page fault yang mematikan perangkat
+
+Sesudah ~35 menit pemakaian, perangkat reboot mendadak. Bukan RescueParty,
+bukan factory reset, bukan panik kernel:
+
+    kgsl kgsl-3d0: GPU PAGE FAULT: addr = BF049400 pid = 5944
+      [BF047000 - BF048000] (+guard) (pid = 5944) (egl_surface)
+       <- fault @ BF049400
+      [BF04A000 - BF06E000] (+guard) (pid = 5944) (egl_surface)
+    (terulang 4 detik kemudian, alamat dan pid sama persis)
+    Watchdog bark! Now = 2107.882536
+    Watchdog last pet at 2087.490352
+    cpu alive mask from last pet 0-3
+    Causing a watchdog bite!
+
+`cpu alive mask 0-3` menegaskan keempat inti masih hidup -- bukan deadlock
+CPU, melainkan jalur GPU yang tersangkut. uid 10118 adalah
+com.android.systemui, proses yang selalu berjalan.
+
+### Mekanismenya: jalur pemulihan yang tidak pernah dipanggil
+
+Bawaan kernel hanya KGSL_FT_PAGEFAULT_INT_ENABLE (0x1, adreno.h:649), dan
+SELURUH pemulihan dibungkus pemeriksaan bit yang mati itu
+(kgsl_iommu.c:374):
+
+    iommu_dev->fault = 1;
+    if (adreno_dev->ft_pf_policy & KGSL_FT_PAGEFAULT_GPUHALT_ENABLE) {
+        adreno_set_gpu_fault(adreno_dev, ADRENO_IOMMU_PAGE_FAULT);
+        kgsl_pwrctrl_change_state(device, KGSL_STATE_AWARE);
+        adreno_dispatcher_schedule(device);
+    }
+
+Tanpa bit itu driver mencatat lalu diam. IOMMU menahan transaksi, GPU
+menggantung, tumpukan grafis terblokir, watchdog perangkat keras tidak
+terpet 20 detik, dan SoC me-reset paksa. Diperbaiki dengan menulis 0x3 ke
+ft_pagefault_policy di init.target.rc.
+
+### Akar penyebabnya BELUM ditemukan, dan hipotesis utama gugur
+
+Aritmetikanya sempat sangat meyakinkan. Alokasi kedua berukuran 147456 byte
+-- persis ukuran bilah status pada layar 720 dengan stride 736 -- dan fault
+terjadi 3072 byte sebelum awalnya, yaitu tepat satu baris (736 x 4 = 2944).
+Membaca satu baris sebelum awal buffer adalah tanda khas ketidakcocokan
+stride, dan kita memang memaksa LEGACY_GRALLOC.
+
+Tetapi ada mekanisme yang memeriksanya, dan ia aktif. Gralloc2Mapper::
+validateBufferSize melewatkan validasi hanya bila mapper 2.1 tidak ada:
+
+    if (mMapperV2_1 == nullptr) return NO_ERROR;
+
+Perangkat ini punya android.hardware.graphics.mapper@2.1::IMapper,
+terdaftar dan dipakai tujuh proses. Validasi ukuran berjalan pada setiap
+alokasi, dan NOL kegagalan di seluruh log termasuk arsip. libui dan gralloc
+sepakat soal ukuran buffer.
+
+Hipotesisnya gugur. Penyimpangan alamat terjadi di dalam blob Adreno, bukan
+di antarmuka gralloc.
+
+### Yang dikerjakan ketika sebab tidak bisa dikejar
+
+Perbaikan yang sama ternyata melakukan lebih dari sekadar memulihkan GPU.
+dispatcher_do_fault memanggil kgsl_device_snapshot(device,
+cmdbatch->context) (adreno_dispatch.c:1745), sehingga fault berikutnya
+meninggalkan status register, konteks yang bersalah, dan command batch yang
+sedang berjalan di /sys/class/kgsl/kgsl-3d0/snapshot/.
+
+Pola yang sama dengan bootwatchdog dan tombstoned: ketika penyebab tidak
+dapat dikejar langsung, yang dikerjakan adalah membuatnya terekam.
+Sebelumnya tiap kemunculan hanya menyisakan lima baris log lalu perangkat
+mati.
+
+### Pelajaran keenam
+
+**Aritmetika yang cocok bukan bukti.** 3072 byte yang tepat sama dengan satu
+baris stride terasa seperti temuan, dan hampir saya laporkan sebagai sebab.
+Yang menyelamatkan adalah bertanya "apakah ada yang seharusnya menangkap ini
+kalau benar" -- lalu menemukan validateBufferSize, memastikan ia aktif, dan
+mendapati ia tidak pernah gagal. Hipotesis yang cocok dengan angka tetap
+harus diuji terhadap mekanisme yang akan membantahnya.
+
+### Enam pelajaran yang paling mahal
 
 **Menutup satu lubang sering hanya memindahkan kegagalan.** Peta BPF null ->
 peta yang mengabaikan segalanya -> peta berbasis memori: tiga iterasi untuk
@@ -541,7 +621,7 @@ melewatkan `getL4sEnabledMap` karena namanya mengandung angka -- dan skrip
 verifikasinya memakai pola yang sama, sehingga melaporkan bersih padahal
 tidak.
 
-## 9. Utang yang harus dibayar sebelum rilis
+## 10. Utang yang harus dibayar sebelum rilis
 
 Semuanya diagnostik, sengaja dipasang, dan harus dicabut:
 
